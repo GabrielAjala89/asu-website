@@ -1,0 +1,55 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/*
+  Africa Sports Unified — design tokens
+  Brand colours and typography. Used everywhere via Tailwind utilities.
+*/
+@theme {
+  /* Brand colours */
+  --color-asu-blue: #1b3d6e;
+  --color-asu-blue-light: #2a5793;
+  --color-asu-blue-dark: #122a4b;
+
+  --color-asu-orange: #f37021;
+  --color-asu-orange-light: #f58a48;
+  --color-asu-orange-dark: #d65a14;
+
+  --color-asu-black: #030000;
+  --color-asu-cream: #faf3e7;
+
+  /* Font families */
+  --font-heading: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-lora), Georgia, "Times New Roman", serif;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--color-asu-black);
+    background-color: #ffffff;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--color-asu-blue);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  /* Headings have a default tight line-height */
+  h1 { line-height: 1.05; }
+  h2 { line-height: 1.1; }
+  h3, h4, h5, h6 { line-height: 1.2; }
+
+  /* Selection colour matches brand */
+  ::selection {
+    background-color: var(--color-asu-orange);
+    color: white;
+  }
+}
