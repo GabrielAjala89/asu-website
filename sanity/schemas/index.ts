@@ -12,3 +12,4 @@ export { trustedBy } from "./trustedBy";
 export { author } from "./author";
 export { topic } from "./topic";
 export { siteSettings } from "./siteSettings";
+export { waitlistEntry } from "./waitlistEntry";

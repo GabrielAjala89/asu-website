@@ -3,7 +3,7 @@ import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import {
   article, video, report, tracker, caseStudy,
-  testimonial, trustedBy, author, topic, siteSettings,
+  testimonial, trustedBy, author, topic, siteSettings, waitlistEntry,
 } from "./sanity/schemas";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
@@ -39,6 +39,8 @@ export default defineConfig({
             S.divider(),
             S.documentTypeListItem("author").title("Authors"),
             S.documentTypeListItem("topic").title("Topics"),
+            S.divider(),
+            S.documentTypeListItem("waitlistEntry").title("ASU Insider Waitlist"),
           ]),
     }),
     visionTool(),
@@ -47,7 +49,7 @@ export default defineConfig({
   schema: {
     types: [
       article, video, report, tracker, caseStudy,
-      testimonial, trustedBy, author, topic, siteSettings,
+      testimonial, trustedBy, author, topic, siteSettings, waitlistEntry,
     ],
   },
 });
