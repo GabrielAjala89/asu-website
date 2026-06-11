@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
@@ -20,6 +21,7 @@ interface NavbarProps {
 
 export function Navbar({ transparent = false }: NavbarProps) {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header
@@ -64,7 +66,9 @@ export function Navbar({ transparent = false }: NavbarProps) {
               href={link.href}
               className={cn(
                 "text-sm font-semibold font-[family-name:var(--font-heading)] tracking-wide transition-colors",
-                transparent
+                pathname === link.href
+                  ? "text-[#F37021]"
+                  : transparent
                   ? "text-white/90 hover:text-white"
                   : "text-[#1b3d6e] hover:text-[#F37021]"
               )}
