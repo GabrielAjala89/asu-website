@@ -91,7 +91,7 @@ function ProductCard({ product }: { product: Product }) {
         {/* Bottom content */}
         <div className="relative z-10 p-5">
           <p className="text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">
-            {product.pricePaid ? `£${product.pricePaid}` : "Free"}
+            {product.pricePaid ? `$${product.pricePaid}` : "Free"}
           </p>
           {product.features && product.features.length > 0 && (
             <div className="mt-3">
@@ -118,25 +118,25 @@ function ProductCard({ product }: { product: Product }) {
 
 const placeholders = [
   {
-    id: 1, badge: "2025 AFCON OVERVIEW REPORT", price: "£100",
+    id: 1, badge: "2025 AFCON OVERVIEW REPORT", price: "$100",
     description: "Strategic, data-driven analysis of the 2025 Africa Cup of Nations tournament",
     features: ["Commercial & Financial Insights","Media & Broadcast Impact","Sporting & Competitive Summary","Host & Infrastructure Evaluation"],
     label: "VIEW REPORT", bg: "from-green-900/80",
   },
   {
-    id: 2, badge: "AFRICAN SPORTS MARKET DEALS TRACKER", price: "£55",
+    id: 2, badge: "AFRICAN SPORTS MARKET DEALS TRACKER", price: "$55",
     description: "Database that tracks commercial deals, sponsorships, broadcast, and investments.",
     features: ["Deal Coverage & Listings","Market Insights & Trends","Data for Strategic Decisions","Contextual Industry Insights"],
     label: "EXPLORE TRACKER", bg: "from-slate-800/80",
   },
   {
-    id: 3, badge: "2023 AFCON OVERVIEW REPORT", price: "£145",
+    id: 3, badge: "2023 AFCON OVERVIEW REPORT", price: "$145",
     description: "Comprehensive analysis of the 2023 Africa Cup of Nations (AFCON)",
     features: ["Tournament Summary & Stats","Competitive Insights","Commercial & Media Impact","Socio-economic Impact"],
     label: "VIEW REPORT", bg: "from-stone-700/80",
   },
   {
-    id: 4, badge: "2025 AFRICAN SPORTS MARKET TRENDS REPORT", price: "£25",
+    id: 4, badge: "2025 AFRICAN SPORTS MARKET TRENDS REPORT", price: "$25",
     description: "Comprehensive industry analysis released by Africa Sports Unified",
     features: ["Digital Transformation as a Growth Driver","Investment Trends and Challenges","Importance of Grassroots Development","Strategic Insights for Stakeholders"],
     label: "VIEW REPORT", bg: "from-orange-900/80",

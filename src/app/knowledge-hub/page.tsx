@@ -47,7 +47,7 @@ export default async function KnowledgeHubPage() {
           <div className="relative z-10 mx-auto max-w-7xl px-6 w-full pb-16">
             <OrangeLine />
             <h1 className="mt-4 text-4xl md:text-5xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight">
-              The ASU Knowledge Hub
+              Intelligence, Insights &amp; Ideas Driving Africa&apos;s Sports Industry
             </h1>
             <p className="mt-3 text-white/80 text-base md:text-lg max-w-2xl leading-relaxed">
               Decision-grade intelligence on Africa&apos;s sports economy — reports, trackers, articles, and video content.

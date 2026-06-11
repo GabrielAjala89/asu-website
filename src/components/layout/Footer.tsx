@@ -1,63 +1,32 @@
 import Link from "next/link";
 import Image from "next/image";
-import { OrangeLine } from "@/components/ui/OrangeLine";
+import { Phone, Mail } from "lucide-react";
 
-const quickLinks = [
-  { label: "About", href: "/about" },
-  { label: "ASU Insider", href: "/asu-insider" },
-  { label: "Consult", href: "/consult" },
+const QUICK_LINKS = [
+  { label: "About",         href: "/about" },
   { label: "Knowledge Hub", href: "/knowledge-hub" },
-  { label: "Contact", href: "/contact" },
+  { label: "Consulting",    href: "/consult" },
+  { label: "Events",        href: "/events" },
+  { label: "Contact Us",    href: "/contact" },
 ];
 
-const legalLinks = [
-  { label: "Privacy Policy", href: "/legal/privacy" },
-  { label: "Terms of Use", href: "/legal/terms" },
-  { label: "Cookie Policy", href: "/legal/cookies" },
+const LEGAL_LINKS = [
+  { label: "Privacy Policy",   href: "/legal/privacy" },
+  { label: "Terms of Service", href: "/legal/terms" },
+  { label: "Cookies Settings", href: "/legal/cookies" },
 ];
 
 export function Footer() {
   return (
     <footer className="bg-[#1b3d6e] text-white">
-      {/* Newsletter strip */}
-      <div id="newsletter" className="border-b border-white/10">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-            <div className="max-w-md">
-              <OrangeLine />
-              <h3 className="mt-3 text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">
-                Stay ahead of Africa&apos;s sports economy
-              </h3>
-              <p className="mt-2 text-sm text-white/70">
-                Free intelligence delivered to your inbox. No spam.
-              </p>
-            </div>
-            <form className="flex flex-col sm:flex-row gap-3 w-full md:max-w-sm" action="/api/subscribe" method="POST">
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder="Your email address"
-                className="flex-1 px-4 py-3 rounded-full bg-white/10 border border-white/20 text-white placeholder:text-white/50 text-sm focus:outline-none focus:ring-2 focus:ring-[#F37021] focus:border-transparent"
-              />
-              <button
-                type="submit"
-                className="px-6 py-3 bg-[#F37021] text-white font-semibold rounded-full text-sm font-[family-name:var(--font-heading)] hover:bg-[#d65a14] transition-colors whitespace-nowrap"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
+      <div className="mx-auto max-w-7xl px-6 py-14">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-12">
 
-      {/* Main footer */}
-      <div className="mx-auto max-w-7xl px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {/* Brand */}
-          <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="relative w-9 h-9">
+          {/* ── Left: brand + links + CTA buttons ─────────────────────── */}
+          <div className="flex-1">
+            {/* Logo */}
+            <div className="flex items-center gap-3 mb-8">
+              <div className="relative w-9 h-9 shrink-0">
                 <Image
                   src="/images/asu-logo-white.png"
                   alt="Africa Sports Unified"
@@ -69,91 +38,113 @@ export function Footer() {
                 Africa Sports Unified
               </span>
             </div>
-            <p className="text-sm text-white/60 leading-relaxed max-w-xs">
-              Intelligence, advisory, and ecosystem access for organisations
-              shaping Africa&apos;s sports economy.
+
+            {/* Quick Links */}
+            <p className="font-[family-name:var(--font-heading)] font-bold text-white text-sm mb-3">
+              Quick Links
             </p>
-            {/* Social icons */}
-            <div className="mt-5 flex gap-3">
-              {[
-                { label: "LinkedIn", href: "https://linkedin.com/company/africa-sports-unified", icon: "in" },
-                { label: "Twitter", href: "https://twitter.com/asunified", icon: "𝕏" },
-                { label: "Spotify", href: "https://open.spotify.com", icon: "♫" },
-                { label: "YouTube", href: "https://youtube.com", icon: "▶" },
-              ].map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center text-xs text-white/70 hover:border-[#F37021] hover:text-[#F37021] transition-colors"
+            <nav className="flex flex-wrap gap-x-5 gap-y-2 mb-8">
+              {QUICK_LINKS.map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="text-sm text-white/70 hover:text-white transition-colors"
                 >
-                  {s.icon}
-                </a>
+                  {l.label}
+                </Link>
               ))}
+            </nav>
+
+            {/* CTA buttons */}
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/#newsletter"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border-2 border-white/80 text-white text-sm font-semibold font-[family-name:var(--font-heading)] hover:bg-white hover:text-[#1b3d6e] transition-colors"
+              >
+                Subscribe to our Newsletter →
+              </Link>
+              <a
+                href="https://open.spotify.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border-2 border-white/80 text-white text-sm font-semibold font-[family-name:var(--font-heading)] hover:bg-white hover:text-[#1b3d6e] transition-colors"
+              >
+                Podcast Sessions
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2a10 10 0 100 20A10 10 0 0012 2zm0 3a7 7 0 110 14A7 7 0 0112 5zm-1 4v4.5l3.5 2.1-.7 1.2L9 14V9h2z"/>
+                </svg>
+              </a>
             </div>
           </div>
 
-          {/* Quick links */}
-          <div>
-            <h4 className="font-[family-name:var(--font-heading)] font-bold text-sm uppercase tracking-wider text-white/50 mb-4">
-              Quick Links
-            </h4>
-            <ul className="space-y-2">
-              {quickLinks.map((l) => (
-                <li key={l.href}>
-                  <Link
-                    href={l.href}
-                    className="text-sm text-white/70 hover:text-[#F37021] transition-colors"
-                  >
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Content */}
-          <div>
-            <h4 className="font-[family-name:var(--font-heading)] font-bold text-sm uppercase tracking-wider text-white/50 mb-4">
-              Content
-            </h4>
-            <ul className="space-y-2">
-              {[
-                { label: "Articles & Insights", href: "/knowledge-hub" },
-                { label: "Reports", href: "/knowledge-hub?type=reports" },
-                { label: "Trackers", href: "/knowledge-hub?type=trackers" },
-                { label: "Videos", href: "/knowledge-hub?type=videos" },
-                { label: "Podcast", href: "https://open.spotify.com", external: true },
-              ].map((l) => (
-                <li key={l.label}>
-                  <Link
-                    href={l.href}
-                    {...(l.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-                    className="text-sm text-white/70 hover:text-[#F37021] transition-colors"
-                  >
-                    {l.label}
-                    {l.external && <span className="ml-1 text-xs opacity-50">↗</span>}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          {/* ── Right: socials ─────────────────────────────────────────── */}
+          <div className="lg:max-w-xs">
+            <p className="font-[family-name:var(--font-heading)] font-bold text-base mb-5">
+              Our Socials
+            </p>
+            <div className="flex flex-wrap gap-3 mb-5">
+              <SocialIcon href="tel:+44" label="Call us">
+                <Phone size={15} />
+              </SocialIcon>
+              <SocialIcon href="mailto:info@asunified.com" label="Email">
+                <Mail size={15} />
+              </SocialIcon>
+              <SocialIcon href="https://wa.me/" label="WhatsApp" external>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+              </SocialIcon>
+              <SocialIcon href="https://linkedin.com/company/africa-sports-unified" label="LinkedIn" external>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>
+                </svg>
+              </SocialIcon>
+              <SocialIcon href="https://twitter.com/asunified" label="Twitter / X" external>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+              </SocialIcon>
+              <SocialIcon href="https://facebook.com" label="Facebook" external>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </SocialIcon>
+            </div>
+            <p className="text-sm text-white/70 leading-relaxed">
+              Feel Free to reach us on any of our social media handles or call us directly
+            </p>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/40">
-          <span>© {new Date().getFullYear()} Africa Sports Unified. All rights reserved.</span>
-          <div className="flex gap-4">
-            {legalLinks.map((l) => (
-              <Link key={l.href} href={l.href} className="hover:text-white/70 transition-colors">
+        {/* ── Bottom bar ───────────────────────────────────────────────── */}
+        <div className="mt-12 pt-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
+          <div className="flex flex-wrap gap-4">
+            {LEGAL_LINKS.map((l) => (
+              <Link key={l.href} href={l.href} className="hover:text-white/80 transition-colors">
                 {l.label}
               </Link>
             ))}
           </div>
+          <span>2025 Africa sport unified. All right reserved.</span>
         </div>
       </div>
     </footer>
+  );
+}
+
+function SocialIcon({
+  href, label, external, children,
+}: {
+  href: string; label: string; external?: boolean; children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      aria-label={label}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors shrink-0"
+    >
+      {children}
+    </a>
   );
 }

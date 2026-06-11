@@ -1,287 +1,229 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { PageHero } from "@/components/ui/PageHero";
 import { OrangeLine } from "@/components/ui/OrangeLine";
 import { Button } from "@/components/ui/Button";
-import { TestimonialsCarousel } from "@/components/sections/TestimonialsCarousel";
 import { sanityFetch } from "@/lib/sanity";
-import { ALL_TESTIMONIALS_QUERY, ALL_CASE_STUDIES_QUERY, SITE_SETTINGS_QUERY } from "@/lib/queries";
+import { ALL_CASE_STUDIES_QUERY } from "@/lib/queries";
 import Image from "next/image";
+import Link from "next/link";
+import { Globe, Lock, Map, BarChart2 } from "lucide-react";
 
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Advisory | Africa Sports Unified",
-  description: "ASU Advisory provides strategic counsel to investors, federations, sponsors, and governments navigating Africa's sports economy.",
+  title: "Consulting | Africa Sports Unified",
+  description: "ASU Advisory — strategic counsel for the organisations shaping Africa's sports economy.",
 };
-
-const SERVICES = [
-  {
-    number: "01",
-    title: "Market Entry & Expansion",
-    body: "Helping international brands, leagues, and investors identify the right markets, partners, and timing for entering or scaling in Africa.",
-  },
-  {
-    number: "02",
-    title: "Sponsorship Strategy",
-    body: "Advising rights holders on packaging and selling sponsorship, and brands on identifying and valuing African sport sponsorship opportunities.",
-  },
-  {
-    number: "03",
-    title: "Governance & Institutional Reform",
-    body: "Working with federations and national governing bodies on strategy, governance frameworks, and stakeholder engagement.",
-  },
-  {
-    number: "04",
-    title: "Media Rights & Content Strategy",
-    body: "Supporting broadcasters, OTT platforms, and federations on rights valuation, distribution, and content strategy for African audiences.",
-  },
-  {
-    number: "05",
-    title: "Investment Advisory",
-    body: "Providing due diligence support, sector mapping, and deal intelligence for private equity, venture, and strategic investors.",
-  },
-  {
-    number: "06",
-    title: "Event & Bid Strategy",
-    body: "Advising cities, governments, and organisations on hosting bids, event strategy, and the economic case for major sport events.",
-  },
-];
-
-const PROCESS = [
-  {
-    step: "1",
-    title: "Initial Conversation",
-    body: "A free 30-minute call to understand your situation, objectives, and how ASU can help.",
-  },
-  {
-    step: "2",
-    title: "Scoping & Proposal",
-    body: "We define the scope, timeline, and fee structure — clear, transparent, and tailored to your needs.",
-  },
-  {
-    step: "3",
-    title: "Research & Analysis",
-    body: "Deep-dive work drawing on ASU's proprietary data, continental networks, and sector expertise.",
-  },
-  {
-    step: "4",
-    title: "Delivery & Support",
-    body: "A structured output — report, strategy, or ongoing retainer — with continued support as you act on it.",
-  },
-];
 
 interface CaseStudy {
   _id: string;
   title: string;
   clientName?: string;
   summary?: string;
-  outcomes?: string[];
   documentUrl?: string;
   clientLogo?: { asset?: { url: string }; alt?: string };
-  heroImage?: { asset?: { url: string } };
-}
-
-interface SiteSettings {
-  calendlyUrl?: string;
 }
 
 export default async function ConsultPage() {
-  const [testimonials, caseStudies, settings] = await Promise.all([
-    sanityFetch<never[]>(ALL_TESTIMONIALS_QUERY).catch(() => []),
-    sanityFetch<CaseStudy[]>(ALL_CASE_STUDIES_QUERY).catch(() => []),
-    sanityFetch<SiteSettings>(SITE_SETTINGS_QUERY).catch(() => ({})),
-  ]);
-
-  const calendlyUrl = (settings as SiteSettings)?.calendlyUrl || "https://calendly.com/asunified";
+  const caseStudies = await sanityFetch<CaseStudy[]>(ALL_CASE_STUDIES_QUERY).catch(() => []);
+  const primaryCase = (caseStudies as CaseStudy[])?.[0];
 
   return (
     <>
       <Navbar />
-      <main className="pt-18">
-        <PageHero
-          title="ASU Advisory"
-          subtitle="Strategic counsel for the people and organisations shaping Africa's sports economy. We bring the intelligence, the networks, and the experience to help you move with confidence."
-          imageSrc="/images/consult-hero.jpg"
-          imageAlt="ASU Advisory"
-        />
+      <main>
 
-        {/* Intro */}
+        {/* ── Hero ─────────────────────────────────────────────────────────── */}
+        <section>
+          {/* Cream subtitle strip (navbar overlays this) */}
+          <div className="bg-[#faf3e7] pt-20 pb-6 text-center px-6">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 font-[family-name:var(--font-heading)]">
+              Turn Sport Into Economic Value
+            </p>
+          </div>
+          {/* Full-bleed image */}
+          <div className="relative h-[65vh] min-h-[420px]">
+            <Image
+              src="/images/consult-hero.jpg"
+              alt="ASU Consulting"
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
+            <div className="absolute bottom-0 left-0 w-full px-6 pb-14 lg:px-16 lg:pb-20 max-w-4xl">
+              <h1 className="text-3xl md:text-5xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight">
+                Using Sport as a driver for economic growth, investment, and long-term value.
+              </h1>
+              <div className="mt-8">
+                <Link
+                  href="#contact"
+                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#1b3d6e] text-white text-sm font-bold font-[family-name:var(--font-heading)] hover:bg-[#122a4b] transition-colors"
+                >
+                  Work with ASU →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Who We Work With ─────────────────────────────────────────────── */}
+        <section className="py-20 bg-[#faf3e7]">
+          <div className="mx-auto max-w-7xl px-6">
+            <OrangeLine />
+            <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+              Who We Work With
+            </h2>
+            <p className="mt-3 text-gray-600 max-w-2xl leading-relaxed">
+              We partner with leaders in both the public and private sector who are using sport as a lever for growth, investment, and national development.
+            </p>
+
+            <div className="mt-10 grid md:grid-cols-2 gap-6">
+              {/* Public Sector */}
+              <div className="rounded-2xl bg-[#F37021] p-12 flex flex-col items-center justify-center text-center min-h-[260px]">
+                <Globe size={48} className="text-white" strokeWidth={1.5} />
+                <h3 className="mt-6 text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">
+                  Public Sector
+                </h3>
+                <p className="mt-3 text-white/85 text-sm leading-relaxed max-w-sm">
+                  Governments, ministries, national sports federations, development agencies, and multilateral institutions shaping sport policy and infrastructure.
+                </p>
+              </div>
+              {/* Private Sector */}
+              <div className="rounded-2xl bg-[#1b3d6e] p-12 flex flex-col items-center justify-center text-center min-h-[260px]">
+                <Lock size={48} className="text-white" strokeWidth={1.5} />
+                <h3 className="mt-6 text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">
+                  Private Sector
+                </h3>
+                <p className="mt-3 text-white/85 text-sm leading-relaxed max-w-sm">
+                  Investors, brands, media companies, leagues, clubs, and sponsors seeking to enter, expand, or deepen their position in Africa&apos;s sports economy.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── What We Offer ────────────────────────────────────────────────── */}
         <section className="py-20 bg-white">
           <div className="mx-auto max-w-7xl px-6">
-            <div className="grid md:grid-cols-2 gap-16 items-start">
+            <OrangeLine />
+            <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+              What We Offer
+            </h2>
+            <p className="mt-3 text-gray-600 max-w-2xl leading-relaxed">
+              Our advisory work spans two core disciplines — strategic guidance and data-driven intelligence.
+            </p>
+
+            <div className="mt-10 grid md:grid-cols-2 gap-6">
+              {/* Advisory & Roadmapping */}
+              <div className="rounded-2xl bg-[#F37021] p-12 flex flex-col items-center justify-center text-center min-h-[260px]">
+                <Map size={48} className="text-white" strokeWidth={1.5} />
+                <h3 className="mt-6 text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">
+                  Advisory &amp; Roadmapping
+                </h3>
+                <p className="mt-3 text-white/85 text-sm leading-relaxed max-w-sm">
+                  Strategic counsel to help you navigate market entry, institutional reform, sponsorship strategy, and event or bid planning with clarity and confidence.
+                </p>
+              </div>
+              {/* Decision Support */}
+              <div className="rounded-2xl bg-[#1b3d6e] p-12 flex flex-col items-center justify-center text-center min-h-[260px]">
+                <BarChart2 size={48} className="text-white" strokeWidth={1.5} />
+                <h3 className="mt-6 text-xl font-extrabold text-white font-[family-name:var(--font-heading)]">
+                  Decision Support &amp; Market Intelligence
+                </h3>
+                <p className="mt-3 text-white/85 text-sm leading-relaxed max-w-sm">
+                  Bespoke research, sector mapping, deal intelligence, and data analysis that gives investors and institutions the information edge they need.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Who We Have Worked With ──────────────────────────────────────── */}
+        <section className="py-20 bg-[#f4f7fb]">
+          <div className="mx-auto max-w-7xl px-6">
+            <OrangeLine />
+            <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+              Who we have worked with
+            </h2>
+
+            <div className="mt-12 flex flex-col md:flex-row items-center gap-12">
+              {/* Logo */}
+              <div className="shrink-0">
+                {primaryCase?.clientLogo?.asset?.url ? (
+                  <div className="relative w-48 h-28">
+                    <Image
+                      src={primaryCase.clientLogo.asset.url}
+                      alt={primaryCase.clientLogo.alt || primaryCase.clientName || "Client"}
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                ) : (
+                  <div className="relative w-52 h-32">
+                    <Image
+                      src="/images/uneca-logo.png"
+                      alt="United Nations Economic Commission for Africa"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                )}
+              </div>
+              {/* Text */}
+              <div className="flex-1 max-w-2xl">
+                <h3 className="text-lg font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+                  {primaryCase?.title || "United Nations Economic Commission for Africa (UNECA)"}
+                </h3>
+                <p className="mt-3 text-gray-600 leading-relaxed">
+                  {primaryCase?.summary ||
+                    "ASU supported UNECA in developing a sport and economic development framework for the African continent, providing strategic intelligence and market analysis to inform policy recommendations across member states."}
+                </p>
+                <div className="mt-6">
+                  <Link
+                    href={primaryCase?.documentUrl || "#"}
+                    className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#1b3d6e] text-white text-sm font-bold font-[family-name:var(--font-heading)] hover:bg-[#122a4b] transition-colors"
+                  >
+                    View Case Study →
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Let's Talk ──────────────────────────────────────────────────── */}
+        <section id="contact" className="py-20 bg-white">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              {/* Left */}
               <div>
                 <OrangeLine />
-                <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                  The Advisory Firm Built for African Sport
+                <h2 className="mt-4 text-3xl md:text-4xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] leading-tight">
+                  Let&apos;s Talk
                 </h2>
-                <p className="mt-5 text-gray-600 leading-relaxed">
-                  ASU Advisory is the consulting arm of Africa Sports Unified. We work with a small number of clients at any one time, providing the depth of engagement and quality of thinking that complex African sport challenges require.
-                </p>
                 <p className="mt-4 text-gray-600 leading-relaxed">
-                  Our clients include international brands entering African markets, federations navigating reform, investors evaluating opportunities, and governments building sport infrastructure strategies. What they share is a need for counsel grounded in real African sport expertise — not generic consultancy applied to a context the adviser doesn't understand.
-                </p>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  We know the people, the politics, and the possibilities. That is what we bring.
+                  If you&apos;re looking for strategic counsel, a trusted intelligence partner, or simply want to explore how ASU Advisory can support your objectives — we&apos;d welcome the conversation.
                 </p>
                 <div className="mt-8">
-                  <Button href={calendlyUrl} variant="primary" size="lg" external>
-                    Book a Free Call →
+                  <Button href="mailto:info@asunified.com" variant="secondary" size="lg">
+                    Work with ASU →
                   </Button>
                 </div>
               </div>
-
-              {/* Right column accent card */}
-              <div className="bg-[#1b3d6e] rounded-2xl p-8 text-white">
-                <p className="text-[#F37021] font-bold text-xs uppercase tracking-widest font-[family-name:var(--font-heading)]">
-                  Who We Work With
-                </p>
-                <ul className="mt-5 space-y-4">
-                  {[
-                    "International brands & sponsors entering African sport",
-                    "Sports federations & national governing bodies",
-                    "Private equity & venture investors",
-                    "Broadcasters & media rights holders",
-                    "Governments & development agencies",
-                    "Football clubs, leagues & rights holders",
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-sm text-white/85 leading-relaxed">
-                      <span className="mt-0.5 h-4 w-4 shrink-0 rounded-full bg-[#F37021] flex items-center justify-center">
-                        <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                          <path d="M1.5 4L3 5.5L6.5 2.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+              {/* Right */}
+              <div className="relative h-72 md:h-96 rounded-2xl overflow-hidden">
+                <Image
+                  src="/images/consult-cta-bg.jpg"
+                  alt="ASU consulting team"
+                  fill
+                  className="object-cover"
+                />
               </div>
             </div>
           </div>
         </section>
 
-        {/* Services */}
-        <section className="py-20 bg-[#f4f7fb]">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="text-center max-w-2xl mx-auto mb-12">
-              <OrangeLine className="mx-auto" />
-              <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                Our Advisory Services
-              </h2>
-              <p className="mt-3 text-gray-600">
-                Focused expertise across the areas that matter most in African sport.
-              </p>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {SERVICES.map((s) => (
-                <div key={s.number} className="bg-white rounded-2xl p-7 shadow-sm hover:shadow-md transition-shadow">
-                  <span className="text-[#F37021] font-extrabold text-2xl font-[family-name:var(--font-heading)]">
-                    {s.number}
-                  </span>
-                  <h3 className="mt-3 text-base font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                    {s.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">{s.body}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Case Studies */}
-        {caseStudies.length > 0 && (
-          <section className="py-20 bg-white">
-            <div className="mx-auto max-w-7xl px-6">
-              <div className="mb-12">
-                <OrangeLine />
-                <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                  Case Studies
-                </h2>
-              </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {caseStudies.map((cs) => (
-                  <div key={cs._id} className="rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow border border-gray-100">
-                    {cs.heroImage?.asset?.url && (
-                      <div className="relative h-48">
-                        <Image
-                          src={cs.heroImage.asset.url}
-                          alt={cs.title}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                    )}
-                    <div className="p-6">
-                      {cs.clientName && (
-                        <p className="text-[#F37021] text-xs font-bold uppercase tracking-wider font-[family-name:var(--font-heading)] mb-2">
-                          {cs.clientName}
-                        </p>
-                      )}
-                      <h3 className="text-base font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                        {cs.title}
-                      </h3>
-                      {cs.summary && (
-                        <p className="mt-2 text-sm text-gray-600 leading-relaxed line-clamp-3">
-                          {cs.summary}
-                        </p>
-                      )}
-                      {cs.outcomes && cs.outcomes.length > 0 && (
-                        <ul className="mt-4 space-y-1">
-                          {cs.outcomes.slice(0, 3).map((o) => (
-                            <li key={o} className="text-xs text-gray-500 flex items-start gap-2">
-                              <span className="text-[#F37021] mt-0.5">▸</span> {o}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
-
-        {/* How We Work */}
-        <section className="py-20 bg-[#1b3d6e]">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="text-center mb-14">
-              <OrangeLine className="mx-auto" />
-              <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-white font-[family-name:var(--font-heading)]">
-                How We Work
-              </h2>
-            </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {PROCESS.map((p) => (
-                <div key={p.step} className="relative">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="h-9 w-9 shrink-0 rounded-full bg-[#F37021] flex items-center justify-center text-white font-extrabold font-[family-name:var(--font-heading)] text-sm">
-                      {p.step}
-                    </span>
-                    {/* connector line */}
-                    <div className="hidden lg:block flex-1 h-px bg-white/20" />
-                  </div>
-                  <h3 className="text-white font-extrabold font-[family-name:var(--font-heading)] text-sm">
-                    {p.title}
-                  </h3>
-                  <p className="mt-2 text-white/70 text-sm leading-relaxed">{p.body}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* CTA */}
-            <div className="mt-16 text-center">
-              <p className="text-white/80 text-base mb-6 max-w-xl mx-auto">
-                Ready to explore how ASU Advisory can support your objectives? Start with a free, no-obligation conversation.
-              </p>
-              <Button href={calendlyUrl} variant="primary" size="lg" external>
-                Book a Free 30-Minute Call →
-              </Button>
-            </div>
-          </div>
-        </section>
-
-        <TestimonialsCarousel testimonials={testimonials} />
       </main>
       <Footer />
     </>

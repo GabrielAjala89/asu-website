@@ -80,7 +80,7 @@ export function Navbar({ transparent = false }: NavbarProps) {
 
         {/* Desktop CTAs */}
         <div className="hidden lg:flex items-center gap-3">
-          <Button href="/#newsletter" variant={transparent ? "ghost" : "outline"} size="sm">
+          <Button href="/#newsletter" variant={transparent ? "ghost" : "secondary"} size="sm">
             Subscribe
           </Button>
           <Button href="/asu-insider" variant="primary" size="sm">
