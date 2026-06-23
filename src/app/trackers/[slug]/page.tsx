@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle, ArrowLeft, ExternalLink } from "lucide-react";
+import { HubSpotForm } from "@/components/sections/HubSpotForm";
 
 export const revalidate = 60;
 
@@ -163,9 +164,9 @@ export default async function TrackerPage({ params }: { params: Promise<{ slug: 
                     Full access
                   </p>
                   <p className="text-5xl font-extrabold font-[family-name:var(--font-heading)]">
-                    {tracker.pricePaid ? `$${tracker.pricePaid}` : "Free"}
+                    {tracker.pricePaid ? `£${tracker.pricePaid}` : "Free"}
                   </p>
-                  <p className="mt-2 text-white/60 text-sm">Instant access after payment</p>
+                  <p className="mt-2 text-white/60 text-sm">Annual subscription — instant access</p>
 
                   <a
                     href={buyLink}
@@ -188,6 +189,26 @@ export default async function TrackerPage({ params }: { params: Promise<{ slug: 
                 </div>
               </div>
 
+            </div>
+          </div>
+        </section>
+
+        {/* ── HubSpot form ──────────────────────────────────────────────── */}
+        <section className="py-16 bg-[#f4f7fb]">
+          <div className="mx-auto max-w-3xl px-6">
+            <OrangeLine />
+            <h2 className="mt-4 text-2xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] mb-2">
+              Get access to the Deals Tracker
+            </h2>
+            <p className="text-gray-500 mb-8">
+              Complete the form below to access the full tracker and start tracking deals across Africa.
+            </p>
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+              <HubSpotForm
+                portalId="25075380"
+                formId="aec7342b-ccd0-4cf3-943f-e5bffc6f5783"
+                region="eu1"
+              />
             </div>
           </div>
         </section>
