@@ -23,11 +23,11 @@ export const metadata: Metadata = {
     template: "%s | Africa Sports Unified",
   },
   description:
-    "Intelligence, advisory, and ecosystem access for organisations shaping Africa's sports economy.",
+    "Africa's most trusted intelligence and advisory platform for the Pan-African sports economy. Insights, access, and strategy for decision-makers.",
   metadataBase: new URL("https://asunified.com"),
   openGraph: {
     title: "Africa Sports Unified",
-    description: "Powering the Business of Sport in Africa.",
+    description: "Africa's most trusted intelligence and advisory platform for the Pan-African sports economy. Insights, access, and strategy for decision-makers.",
     url: "https://asunified.com",
     siteName: "Africa Sports Unified",
     locale: "en_GB",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Africa Sports Unified",
-    description: "Powering the Business of Sport in Africa.",
+    description: "Africa's most trusted intelligence and advisory platform for the Pan-African sports economy. Insights, access, and strategy for decision-makers.",
   },
 };
 
