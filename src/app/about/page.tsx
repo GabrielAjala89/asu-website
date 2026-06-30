@@ -83,7 +83,7 @@ export default function AboutPage() {
               During a postgraduate research project at Birkbeck University, our founder, Gabriel Ajala, set out to write a dissertation on the Nigerian Professional Football League. The data wasn&apos;t there. The reports didn&apos;t exist. The resources that any stakeholder would take for granted in a mature sports market simply weren&apos;t available for Africa.
             </p>
             <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
-              When he raised this with people working inside the industry, the response was consistent: there is no go-to place for this. That gap — between the scale of Africa&apos;s sports economy and the quality of intelligence available to navigate it — is why Africa Sports Unified exists. Not as a response to a market opportunity, but as a solution to a problem we experienced firsthand.
+              When he raised this with people working inside the industry, the response was consistent: <span className="font-bold italic text-gray-900">there is no go-to place for this.</span> That gap — between the scale of Africa&apos;s sports economy and the quality of intelligence available to navigate it — is why Africa Sports Unified exists. Not as a response to a market opportunity, but as a solution to a problem we experienced firsthand.
             </p>
             <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
               Everything ASU produces is built on that original frustration. The people making decisions about African sport deserve the same quality of intelligence, data, and strategic support available anywhere else in the world. We built ASU to close that gap. And we&apos;re not done yet.
