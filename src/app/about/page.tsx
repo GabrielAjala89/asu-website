@@ -80,7 +80,7 @@ export default function AboutPage() {
               Why We Built This
             </h2>
             <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
-              During a postgraduate research project at Birkbeck University, our founder, Gabriel Ajala, set out to write a dissertation on the Nigerian Professional Football League. The data wasn&apos;t there. The reports didn&apos;t exist. The resources that any researcher would take for granted in a mature sports market simply weren&apos;t available for Africa.
+              During a postgraduate research project at Birkbeck University, our founder, Gabriel Ajala, set out to write a dissertation on the Nigerian Professional Football League. The data wasn&apos;t there. The reports didn&apos;t exist. The resources that any stakeholder would take for granted in a mature sports market simply weren&apos;t available for Africa.
             </p>
             <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
               When he raised this with people working inside the industry, the response was consistent: there is no go-to place for this.
