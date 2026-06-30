@@ -93,34 +93,38 @@ export default function AboutPage() {
 
         {/* ── Our Belief + Our Mission (shared gray bg) ─────────────────────── */}
         <section className="py-20 bg-[#f4f7fb]">
-          <div className="mx-auto max-w-4xl px-6">
+          {/* Belief + Mission side by side */}
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="grid md:grid-cols-2 gap-12">
 
-            {/* Belief */}
-            <OrangeLine />
-            <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-              Our Belief
-            </h2>
-            <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
-              We believe a thriving Pan-African sports market drives growth across Africa and Abroad. Sport connects people, markets, capital, and ideas. It creates opportunities for investment, employment, and national pride. At ASU, we recognise this potential and are committed to realising it through intelligence, advisory, and ecosystem building.
-            </p>
+              <div>
+                <OrangeLine />
+                <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+                  Our Belief
+                </h2>
+                <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
+                  We believe a thriving Pan-African sports market drives growth across Africa and Abroad. Sport connects people, markets, capital, and ideas. It creates opportunities for investment, employment, and national pride. At ASU, we recognise this potential and are committed to realising it through intelligence, advisory, and ecosystem building.
+                </p>
+              </div>
 
-            {/* Mission */}
-            <div className="mt-14">
-              <OrangeLine />
-              <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                Our Mission
-              </h2>
-              <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
-                Our mission is to shape and support the growth of Africa&apos;s sports economy through intelligence, advisory, and ecosystem access.
-              </p>
-              <p className="mt-8 text-[#1b3d6e] font-bold text-sm uppercase tracking-wider font-[family-name:var(--font-heading)]">
-                We do this by:
-              </p>
+              <div>
+                <OrangeLine />
+                <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+                  Our Mission
+                </h2>
+                <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
+                  Our mission is to shape and support the growth of Africa&apos;s sports economy through intelligence, advisory, and ecosystem access.
+                </p>
+              </div>
+
             </div>
           </div>
 
-          {/* Pillar boxes — full width within container */}
-          <div className="mx-auto max-w-7xl px-6 mt-8">
+          {/* Pillar boxes */}
+          <div className="mx-auto max-w-7xl px-6 mt-16">
+            <p className="text-[#1b3d6e] font-bold text-sm uppercase tracking-wider font-[family-name:var(--font-heading)] mb-8">
+              We do this by:
+            </p>
             <div className="grid md:grid-cols-3 gap-6">
               {PILLARS.map((p) => (
                 <div key={p.title} className={`${p.bg} rounded-2xl p-10 flex flex-col items-center text-center`}>
