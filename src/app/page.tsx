@@ -75,11 +75,11 @@ export default async function HomePage() {
               {[
                 { src: "/images/trusted-by/fifa.png",      alt: "FIFA" },
                 { src: "/images/trusted-by/caf.png",       alt: "CAF — Confederation of African Football" },
-                { src: "/images/trusted-by/uneca.png",     alt: "UNECA" },
+                { src: "/images/trusted-by/uneca.png",     alt: "UNECA", wide: true },
                 { src: "/images/trusted-by/afcfta.jpg",    alt: "AfCFTA" },
                 { src: "/images/trusted-by/apo-group.png", alt: "APO Group" },
               ].map((logo) => (
-                <div key={logo.alt} className="relative h-10 w-28 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                <div key={logo.alt} className={`relative grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 ${'wide' in logo && logo.wide ? 'h-14 w-40' : 'h-10 w-28'}`}>
                   <Image src={logo.src} alt={logo.alt} fill className="object-contain" />
                 </div>
               ))}
