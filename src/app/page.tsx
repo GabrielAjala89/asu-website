@@ -73,13 +73,13 @@ export default async function HomePage() {
             </p>
             <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
               {[
-                { src: "/images/trusted-by/fifa.png",      alt: "FIFA" },
-                { src: "/images/trusted-by/caf.png",       alt: "CAF — Confederation of African Football" },
-                { src: "/images/trusted-by/uneca.png",     alt: "UNECA", wide: true },
-                { src: "/images/trusted-by/afcfta.jpg",    alt: "AfCFTA" },
-                { src: "/images/trusted-by/apo-group.png", alt: "APO Group" },
+                { src: "/images/trusted-by/fifa.png",      alt: "FIFA",                               size: "h-12 w-32" },
+                { src: "/images/trusted-by/caf.png",       alt: "CAF",                                size: "h-12 w-32" },
+                { src: "/images/trusted-by/uneca.png",     alt: "UNECA",                              size: "h-20 w-52" },
+                { src: "/images/trusted-by/afcfta.jpg",    alt: "AfCFTA",                             size: "h-20 w-52" },
+                { src: "/images/trusted-by/apo-group.png", alt: "APO Group",                          size: "h-12 w-32" },
               ].map((logo) => (
-                <div key={logo.alt} className={`relative grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 ${'wide' in logo && logo.wide ? 'h-14 w-40' : 'h-10 w-28'}`}>
+                <div key={logo.alt} className={`relative grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 ${logo.size}`}>
                   <Image src={logo.src} alt={logo.alt} fill className="object-contain" />
                 </div>
               ))}
