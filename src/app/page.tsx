@@ -75,7 +75,7 @@ export default async function HomePage() {
               {[
                 { src: "/images/trusted-by/fifa.png",      alt: "FIFA",                               size: "h-12 w-32" },
                 { src: "/images/trusted-by/caf.png",       alt: "CAF",                                size: "h-12 w-32" },
-                { src: "/images/trusted-by/uneca.png",     alt: "UNECA",                              size: "h-20 w-52" },
+                { src: "/images/trusted-by/uneca.webp",    alt: "UNECA",                              size: "h-24 w-24" },
                 { src: "/images/trusted-by/afcfta.jpg",    alt: "AfCFTA",                             size: "h-20 w-52" },
                 { src: "/images/trusted-by/apo-group.png", alt: "APO Group",                          size: "h-12 w-32" },
               ].map((logo) => (
