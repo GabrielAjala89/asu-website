@@ -24,6 +24,46 @@ export default async function HomePage() {
       <Navbar transparent />
       <main>
         <HeroVideo />
+
+        {/* ── Community stats bar ───────────────────────────────────────── */}
+        <section className="bg-[#1b3d6e] py-10">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/20">
+
+              <div className="flex flex-col items-center text-center py-6 md:py-0 md:px-10">
+                <p className="text-4xl font-extrabold text-white font-[family-name:var(--font-heading)]">
+                  4,300+
+                </p>
+                <p className="mt-2 text-white/70 text-sm font-[family-name:var(--font-heading)] font-semibold uppercase tracking-wider">
+                  Industry leaders in our network
+                </p>
+              </div>
+
+              <div className="flex flex-col items-center text-center py-6 md:py-0 md:px-10">
+                <p className="text-4xl font-extrabold text-[#F37021] font-[family-name:var(--font-heading)]">
+                  22.8%
+                </p>
+                <p className="mt-2 text-white/70 text-sm font-[family-name:var(--font-heading)] font-semibold uppercase tracking-wider">
+                  Newsletter engagement rate
+                </p>
+                <p className="mt-1 text-white/40 text-xs">
+                  vs. 2.64% global average
+                </p>
+              </div>
+
+              <div className="flex flex-col items-center text-center py-6 md:py-0 md:px-10">
+                <p className="text-4xl font-extrabold text-white font-[family-name:var(--font-heading)]">
+                  10+
+                </p>
+                <p className="mt-2 text-white/70 text-sm font-[family-name:var(--font-heading)] font-semibold uppercase tracking-wider">
+                  Countries represented across our community
+                </p>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
         <WhoWeAre />
         <KnowledgeHubPreview products={products as never[]} />
         <IntelligenceAndPodcast />
