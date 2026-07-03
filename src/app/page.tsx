@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { HeroVideo } from "@/components/sections/HeroVideo";
 import { WhoWeAre } from "@/components/sections/WhoWeAre";
+import Image from "next/image";
 import { KnowledgeHubPreview } from "@/components/sections/KnowledgeHubPreview";
 import { IntelligenceAndPodcast } from "@/components/sections/IntelligenceAndPodcast";
 import { TestimonialsCarousel } from "@/components/sections/TestimonialsCarousel";
@@ -60,6 +61,28 @@ export default async function HomePage() {
                 </p>
               </div>
 
+            </div>
+          </div>
+        </section>
+
+        {/* ── Who we've worked with — logo bar ─────────────────────────── */}
+        <section className="py-12 bg-white border-b border-gray-100">
+          <div className="mx-auto max-w-7xl px-6">
+            <p className="text-center text-xs font-bold uppercase tracking-widest text-gray-400 font-[family-name:var(--font-heading)] mb-8">
+              Who we&apos;ve worked with
+            </p>
+            <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
+              {[
+                { src: "/images/trusted-by/fifa.png",      alt: "FIFA" },
+                { src: "/images/trusted-by/caf.png",       alt: "CAF — Confederation of African Football" },
+                { src: "/images/trusted-by/uneca.png",     alt: "UNECA" },
+                { src: "/images/trusted-by/afcfta.jpg",    alt: "AfCFTA" },
+                { src: "/images/trusted-by/apo-group.png", alt: "APO Group" },
+              ].map((logo) => (
+                <div key={logo.alt} className="relative h-10 w-28 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                  <Image src={logo.src} alt={logo.alt} fill className="object-contain" />
+                </div>
+              ))}
             </div>
           </div>
         </section>
