@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
+import { ShareBar } from "@/components/ui/ShareBar";
 
 export const revalidate = 60;
 
@@ -38,9 +39,9 @@ interface RelatedArticle {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const article = await sanityFetch<Article>(ARTICLE_BY_SLUG_QUERY, { slug }).catch(() => null);
-  if (!article) return { title: "Article | Africa Sports Unified" };
+  if (!article) return { title: "Article" };
   return {
-    title: `${article.title} | Africa Sports Unified`,
+    title: article.title,
     description: article.excerpt,
   };
 }
@@ -62,6 +63,88 @@ const portableComponents = {
     blockquote: ({ children }: { children?: React.ReactNode }) => (
       <blockquote className="my-6 pl-5 border-l-4 border-[#F37021] italic text-gray-600 text-lg">{children}</blockquote>
     ),
+  },
+  marks: {
+    link: ({ children, value }: { children?: React.ReactNode; value?: { href: string; blank?: boolean } }) => (
+      <a
+        href={value?.href}
+        target={value?.blank ? '_blank' : undefined}
+        rel={value?.blank ? 'noopener noreferrer' : undefined}
+        className="text-[#F37021] underline underline-offset-2 hover:text-[#1b3d6e] transition-colors"
+      >
+        {children}
+      </a>
+    ),
+    strong: ({ children }: { children?: React.ReactNode }) => (
+      <strong className="font-bold text-gray-900">{children}</strong>
+    ),
+    em: ({ children }: { children?: React.ReactNode }) => (
+      <em className="italic">{children}</em>
+    ),
+  },
+  types: {
+    youtubeEmbed: ({ value }: { value: { url?: string; caption?: string } }) => {
+      const id = value.url?.match(/(?:v=|youtu\.be\/)([^&?/]+)/)?.[1];
+      if (!id) return null;
+      return (
+        <div className="my-8">
+          <div className="relative w-full aspect-video rounded-xl overflow-hidden">
+            <iframe
+              src={`https://www.youtube.com/embed/${id}`}
+              title={value.caption ?? "YouTube video"}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
+          {value.caption && <p className="mt-2 text-sm text-gray-500 text-center italic">{value.caption}</p>}
+        </div>
+      );
+    },
+    promoBanner: ({ value }: { value: { image?: { asset?: { url: string }; alt?: string }; title?: string; description?: string; linkUrl?: string; linkText?: string } }) => (
+      <div className="my-8 rounded-2xl overflow-hidden border border-gray-200 flex flex-col sm:flex-row">
+        {value.image?.asset?.url && (
+          <div className="relative sm:w-56 h-40 sm:h-auto shrink-0">
+            <Image src={value.image.asset.url} alt={value.image.alt ?? value.title ?? ""} fill className="object-cover" />
+          </div>
+        )}
+        <div className="p-6 flex flex-col justify-center gap-3">
+          {value.title && <p className="font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] text-lg leading-snug">{value.title}</p>}
+          {value.description && <p className="text-sm text-gray-600 leading-relaxed">{value.description}</p>}
+          {value.linkUrl && (
+            <a href={value.linkUrl} target="_blank" rel="noopener noreferrer"
+              className="self-start px-5 py-2.5 rounded-full bg-[#F37021] text-white text-sm font-bold font-[family-name:var(--font-heading)] hover:bg-[#d65a14] transition-colors">
+              {value.linkText ?? "Listen Now"} →
+            </a>
+          )}
+        </div>
+      </div>
+    ),
+    articleTable: ({ value }: { value: { tableTitle?: string; col1Header?: string; col2Header?: string; col3Header?: string; col4Header?: string; rows?: { col1?: string; col2?: string; col3?: string; col4?: string; _key?: string }[] } }) => {
+      const headers = [value.col1Header, value.col2Header, value.col3Header, value.col4Header].filter(Boolean);
+      return (
+        <div className="overflow-x-auto my-8">
+          {value.tableTitle && <p className="mb-2 text-sm font-bold text-[#1b3d6e] font-[family-name:var(--font-heading)]">{value.tableTitle}</p>}
+          <table className="w-full border-collapse text-sm rounded-xl overflow-hidden border border-gray-200">
+            <thead>
+              <tr className="bg-[#1b3d6e] text-white">
+                {headers.map((h, i) => <th key={i} className="px-5 py-3 text-left font-bold font-[family-name:var(--font-heading)] text-xs uppercase tracking-wider">{h}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {value.rows?.map((row, i) => {
+                const cells = [row.col1, row.col2, row.col3, row.col4].slice(0, headers.length);
+                return (
+                  <tr key={row._key ?? i} className={i % 2 === 0 ? 'bg-white' : 'bg-[#f4f7fb]'}>
+                    {cells.map((c, j) => <td key={j} className="px-5 py-3 border-b border-gray-100 text-gray-700">{c}</td>)}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      );
+    },
   },
 };
 
@@ -150,16 +233,19 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               </div>
             </div>
 
-            {/* Topics */}
-            {article.topics && article.topics.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-8">
-                {article.topics.map(t => (
-                  <span key={t.slug.current} className="px-3 py-1 rounded-full bg-[#f4f7fb] text-[#1b3d6e] text-xs font-semibold font-[family-name:var(--font-heading)]">
-                    {t.title}
-                  </span>
-                ))}
-              </div>
-            )}
+            {/* Topics + share (top) */}
+            <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+              {article.topics && article.topics.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {article.topics.map(t => (
+                    <span key={t.slug.current} className="px-3 py-1 rounded-full bg-[#f4f7fb] text-[#1b3d6e] text-xs font-semibold font-[family-name:var(--font-heading)]">
+                      {t.title}
+                    </span>
+                  ))}
+                </div>
+              )}
+              <ShareBar title={article.title} />
+            </div>
 
             {/* Body */}
             {article.body && article.body.length > 0 ? (
@@ -171,11 +257,18 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               article.excerpt && <p className="text-gray-700 leading-relaxed text-lg">{article.excerpt}</p>
             )}
 
-            {/* Back link */}
-            <div className="mt-14 pt-8 border-t border-gray-100">
-              <Link href="/knowledge-hub" className="inline-flex items-center gap-2 text-sm text-[#1b3d6e] font-semibold font-[family-name:var(--font-heading)] hover:text-[#F37021] transition-colors">
-                <ArrowLeft size={16} /> Back to Knowledge Hub
-              </Link>
+            {/* Share (bottom) + back links */}
+            <div className="mt-14 pt-8 border-t border-gray-100 flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center gap-4 text-sm font-semibold font-[family-name:var(--font-heading)]">
+                <Link href="/knowledge-hub?tab=articles" className="inline-flex items-center gap-2 text-[#1b3d6e] hover:text-[#F37021] transition-colors">
+                  <ArrowLeft size={16} /> Back to Articles
+                </Link>
+                <span className="text-gray-200">|</span>
+                <Link href="/knowledge-hub" className="text-gray-400 hover:text-[#1b3d6e] transition-colors">
+                  Knowledge Hub
+                </Link>
+              </div>
+              <ShareBar title={article.title} />
             </div>
           </div>
         </section>

@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle, ArrowLeft, ExternalLink, FileText } from "lucide-react";
+import { DownloadForm } from "@/components/ui/DownloadForm";
 
 export const revalidate = 60;
 
@@ -21,7 +22,9 @@ interface Report {
   pricePaid?: number;
   priceMember?: number;
   stripePaymentLink?: string;
+  emailGateUrl?: string;
   pdfFreeUrl?: string;
+  pdfFullUrl?: string;
   coverImage?: { asset?: { url: string }; alt?: string };
   topics?: { title: string; slug: { current: string } }[];
 }
@@ -29,9 +32,9 @@ interface Report {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const report = await sanityFetch<Report>(REPORT_BY_SLUG_QUERY, { slug }).catch(() => null);
-  if (!report) return { title: "Report | Africa Sports Unified" };
+  if (!report) return { title: "Report" };
   return {
-    title: `${report.title} | Africa Sports Unified`,
+    title: report.title,
     description: report.description,
   };
 }
@@ -42,6 +45,7 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
 
   if (!report) notFound();
 
+  const isFree = !report.pricePaid;
   const buyLink = report.stripePaymentLink || "#";
   const publishedYear = report.publishedAt ? new Date(report.publishedAt).getFullYear() : null;
 
@@ -128,8 +132,8 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                   </>
                 )}
 
-                {/* Free preview */}
-                {report.pdfFreeUrl && (
+                {/* Free preview — only shown for paid reports with a sample, not for email-gated free reports */}
+                {report.pdfFreeUrl && !report.emailGateUrl && (
                   <div className="mt-10 p-6 rounded-2xl bg-[#f4f7fb] border border-gray-200">
                     <div className="flex items-center gap-3 mb-2">
                       <FileText size={20} className="text-[#1b3d6e]" />
@@ -159,27 +163,50 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
                     Full report
                   </p>
                   <p className="text-5xl font-extrabold font-[family-name:var(--font-heading)]">
-                    {report.pricePaid ? `$${report.pricePaid}` : "Free"}
+                    {isFree ? "Free" : `£${report.pricePaid}`}
                   </p>
-                  <p className="mt-2 text-white/60 text-sm">One-time payment — instant PDF access</p>
-
-                  <a
-                    href={buyLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-8 flex items-center justify-center gap-2 w-full px-6 py-4 rounded-full bg-[#F37021] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#d65a14] transition-colors"
-                  >
-                    Buy Report <ExternalLink size={15} />
-                  </a>
-
-                  <p className="mt-4 text-white/50 text-xs text-center">
-                    Secure checkout via Stripe
+                  <p className="mt-2 text-white/60 text-sm">
+                    {isFree ? "Free — enter your details to download" : "One-time payment — instant PDF access"}
                   </p>
+
+                  {isFree ? (
+                    <div className="mt-8">
+                      <DownloadForm
+                        contentTitle={report.title}
+                        contentType="report"
+                        pdfUrl={report.pdfFreeUrl}
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      <a
+                        href={buyLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-8 flex items-center justify-center gap-2 w-full px-6 py-4 rounded-full bg-[#F37021] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#d65a14] transition-colors"
+                      >
+                        Buy Report <ExternalLink size={15} />
+                      </a>
+                      <p className="mt-4 text-white/50 text-xs text-center">
+                        Secure checkout via Stripe
+                      </p>
+                    </>
+                  )}
 
                   <div className="mt-6 pt-6 border-t border-white/10 space-y-2 text-sm text-white/70">
-                    <p>✓ Instant PDF download after payment</p>
-                    <p>✓ Written by ASU analysts</p>
-                    <p>✓ Data-backed, Africa-focused</p>
+                    {isFree ? (
+                      <>
+                        <p>✓ Delivered to your inbox instantly</p>
+                        <p>✓ Written by ASU analysts</p>
+                        <p>✓ Data-backed, Africa-focused</p>
+                      </>
+                    ) : (
+                      <>
+                        <p>✓ Instant PDF download after payment</p>
+                        <p>✓ Written by ASU analysts</p>
+                        <p>✓ Data-backed, Africa-focused</p>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -188,14 +215,15 @@ export default async function ReportPage({ params }: { params: Promise<{ slug: s
           </div>
         </section>
 
-        {/* ── Back link ─────────────────────────────────────────────────── */}
+        {/* ── Back links ────────────────────────────────────────────────── */}
         <section className="py-10 bg-white border-t border-gray-100">
-          <div className="mx-auto max-w-7xl px-6">
-            <Link
-              href="/knowledge-hub"
-              className="inline-flex items-center gap-2 text-sm text-[#1b3d6e] font-semibold font-[family-name:var(--font-heading)] hover:text-[#F37021] transition-colors"
-            >
-              <ArrowLeft size={16} /> Back to Knowledge Hub
+          <div className="mx-auto max-w-7xl px-6 flex items-center gap-4 text-sm font-semibold font-[family-name:var(--font-heading)]">
+            <Link href="/knowledge-hub?tab=reports" className="inline-flex items-center gap-2 text-[#1b3d6e] hover:text-[#F37021] transition-colors">
+              <ArrowLeft size={16} /> Back to Reports
+            </Link>
+            <span className="text-gray-200">|</span>
+            <Link href="/knowledge-hub" className="text-gray-400 hover:text-[#1b3d6e] transition-colors">
+              Knowledge Hub
             </Link>
           </div>
         </section>

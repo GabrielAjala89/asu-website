@@ -11,7 +11,7 @@ import { Globe, Lock, Map, BarChart2 } from "lucide-react";
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Consulting | Africa Sports Unified",
+  title: "Consulting",
   description: "ASU Advisory — strategic counsel for the organisations shaping Africa's sports economy.",
 };
 
@@ -34,35 +34,35 @@ export default async function ConsultPage() {
       <main>
 
         {/* ── Hero ─────────────────────────────────────────────────────────── */}
-        <section>
-          {/* Cream subtitle strip (navbar overlays this) */}
-          <div className="bg-[#faf3e7] pt-20 pb-6 text-center px-6">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 font-[family-name:var(--font-heading)]">
-              Turn Sport Into Economic Value
+        <section className="relative min-h-[75vh] flex items-end overflow-hidden">
+          <Image
+            src="/images/consult-hero.jpg"
+            alt="ASU Consulting"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1b3d6e]/95 via-[#1b3d6e]/55 to-[#1b3d6e]/20" />
+          <div className="relative z-10 mx-auto max-w-7xl px-6 w-full pb-16 md:pb-24">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#F37021] font-[family-name:var(--font-heading)] mb-4">
+              ASU Advisory
             </p>
-          </div>
-          {/* Full-bleed image */}
-          <div className="relative h-[65vh] min-h-[420px]">
-            <Image
-              src="/images/consult-hero.jpg"
-              alt="ASU Consulting"
-              fill
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
-            <div className="absolute bottom-0 left-0 w-full px-6 pb-14 lg:px-16 lg:pb-20 max-w-4xl">
-              <h1 className="text-3xl md:text-5xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight">
-                Using Sport as a driver for economic growth, investment, and long-term value.
-              </h1>
-              <div className="mt-8">
-                <Link
-                  href="#contact"
-                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#1b3d6e] text-white text-sm font-bold font-[family-name:var(--font-heading)] hover:bg-[#122a4b] transition-colors"
-                >
-                  Work with ASU →
-                </Link>
-              </div>
+            <OrangeLine />
+            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight max-w-3xl">
+              Using Sport as a Driver for Economic Growth, Investment, and Long-Term Value.
+            </h1>
+            <p className="mt-4 text-white/80 text-base md:text-lg max-w-2xl leading-relaxed">
+              Strategic counsel for governments, investors, and institutions navigating Africa&apos;s sports economy.
+            </p>
+            <div className="mt-8">
+              <Link
+                href="https://calendly.com/gabriel-tpvo/30min"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#F37021] text-white text-sm font-bold font-[family-name:var(--font-heading)] hover:bg-[#d65a14] transition-colors"
+              >
+                Book a Call →
+              </Link>
             </div>
           </div>
         </section>
@@ -179,14 +179,16 @@ export default async function ConsultPage() {
                   {primaryCase?.summary ||
                     "ASU supported UNECA in developing a sport and economic development framework for the African continent, providing strategic intelligence and market analysis to inform policy recommendations across member states."}
                 </p>
-                <div className="mt-6">
-                  <Link
-                    href={primaryCase?.documentUrl || "#"}
-                    className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#1b3d6e] text-white text-sm font-bold font-[family-name:var(--font-heading)] hover:bg-[#122a4b] transition-colors"
-                  >
-                    View Case Study →
-                  </Link>
-                </div>
+                {primaryCase?.documentUrl && (
+                  <div className="mt-6">
+                    <Link
+                      href={primaryCase.documentUrl}
+                      className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#1b3d6e] text-white text-sm font-bold font-[family-name:var(--font-heading)] hover:bg-[#122a4b] transition-colors"
+                    >
+                      View Case Study →
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>

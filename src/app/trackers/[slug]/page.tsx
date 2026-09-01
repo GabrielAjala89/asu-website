@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle, ArrowLeft, ExternalLink } from "lucide-react";
-import { HubSpotForm } from "@/components/sections/HubSpotForm";
+import { DownloadForm } from "@/components/ui/DownloadForm";
 
 export const revalidate = 60;
 
@@ -30,9 +30,9 @@ interface Tracker {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const tracker = await sanityFetch<Tracker>(TRACKER_BY_SLUG_QUERY, { slug }).catch(() => null);
-  if (!tracker) return { title: "Tracker | Africa Sports Unified" };
+  if (!tracker) return { title: "Tracker" };
   return {
-    title: `${tracker.title} | Africa Sports Unified`,
+    title: tracker.title,
     description: tracker.description,
   };
 }
@@ -193,21 +193,21 @@ export default async function TrackerPage({ params }: { params: Promise<{ slug: 
           </div>
         </section>
 
-        {/* ── HubSpot form ──────────────────────────────────────────────── */}
+        {/* ── Sample request ────────────────────────────────────────────── */}
         <section className="py-16 bg-[#f4f7fb]">
-          <div className="mx-auto max-w-3xl px-6">
+          <div className="mx-auto max-w-xl px-6">
             <OrangeLine />
             <h2 className="mt-4 text-2xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] mb-2">
-              Get access to the Deals Tracker
+              Request a Free Sample
             </h2>
-            <p className="text-gray-500 mb-8">
-              Complete the form below to access the full tracker and start tracking deals across Africa.
+            <p className="text-gray-600 mb-8 leading-relaxed">
+              See the data before you commit. Enter your details and we&apos;ll send you a sample of the tracker — a structured, decision-ready snapshot of commercial activity across Africa&apos;s sports market.
             </p>
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-              <HubSpotForm
-                portalId="25075380"
-                formId="aec7342b-ccd0-4cf3-943f-e5bffc6f5783"
-                region="eu1"
+            <div className="bg-[#1b3d6e] rounded-2xl p-8">
+              <DownloadForm
+                contentTitle={tracker.title}
+                contentType="tracker"
+                stripeLink={tracker.stripePaymentLink}
               />
             </div>
           </div>
@@ -235,11 +235,15 @@ export default async function TrackerPage({ params }: { params: Promise<{ slug: 
           </section>
         )}
 
-        {/* ── Back link ─────────────────────────────────────────────────── */}
+        {/* ── Back links ────────────────────────────────────────────────── */}
         <section className="py-10 bg-white border-t border-gray-100">
-          <div className="mx-auto max-w-7xl px-6">
-            <Link href="/knowledge-hub" className="inline-flex items-center gap-2 text-sm text-[#1b3d6e] font-semibold font-[family-name:var(--font-heading)] hover:text-[#F37021] transition-colors">
-              <ArrowLeft size={16} /> Back to Knowledge Hub
+          <div className="mx-auto max-w-7xl px-6 flex items-center gap-4 text-sm font-semibold font-[family-name:var(--font-heading)]">
+            <Link href="/knowledge-hub?tab=trackers" className="inline-flex items-center gap-2 text-[#1b3d6e] hover:text-[#F37021] transition-colors">
+              <ArrowLeft size={16} /> Back to Trackers
+            </Link>
+            <span className="text-gray-200">|</span>
+            <Link href="/knowledge-hub" className="text-gray-400 hover:text-[#1b3d6e] transition-colors">
+              Knowledge Hub
             </Link>
           </div>
         </section>

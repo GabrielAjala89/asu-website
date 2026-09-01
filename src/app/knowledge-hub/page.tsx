@@ -9,7 +9,7 @@ import Image from "next/image";
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Knowledge Hub | Africa Sports Unified",
+  title: "Knowledge Hub",
   description: "Decision-grade intelligence on Africa's sports economy — reports, trackers, articles, and video content from ASU.",
 };
 
@@ -20,7 +20,17 @@ interface HubData {
   trackers: never[];
 }
 
-export default async function KnowledgeHubPage() {
+const VALID_TABS = ["all", "reports", "trackers", "articles", "videos"] as const;
+type Tab = (typeof VALID_TABS)[number];
+
+export default async function KnowledgeHubPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ tab?: string }>;
+}) {
+  const params = await searchParams;
+  const initialTab: Tab = VALID_TABS.includes(params.tab as Tab) ? (params.tab as Tab) : "all";
+
   const hub = await sanityFetch<HubData>(KNOWLEDGE_HUB_QUERY).catch(() => ({
     articles: [],
     videos: [],
@@ -60,6 +70,7 @@ export default async function KnowledgeHubPage() {
           videos={videos}
           reports={reports}
           trackers={trackers}
+          initialTab={initialTab}
         />
       </main>
       <Footer />

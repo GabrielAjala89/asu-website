@@ -8,7 +8,7 @@ import { Network, Users, Briefcase } from "lucide-react";
 export const revalidate = 60;
 
 export const metadata = {
-  title: "About | Africa Sports Unified",
+  title: "About",
   description: "Africa Sports Unified is the leading Pan-African sport intelligence and advisory firm — connecting decision-makers, investors, and institutions across the continent's sports economy.",
 };
 
@@ -139,35 +139,7 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── Advisory Board ────────────────────────────────────────────────── */}
-        <section className="py-20 bg-white">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="text-center mb-14">
-              <OrangeLine className="mx-auto" />
-              <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                Meet our Advisory Board
-              </h2>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8">
-              {BOARD_MEMBERS.map((member, i) => (
-                <div key={i} className="flex flex-col items-center text-center">
-                  <div className="w-24 h-24 rounded-full bg-[#dde6f0] flex items-center justify-center overflow-hidden relative shrink-0">
-                    <Image
-                      src={`/images/board-${i + 1}.jpg`}
-                      alt={member.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <p className="mt-3 text-sm font-bold text-[#1b3d6e] font-[family-name:var(--font-heading)] leading-tight">
-                    {member.name}
-                  </p>
-                  <p className="mt-1 text-xs text-gray-500 leading-snug">{member.role}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        {/* Advisory Board — hidden until real members are confirmed */}
 
         <EngageSection />
       </main>

@@ -1,17 +1,17 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { OrangeLine } from "@/components/ui/OrangeLine";
-import { WaitlistForm } from "@/components/sections/WaitlistForm";
+import { InsiderForm } from "@/components/ui/InsiderForm";
 import { sanityFetch } from "@/lib/sanity";
 import { ALL_TRUSTED_BY_QUERY } from "@/lib/queries";
 import Image from "next/image";
-import { FileText, Users, BarChart2, Mic } from "lucide-react";
+import { BarChart2, Globe, Users } from "lucide-react";
 
 export const revalidate = 60;
 
 export const metadata = {
-  title: "ASU Insider | Africa Sports Unified",
-  description: "ASU Insider — exclusive intelligence, community access, and advisory insights for decision-makers in Africa's sports economy. Coming soon.",
+  title: "ASU Insider",
+  description: "ASU Insider — a members-only platform for decision-makers, investors, and institutions shaping Africa's sports economy.",
 };
 
 interface TrustedBy {
@@ -22,24 +22,19 @@ interface TrustedBy {
 
 const BENEFITS = [
   {
-    Icon: FileText,
-    title: "Intelligence & Research",
-    body: "Exclusive access to ASU's full library of reports, trackers, and deep-dive analysis on Africa's sports economy.",
+    Icon: BarChart2,
+    title: "Market Intelligence",
+    body: "Access to ASU's full library of reports, trackers, and data-driven briefings — covering deals, investments, media rights, and commercial trends across the continent.",
   },
   {
-    Icon: BarChart2,
-    title: "Market Insights",
-    body: "Data-driven briefings on deals, investments, media rights, and commercial trends across the continent.",
+    Icon: Globe,
+    title: "Ecosystem Access",
+    body: "Direct access to the investors, federations, brands, and institutions shaping sport business in Africa. The right connections, verified.",
   },
   {
     Icon: Users,
-    title: "Community Access",
-    body: "Connect with the investors, federations, brands, and professionals shaping African sport.",
-  },
-  {
-    Icon: Mic,
-    title: "Events & Conversations",
-    body: "Invitations to ASU roundtables, briefings, and curated conversations that don't happen anywhere else.",
+    title: "Events & Roundtables",
+    body: "Invitations to ASU roundtables, curated briefings, and exclusive conversations with the decision-makers building Africa's sports economy.",
   },
 ];
 
@@ -70,7 +65,7 @@ export default async function AsuInsiderPage() {
               ASU Insider
             </h1>
             <p className="mt-4 text-white/80 text-base md:text-xl max-w-2xl leading-relaxed">
-              The membership for decision-makers, investors, and institutions shaping Africa&apos;s sports economy. Intelligence, community, and access — in one place.
+              The membership for decision-makers, investors, and institutions shaping Africa&apos;s sports economy. Intelligence, ecosystem access, and exclusive conversations in one place.
             </p>
           </div>
         </section>
@@ -85,10 +80,10 @@ export default async function AsuInsiderPage() {
                   Your edge in Africa&apos;s sports economy
                 </h2>
                 <p className="mt-4 text-gray-600 leading-relaxed">
-                  ASU Insider is a members-only platform bringing together the professionals, investors, brands, and institutions at the forefront of sport business in Africa. It is where intelligence meets opportunity.
+                  ASU Insider is a members-only platform built exclusively for the professionals, brands, federations, and institutions at the forefront of sport business in Africa. It is where trusted intelligence meets verified access.
                 </p>
                 <p className="mt-3 text-gray-600 leading-relaxed">
-                  Members get exclusive access to ASU&apos;s full research library, priority briefings, curated community connections, and invitations to events that bring the continent&apos;s sports industry together.
+                  Members gain the insights to evaluate markets, identify opportunities, and make better commercial decisions, alongside direct access to the people and conversations that shape Africa&apos;s sports economy.
                 </p>
               </div>
               <div className="relative h-72 md:h-96 rounded-2xl overflow-hidden">
@@ -112,7 +107,7 @@ export default async function AsuInsiderPage() {
                 What ASU Insider members will get
               </h2>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
               {BENEFITS.map((b) => (
                 <div key={b.title} className="bg-white rounded-2xl p-8">
                   <b.Icon size={36} className="text-[#F37021]" strokeWidth={1.5} />
@@ -126,21 +121,21 @@ export default async function AsuInsiderPage() {
           </div>
         </section>
 
-        {/* ── Waitlist CTA ─────────────────────────────────────────────────── */}
+        {/* ── Registration CTA ─────────────────────────────────────────────── */}
         <section className="py-24 bg-[#1b3d6e]">
-          <div className="mx-auto max-w-2xl px-6 text-center">
-            <span className="inline-block mb-4 px-4 py-1.5 rounded-full bg-[#F37021] text-white text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-widest">
-              Coming Soon
-            </span>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight">
-              Be first to know when we launch
-            </h2>
-            <p className="mt-4 text-white/70 leading-relaxed">
-              Leave your email below and we&apos;ll notify you the moment ASU Insider opens. No spam — just one email when we&apos;re ready.
-            </p>
-            <div className="mt-8">
-              <WaitlistForm />
+          <div className="mx-auto max-w-xl px-6">
+            <div className="text-center mb-10">
+              <span className="inline-block mb-4 px-4 py-1.5 rounded-full bg-[#F37021] text-white text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-widest">
+                Coming Soon
+              </span>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight">
+                Be first to know when we launch
+              </h2>
+              <p className="mt-4 text-white/70 leading-relaxed">
+                Register your interest below and we will be in touch once we go live.
+              </p>
             </div>
+            <InsiderForm />
           </div>
         </section>
 
