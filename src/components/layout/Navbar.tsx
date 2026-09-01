@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/Button";
@@ -23,16 +23,25 @@ interface NavbarProps {
 export function Navbar({ transparent = false }: NavbarProps) {
   const [open, setOpen] = useState(false);
   const [hubOpen, setHubOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const hubTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const isSolid = !transparent || scrolled;
 
   const linkClass = (href: string) => cn(
     "text-sm font-semibold font-[family-name:var(--font-heading)] tracking-wide transition-colors",
     pathname === href || pathname.startsWith(href + "/")
       ? "text-[#F37021]"
-      : transparent
-      ? "text-white/90 hover:text-white"
-      : "text-[#1b3d6e] hover:text-[#F37021]"
+      : isSolid
+      ? "text-[#1b3d6e] hover:text-[#F37021]"
+      : "text-white/90 hover:text-white"
   );
 
   const isHubActive = pathname === "/knowledge-hub" || pathname.startsWith("/knowledge-hub/") || pathname.startsWith("/articles/") || pathname.startsWith("/trackers/") || pathname.startsWith("/reports/") || pathname.startsWith("/videos/");
@@ -48,10 +57,10 @@ export function Navbar({ transparent = false }: NavbarProps) {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-colors duration-300",
-        transparent
-          ? "bg-transparent"
-          : "bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm"
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        isSolid
+          ? "bg-white/95 backdrop-blur-sm border-b border-gray-100 shadow-sm"
+          : "bg-transparent"
       )}
     >
       <div className="mx-auto max-w-7xl px-6 h-18 flex items-center justify-between py-4">
@@ -60,9 +69,9 @@ export function Navbar({ transparent = false }: NavbarProps) {
           <div className="relative w-10 h-10">
             <Image src="/images/asu-logo.png" alt="Africa Sports Unified" fill className="object-contain" priority />
           </div>
-          <div className={cn("font-[family-name:var(--font-heading)] font-extrabold leading-none", transparent ? "text-white" : "text-[#1b3d6e]")}>
+          <div className={cn("font-[family-name:var(--font-heading)] font-extrabold leading-none", isSolid ? "text-[#1b3d6e]" : "text-white")}>
             <span className="text-sm tracking-tight uppercase">Africa Sports Unified</span>
-            <span className={cn("block text-[9px] uppercase tracking-[0.18em] font-medium", transparent ? "text-white/70" : "text-gray-500")}>
+            <span className={cn("block text-[9px] uppercase tracking-[0.18em] font-medium", isSolid ? "text-gray-500" : "text-white/70")}>
               The Voice of African Sports Business
             </span>
           </div>
@@ -88,9 +97,9 @@ export function Navbar({ transparent = false }: NavbarProps) {
                 "inline-flex items-center gap-1 text-sm font-semibold font-[family-name:var(--font-heading)] tracking-wide transition-colors",
                 isHubActive
                   ? "text-[#F37021]"
-                  : transparent
-                  ? "text-white/90 hover:text-white"
-                  : "text-[#1b3d6e] hover:text-[#F37021]"
+                  : isSolid
+                  ? "text-[#1b3d6e] hover:text-[#F37021]"
+                  : "text-white/90 hover:text-white"
               )}
             >
               Knowledge Hub
@@ -122,8 +131,8 @@ export function Navbar({ transparent = false }: NavbarProps) {
 
         {/* Desktop CTAs */}
         <div className="hidden lg:flex items-center gap-3">
-          <Button href="/#newsletter" variant={transparent ? "ghost" : "secondary"} size="sm">
-            Subscribe
+          <Button href="/asu-insider" variant={isSolid ? "secondary" : "ghost"} size="sm">
+            Join
           </Button>
           <Button href="/asu-insider" variant="primary" size="sm">
             Login
@@ -134,7 +143,7 @@ export function Navbar({ transparent = false }: NavbarProps) {
         <button
           type="button"
           onClick={() => setOpen(!open)}
-          className={cn("lg:hidden p-2 rounded-lg transition-colors", transparent ? "text-white hover:bg-white/10" : "text-[#1b3d6e] hover:bg-gray-100")}
+          className={cn("lg:hidden p-2 rounded-lg transition-colors", isSolid ? "text-[#1b3d6e] hover:bg-gray-100" : "text-white hover:bg-white/10")}
           aria-label="Toggle navigation"
         >
           {open ? <X size={22} /> : <Menu size={22} />}
@@ -173,7 +182,7 @@ export function Navbar({ transparent = false }: NavbarProps) {
             </a>
             <div className="pt-4 flex flex-col gap-2">
               <Button href="/#newsletter" variant="outline" size="sm" className="w-full justify-center">
-                Subscribe
+                Join
               </Button>
               <Button href="/asu-insider" variant="primary" size="sm" className="w-full justify-center">
                 Login
