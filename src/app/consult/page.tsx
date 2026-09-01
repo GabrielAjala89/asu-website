@@ -171,24 +171,49 @@ export default async function ConsultPage() {
                 )}
               </div>
               {/* Text */}
-              <div className="flex-1 max-w-2xl">
-                <h3 className="text-lg font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                  {primaryCase?.title || "United Nations Economic Commission for Africa (UNECA)"}
+              <div className="flex-1 max-w-2xl space-y-6">
+                <h3 className="text-xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] leading-snug">
+                  Leveraging Sport to Support the Inclusive Implementation of the AfCFTA
                 </h3>
-                <p className="mt-3 text-gray-600 leading-relaxed">
-                  {primaryCase?.summary ||
-                    "ASU supported UNECA in developing a sport and economic development framework for the African continent, providing strategic intelligence and market analysis to inform policy recommendations across member states."}
-                </p>
-                {primaryCase?.documentUrl && (
-                  <div className="mt-6">
-                    <Link
-                      href={primaryCase.documentUrl}
-                      className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-[#1b3d6e] text-white text-sm font-bold font-[family-name:var(--font-heading)] hover:bg-[#122a4b] transition-colors"
-                    >
-                      View Case Study →
-                    </Link>
-                  </div>
-                )}
+
+                <div>
+                  <p className="text-xs font-bold text-[#F37021] uppercase tracking-widest font-[family-name:var(--font-heading)] mb-1">Challenge</p>
+                  <p className="text-gray-600 leading-relaxed text-sm">
+                    As Africa moves to activate the African Continental Free Trade Area (AfCFTA) — the world&apos;s largest free trade area by member states — the United Nations Economic Commission for Africa (UNECA) recognised that sport represented an underutilised lever for driving intra-African trade, regional economic cooperation, and the inclusion of youth, women, and entrepreneurs in the continent&apos;s emerging trade ecosystem.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs font-bold text-[#F37021] uppercase tracking-widest font-[family-name:var(--font-heading)] mb-1">What ASU Did</p>
+                  <p className="text-gray-600 leading-relaxed text-sm">
+                    Gabriel Ajala worked with UNECA and the African Trade Policy Centre to design and deliver a multi-strand programme spanning research, advocacy, community engagement, and capacity development.
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs font-bold text-[#F37021] uppercase tracking-widest font-[family-name:var(--font-heading)] mb-2">Delivered</p>
+                  <ul className="space-y-1.5 text-sm text-gray-600">
+                    {[
+                      "2 research projects investigating how sport can accelerate AfCFTA implementation and intra-African trade",
+                      "2 online events bringing together stakeholders including FIFA, The African Union, Right to Dream, and the AfCFTA Secretariat",
+                      "4 podcasts reaching listeners across Africa, Europe, and North America — average 47% consumption rate",
+                      "A 6-month mentorship programme for 14 entrepreneurs, with mentors from FIFA, the Basketball Africa League, Toronto Raptors, and Catapult Sports",
+                      "A policy recommendations document delivered to UNECA",
+                    ].map((item, i) => (
+                      <li key={i} className="flex gap-2.5">
+                        <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#F37021] shrink-0" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <p className="text-xs font-bold text-[#F37021] uppercase tracking-widest font-[family-name:var(--font-heading)] mb-1">Results</p>
+                  <p className="text-gray-600 leading-relaxed text-sm">
+                    All workstreams were delivered successfully, culminating in detailed recommendations, strategies, and insights into how sport can drive intra-African trade, regional economic cooperation, and long-term economic growth. 100% of mentees rated the programme positively. 100% of mentors said they would participate again. A third of all event attendees were women.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
