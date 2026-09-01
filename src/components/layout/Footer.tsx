@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Mail } from "lucide-react";
+import { NewsletterModal } from "@/components/ui/NewsletterModal";
 
 const SPOTIFY_URL = "https://open.spotify.com/show/37o4pqxpyoJzURhSr2dXpe?si=aea0cf5f72184b5a";
 
@@ -58,12 +59,7 @@ export function Footer() {
 
             {/* CTA buttons */}
             <div className="flex flex-wrap gap-3">
-              <Link
-                href="/asu-insider"
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border-2 border-white/80 text-white text-sm font-semibold font-[family-name:var(--font-heading)] hover:bg-white hover:text-[#1b3d6e] transition-colors"
-              >
-                Subscribe to our Newsletter →
-              </Link>
+              <NewsletterModal />
               <a
                 href={SPOTIFY_URL}
                 target="_blank"
