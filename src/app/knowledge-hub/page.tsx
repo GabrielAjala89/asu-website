@@ -45,23 +45,33 @@ export default async function KnowledgeHubPage({
       <Navbar />
       <main>
         {/* Hero */}
-        <section className="relative min-h-[50vh] flex items-end overflow-hidden">
-          <Image
-            src="/images/knowledge-hub-hero.jpg"
-            alt="ASU Knowledge Hub — intelligence for Africa's sports economy"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#1b3d6e]/90 via-[#1b3d6e]/40 to-transparent" />
-          <div className="relative z-10 mx-auto max-w-7xl px-6 w-full pb-16">
+        <section className="relative bg-[#1b3d6e] pt-28 pb-16 overflow-hidden">
+          {/* Subtle background text */}
+          <span className="pointer-events-none select-none absolute right-0 top-1/2 -translate-y-1/2 text-[160px] md:text-[220px] font-extrabold text-white/[0.04] font-[family-name:var(--font-heading)] leading-none whitespace-nowrap pr-8">
+            KNOWLEDGE
+          </span>
+          <div className="relative z-10 mx-auto max-w-7xl px-6">
             <OrangeLine />
-            <h1 className="mt-4 text-4xl md:text-5xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight">
-              Intelligence, Insights &amp; Ideas Driving Africa&apos;s Sports Industry
+            <h1 className="mt-4 text-4xl md:text-5xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight max-w-3xl">
+              Intelligence, Insights &amp; Ideas Driving Africa&apos;s Sports Economy
             </h1>
-            <p className="mt-3 text-white/80 text-base md:text-lg max-w-2xl leading-relaxed">
+            <p className="mt-4 text-white/70 text-base md:text-lg max-w-2xl leading-relaxed">
               Decision-grade intelligence on Africa&apos;s sports economy — reports, trackers, articles, and video content.
             </p>
+            {/* Stat strip */}
+            <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
+              {[
+                { value: "55+", label: "Resources published" },
+                { value: "3", label: "Research reports" },
+                { value: "20", label: "Video conversations" },
+                { value: "31", label: "Articles & analysis" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <p className="text-2xl font-extrabold text-[#F37021] font-[family-name:var(--font-heading)]">{s.value}</p>
+                  <p className="text-xs text-white/60 mt-0.5">{s.label}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
