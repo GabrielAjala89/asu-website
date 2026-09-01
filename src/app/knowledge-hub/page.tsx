@@ -56,22 +56,8 @@ export default async function KnowledgeHubPage({
               Intelligence, Insights &amp; Ideas Driving Africa&apos;s Sports Economy
             </h1>
             <p className="mt-4 text-white/70 text-base md:text-lg max-w-2xl leading-relaxed">
-              Decision-grade intelligence on Africa&apos;s sports economy — reports, trackers, articles, and video content.
+              Research, analysis, and sector intelligence for the organisations and decision-makers navigating Africa&apos;s sports economy.
             </p>
-            {/* Stat strip */}
-            <div className="mt-10 flex flex-wrap gap-x-10 gap-y-4">
-              {[
-                { value: "55+", label: "Resources published" },
-                { value: "3", label: "Research reports" },
-                { value: "20", label: "Video conversations" },
-                { value: "31", label: "Articles & analysis" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <p className="text-2xl font-extrabold text-[#F37021] font-[family-name:var(--font-heading)]">{s.value}</p>
-                  <p className="text-xs text-white/60 mt-0.5">{s.label}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
