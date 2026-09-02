@@ -98,6 +98,9 @@ function confirmationHtml({
       If you have any questions in the meantime, feel free to reply to this email.
     </p>
     <p style="margin:16px 0 0;color:#6b7280;font-size:14px;">— Gabriel</p>
+    <p style="margin:16px 0 0;color:#9ca3af;font-size:12px;line-height:1.6;">
+      If this email isn't where you expected it, check your junk or spam folder and mark it as safe.
+    </p>
   </td></tr>
 
   <!-- Footer -->
