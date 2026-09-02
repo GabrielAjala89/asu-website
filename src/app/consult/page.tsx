@@ -103,36 +103,36 @@ export default async function ConsultPage() {
           </div>
         </section>
 
-        {/* ── What We Offer ────────────────────────────────────────────────── */}
+        {/* ── How We Work ──────────────────────────────────────────────────── */}
         <section className="py-20 bg-white">
           <div className="mx-auto max-w-7xl px-6">
             <OrangeLine />
             <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-              What We Offer
+              How We Work
             </h2>
             <p className="mt-3 text-gray-600 max-w-2xl leading-relaxed">
-              Our advisory work spans two core disciplines — strategic guidance and data-driven intelligence.
+              Our advisory is grounded in research and market intelligence — we build the evidence base before we give the counsel. ASU sits at the intersection of Africa&apos;s sports economy and global markets, advising institutions and organisations on both sides.
             </p>
 
             <div className="mt-10 grid md:grid-cols-2 gap-6">
-              {/* Advisory & Roadmapping */}
+              {/* Policy Advisory & Strategic Planning */}
               <div className="rounded-2xl bg-[#F37021] p-12 flex flex-col items-center justify-center text-center min-h-[260px]">
                 <Map size={48} className="text-white" strokeWidth={1.5} />
                 <h3 className="mt-6 text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">
-                  Advisory &amp; Roadmapping
+                  Policy Advisory &amp; Strategic Planning
                 </h3>
                 <p className="mt-3 text-white/85 text-sm leading-relaxed max-w-sm">
-                  Strategic counsel to help you navigate market entry, institutional reform, sponsorship strategy, and event or bid planning with clarity and confidence.
+                  We work with governments, ministries, national sports bodies, and multilateral institutions to shape sport policy and deliver strategic plans that translate objectives into actionable outcomes — including AfCFTA implementation, institutional reform, and capacity building programmes.
                 </p>
               </div>
-              {/* Decision Support */}
+              {/* Commercial & Growth Strategy */}
               <div className="rounded-2xl bg-[#1b3d6e] p-12 flex flex-col items-center justify-center text-center min-h-[260px]">
                 <BarChart2 size={48} className="text-white" strokeWidth={1.5} />
                 <h3 className="mt-6 text-xl font-extrabold text-white font-[family-name:var(--font-heading)]">
-                  Decision Support &amp; Market Intelligence
+                  Commercial &amp; Growth Strategy
                 </h3>
                 <p className="mt-3 text-white/85 text-sm leading-relaxed max-w-sm">
-                  Bespoke research, sector mapping, deal intelligence, and data analysis that gives investors and institutions the information edge they need.
+                  For global investors, brands, and sponsors, we provide the strategic clarity needed to enter and grow in Africa&apos;s market. For African rights holders, federations, and organisations, we support commercial development, partnership strategy, and long-term growth planning. Whether you&apos;re coming into the market or scaling within it, we help you identify the right opportunities and the right relationships.
                 </p>
               </div>
             </div>
