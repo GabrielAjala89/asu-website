@@ -12,7 +12,19 @@ export const metadata = {
 };
 
 const CSV_URL =
-  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQwfVa1av_8miAE8shipaI58BjTz98lNXCOoXQPMpu7bY_qCPLjVTcTU9IBjMpcvoV03F-sVLTEvvCc/pub?gid=0&single=true&output=csv";
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQwfVa1av_8miAE8shipaI58BjTz98lNXCOoXQPMpu7bY_qCPLjVTcTU9IBjMpcvoV03F-sVLTEvvCc/pub?gid=900243820&single=true&output=csv";
+
+const FLAGS: Record<string, string> = {
+  "Algeria": "🇩🇿", "Angola": "🇦🇴", "Botswana": "🇧🇼", "Burkina Faso": "🇧🇫",
+  "Cameroon": "🇨🇲", "Chad": "🇹🇩", "Congo": "🇨🇬", "DR Congo": "🇨🇩",
+  "Egypt": "🇪🇬", "Ethiopia": "🇪🇹", "Gabon": "🇬🇦", "Ghana": "🇬🇭",
+  "Guinea": "🇬🇳", "Ivory Coast": "🇨🇮", "Kenya": "🇰🇪", "Libya": "🇱🇾",
+  "Madagascar": "🇲🇬", "Mali": "🇲🇱", "Morocco": "🇲🇦", "Mozambique": "🇲🇿",
+  "Namibia": "🇳🇦", "Nigeria": "🇳🇬", "Rwanda": "🇷🇼", "Senegal": "🇸🇳",
+  "Sierra Leone": "🇸🇱", "Somalia": "🇸🇴", "South Africa": "🇿🇦", "Sudan": "🇸🇩",
+  "Tanzania": "🇹🇿", "Tunisia": "🇹🇳", "Uganda": "🇺🇬", "Zambia": "🇿🇲",
+  "Zimbabwe": "🇿🇼",
+};
 
 interface Deal {
   date: string;
@@ -41,17 +53,31 @@ function parseCSVLine(line: string): string[] {
   return fields;
 }
 
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
 function formatDate(raw: string): string {
-  const parts = raw.split("-");
-  if (parts.length !== 3) return raw;
-  const months = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-  ];
-  const m = parseInt(parts[1], 10);
-  const y = parseInt(parts[2], 10);
-  if (isNaN(m) || isNaN(y) || m < 1 || m > 12) return raw;
-  return `${months[m - 1]} 20${String(y).padStart(2, "0")}`;
+  // DD/MM/YYYY (2026 tab format)
+  if (raw.includes("/")) {
+    const [d, m, y] = raw.split("/").map((p) => p.trim());
+    const mNum = parseInt(m, 10);
+    if (!isNaN(mNum) && mNum >= 1 && mNum <= 12) {
+      return `${parseInt(d, 10)} ${MONTHS[mNum - 1]} ${y}`;
+    }
+  }
+  // DD-MM-YY fallback
+  if (raw.includes("-")) {
+    const [d, m, y] = raw.split("-").map((p) => p.trim());
+    const mNum = parseInt(m, 10);
+    const yNum = parseInt(y, 10);
+    if (!isNaN(mNum) && mNum >= 1 && mNum <= 12) {
+      return `${parseInt(d, 10)} ${MONTHS[mNum - 1]} 20${String(yNum).padStart(2, "0")}`;
+    }
+  }
+  return raw;
+}
+
+function getFlag(country: string): string {
+  return FLAGS[country] ?? "";
 }
 
 async function getDeals(): Promise<Deal[]> {
@@ -172,7 +198,10 @@ export default async function DealsTrackerPage() {
                           <td className="px-5 py-4 text-gray-400 whitespace-nowrap text-xs font-[family-name:var(--font-heading)] font-semibold tracking-wide">
                             {deal.date}
                           </td>
-                          <td className="px-5 py-4 text-gray-800 font-semibold">
+                          <td className="px-5 py-4 text-gray-800 font-semibold whitespace-nowrap">
+                            {getFlag(deal.country) && (
+                              <span className="mr-2">{getFlag(deal.country)}</span>
+                            )}
                             {deal.country}
                           </td>
                           <td className="px-5 py-4">

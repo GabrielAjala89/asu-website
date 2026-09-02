@@ -44,7 +44,7 @@ export function Navbar({ transparent = false }: NavbarProps) {
       : "text-white/90 hover:text-white"
   );
 
-  const isHubActive = pathname === "/knowledge-hub" || pathname.startsWith("/knowledge-hub/") || pathname.startsWith("/articles/") || pathname.startsWith("/trackers/") || pathname.startsWith("/reports/") || pathname.startsWith("/videos/");
+  const isHubActive = pathname === "/knowledge-hub" || pathname.startsWith("/knowledge-hub/") || pathname.startsWith("/articles/") || pathname.startsWith("/trackers/") || pathname.startsWith("/reports/") || pathname.startsWith("/videos/") || pathname.startsWith("/deals-tracker");
 
   function openHub() {
     if (hubTimeout.current) clearTimeout(hubTimeout.current);
@@ -109,10 +109,16 @@ export function Navbar({ transparent = false }: NavbarProps) {
             {/* Dropdown */}
             {hubOpen && (
               <div
-                className="absolute top-full left-0 mt-2 w-44 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden"
+                className="absolute top-full left-0 mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden"
                 onMouseEnter={openHub}
                 onMouseLeave={closeHub}
               >
+                <Link
+                  href="/deals-tracker"
+                  className="flex items-center gap-2 px-4 py-3 text-sm font-semibold text-[#1b3d6e] font-[family-name:var(--font-heading)] hover:bg-[#f4f7fb] hover:text-[#F37021] transition-colors border-b border-gray-50"
+                >
+                  Deals Tracker
+                </Link>
                 <a
                   href={SPOTIFY_URL}
                   target="_blank"
@@ -170,6 +176,13 @@ export function Navbar({ transparent = false }: NavbarProps) {
               className="py-3 text-sm font-semibold text-[#1b3d6e] hover:text-[#F37021] font-[family-name:var(--font-heading)] border-b border-gray-50 transition-colors"
             >
               Knowledge Hub
+            </Link>
+            <Link
+              href="/deals-tracker"
+              onClick={() => setOpen(false)}
+              className="py-3 pl-4 text-sm font-semibold text-gray-500 hover:text-[#F37021] font-[family-name:var(--font-heading)] border-b border-gray-50 transition-colors"
+            >
+              ↳ Deals Tracker
             </Link>
             <a
               href={SPOTIFY_URL}
