@@ -13,3 +13,7 @@ export { author } from "./author";
 export { topic } from "./topic";
 export { siteSettings } from "./siteSettings";
 export { waitlistEntry } from "./waitlistEntry";
+export { downloadRequest } from "./downloadRequest";
+export { articleTable } from "./articleTable";
+export { youtubeEmbed } from "./youtubeEmbed";
+export { promoBanner } from "./promoBanner";
