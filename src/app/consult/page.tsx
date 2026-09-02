@@ -49,10 +49,10 @@ export default async function ConsultPage() {
             </p>
             <OrangeLine />
             <h1 className="mt-4 text-4xl md:text-6xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight max-w-3xl">
-              Using Sport as a Driver for Economic Growth, Investment, and Long-Term Value.
+              Strategic Counsel for Africa&apos;s Sports Economy
             </h1>
             <p className="mt-4 text-white/80 text-base md:text-lg max-w-2xl leading-relaxed">
-              Strategic counsel for governments, investors, and institutions navigating Africa&apos;s sports economy.
+              We advise governments, investors, and institutions on both sides of the market, from policy and AfCFTA implementation to market entry and commercial growth.
             </p>
             <div className="mt-8">
               <Link
