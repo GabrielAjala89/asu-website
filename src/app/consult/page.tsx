@@ -6,7 +6,7 @@ import { sanityFetch } from "@/lib/sanity";
 import { ALL_CASE_STUDIES_QUERY } from "@/lib/queries";
 import Image from "next/image";
 import Link from "next/link";
-import { Globe, Lock, Map, BarChart2 } from "lucide-react";
+import { Map, BarChart2 } from "lucide-react";
 
 export const revalidate = 60;
 
@@ -67,42 +67,6 @@ export default async function ConsultPage() {
           </div>
         </section>
 
-        {/* ── Who We Work With ─────────────────────────────────────────────── */}
-        <section className="py-20 bg-[#faf3e7]">
-          <div className="mx-auto max-w-7xl px-6">
-            <OrangeLine />
-            <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-              Who We Work With
-            </h2>
-            <p className="mt-3 text-gray-600 max-w-2xl leading-relaxed">
-              We partner with leaders in both the public and private sector who are using sport as a lever for growth, investment, and national development.
-            </p>
-
-            <div className="mt-10 grid md:grid-cols-2 gap-6">
-              {/* Public Sector */}
-              <div className="rounded-2xl bg-[#F37021] p-12 flex flex-col items-center justify-center text-center min-h-[260px]">
-                <Globe size={48} className="text-white" strokeWidth={1.5} />
-                <h3 className="mt-6 text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">
-                  Public Sector
-                </h3>
-                <p className="mt-3 text-white/85 text-sm leading-relaxed max-w-sm">
-                  Governments, ministries, national sports federations, development agencies, and multilateral institutions shaping sport policy and infrastructure.
-                </p>
-              </div>
-              {/* Private Sector */}
-              <div className="rounded-2xl bg-[#1b3d6e] p-12 flex flex-col items-center justify-center text-center min-h-[260px]">
-                <Lock size={48} className="text-white" strokeWidth={1.5} />
-                <h3 className="mt-6 text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">
-                  Private Sector
-                </h3>
-                <p className="mt-3 text-white/85 text-sm leading-relaxed max-w-sm">
-                  Investors, brands, media companies, leagues, clubs, and sponsors seeking to enter, expand, or deepen their position in Africa&apos;s sports economy.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* ── How We Work ──────────────────────────────────────────────────── */}
         <section className="py-20 bg-white">
           <div className="mx-auto max-w-7xl px-6">
@@ -111,28 +75,34 @@ export default async function ConsultPage() {
               How We Work
             </h2>
             <p className="mt-3 text-gray-600 max-w-2xl leading-relaxed">
-              Our advisory is grounded in research and market intelligence — we build the evidence base before we give the counsel. ASU sits at the intersection of Africa&apos;s sports economy and global markets, advising institutions and organisations on both sides.
+              Our advisory is grounded in research and market intelligence. We build the evidence base before we give the counsel. ASU sits at the intersection of Africa&apos;s sports economy and global markets, advising institutions and organisations on both sides.
             </p>
 
             <div className="mt-10 grid md:grid-cols-2 gap-6">
               {/* Policy Advisory & Strategic Planning */}
-              <div className="rounded-2xl bg-[#F37021] p-12 flex flex-col items-center justify-center text-center min-h-[260px]">
+              <div className="rounded-2xl bg-[#F37021] p-10 flex flex-col items-center justify-center text-center">
                 <Map size={48} className="text-white" strokeWidth={1.5} />
                 <h3 className="mt-6 text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">
                   Policy Advisory &amp; Strategic Planning
                 </h3>
                 <p className="mt-3 text-white/85 text-sm leading-relaxed max-w-sm">
-                  We work with governments, ministries, national sports bodies, and multilateral institutions to shape sport policy and deliver strategic plans that translate objectives into actionable outcomes — including AfCFTA implementation, institutional reform, and capacity building programmes.
+                  We work with governments, ministries, national sports bodies, and multilateral institutions to shape sport policy and deliver strategic plans that translate objectives into actionable outcomes.
+                </p>
+                <p className="mt-2 text-white/85 text-sm leading-relaxed max-w-sm">
+                  Our work includes sport policy development, AfCFTA implementation, institutional reform, and the design and delivery of strategic roadmaps alongside stakeholder engagement and capacity building programmes.
                 </p>
               </div>
               {/* Commercial & Growth Strategy */}
-              <div className="rounded-2xl bg-[#1b3d6e] p-12 flex flex-col items-center justify-center text-center min-h-[260px]">
+              <div className="rounded-2xl bg-[#1b3d6e] p-10 flex flex-col items-center justify-center text-center">
                 <BarChart2 size={48} className="text-white" strokeWidth={1.5} />
                 <h3 className="mt-6 text-xl font-extrabold text-white font-[family-name:var(--font-heading)]">
                   Commercial &amp; Growth Strategy
                 </h3>
                 <p className="mt-3 text-white/85 text-sm leading-relaxed max-w-sm">
-                  For global investors, brands, and sponsors, we provide the strategic clarity needed to enter and grow in Africa&apos;s market. For African rights holders, federations, and organisations, we support commercial development, partnership strategy, and long-term growth planning. Whether you&apos;re coming into the market or scaling within it, we help you identify the right opportunities and the right relationships.
+                  For global investors, brands, and sponsors, we provide the strategic clarity needed to enter, position, and grow with confidence in Africa&apos;s market.
+                </p>
+                <p className="mt-2 text-white/85 text-sm leading-relaxed max-w-sm">
+                  For African rights holders, federations, and organisations, we support commercial development, partnership strategy, and long-term growth planning.
                 </p>
               </div>
             </div>
@@ -171,34 +141,29 @@ export default async function ConsultPage() {
                 )}
               </div>
               {/* Text */}
-              <div className="flex-1 max-w-2xl space-y-6">
-                <h3 className="text-xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] leading-snug">
-                  Leveraging Sport to Support the Inclusive Implementation of the AfCFTA
-                </h3>
-
+              <div className="flex-1 max-w-2xl space-y-5">
                 <div>
-                  <p className="text-xs font-bold text-[#F37021] uppercase tracking-widest font-[family-name:var(--font-heading)] mb-1">Challenge</p>
-                  <p className="text-gray-600 leading-relaxed text-sm">
-                    As Africa moves to activate the African Continental Free Trade Area (AfCFTA) — the world&apos;s largest free trade area by member states — the United Nations Economic Commission for Africa (UNECA) recognised that sport represented an underutilised lever for driving intra-African trade, regional economic cooperation, and the inclusion of youth, women, and entrepreneurs in the continent&apos;s emerging trade ecosystem.
+                  <h3 className="text-xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] leading-snug">
+                    Leveraging Sport to Support the Inclusive Implementation of the AfCFTA
+                  </h3>
+                  <p className="mt-1 text-sm text-[#F37021] font-semibold font-[family-name:var(--font-heading)]">
+                    The United Nations Economic Commission for Africa &amp; African Trade Policy Centre
                   </p>
                 </div>
 
-                <div>
-                  <p className="text-xs font-bold text-[#F37021] uppercase tracking-widest font-[family-name:var(--font-heading)] mb-1">What ASU Did</p>
-                  <p className="text-gray-600 leading-relaxed text-sm">
-                    Gabriel Ajala worked with UNECA and the African Trade Policy Centre to design and deliver a multi-strand programme spanning research, advocacy, community engagement, and capacity development.
-                  </p>
-                </div>
+                <p className="text-gray-600 leading-relaxed text-sm">
+                  Gabriel Ajala worked with UNECA and the African Trade Policy Centre to design and deliver a programme using sport as a lever for intra-African trade, regional cooperation, and economic inclusion.
+                </p>
 
                 <div>
                   <p className="text-xs font-bold text-[#F37021] uppercase tracking-widest font-[family-name:var(--font-heading)] mb-2">Delivered</p>
                   <ul className="space-y-1.5 text-sm text-gray-600">
                     {[
-                      "2 research projects investigating how sport can accelerate AfCFTA implementation and intra-African trade",
-                      "2 online events bringing together stakeholders including FIFA, The African Union, Right to Dream, and the AfCFTA Secretariat",
-                      "4 podcasts reaching listeners across Africa, Europe, and North America — average 47% consumption rate",
-                      "A 6-month mentorship programme for 14 entrepreneurs, with mentors from FIFA, the Basketball Africa League, Toronto Raptors, and Catapult Sports",
-                      "A policy recommendations document delivered to UNECA",
+                      "2 research projects on sport and AfCFTA implementation",
+                      "2 stakeholder events featuring FIFA, the African Union, Right to Dream, and the AfCFTA Secretariat",
+                      "4 podcasts across Africa, Europe, and North America (avg. 47% consumption rate)",
+                      "6-month mentorship programme for 14 entrepreneurs, with mentors from FIFA, BAL, Toronto Raptors, and Catapult Sports",
+                      "Policy recommendations delivered to UNECA",
                     ].map((item, i) => (
                       <li key={i} className="flex gap-2.5">
                         <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-[#F37021] shrink-0" />
@@ -211,8 +176,17 @@ export default async function ConsultPage() {
                 <div>
                   <p className="text-xs font-bold text-[#F37021] uppercase tracking-widest font-[family-name:var(--font-heading)] mb-1">Results</p>
                   <p className="text-gray-600 leading-relaxed text-sm">
-                    All workstreams were delivered successfully, culminating in detailed recommendations, strategies, and insights into how sport can drive intra-African trade, regional economic cooperation, and long-term economic growth. 100% of mentees rated the programme positively. 100% of mentors said they would participate again. A third of all event attendees were women.
+                    100% of mentees rated the programme positively. 100% of mentors would participate again. A third of event attendees were women.
                   </p>
+                </div>
+
+                <div className="pt-2">
+                  <a
+                    href="mailto:info@asunified.com?subject=Case Study Request: UNECA AfCFTA"
+                    className="inline-flex items-center gap-2 text-sm font-bold text-[#1b3d6e] font-[family-name:var(--font-heading)] hover:text-[#F37021] transition-colors"
+                  >
+                    Request the full case study →
+                  </a>
                 </div>
               </div>
             </div>
