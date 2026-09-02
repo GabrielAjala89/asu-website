@@ -21,6 +21,7 @@ export const report = defineType({
     // Files
     defineField({ name: "pdfFull", title: "Full PDF (paid/gated)", type: "file", options: { accept: ".pdf" } }),
     defineField({ name: "pdfFree", title: "Free sample PDF (email-gated)", type: "file", options: { accept: ".pdf" } }),
+    defineField({ name: "emailGateUrl", title: "Email gate URL (Zoho / landing page)", description: "If set, the download button sends users here to enter their email before receiving the PDF. Used for free reports.", type: "url" }),
     // Meta
     defineField({ name: "featured", title: "Featured on homepage", type: "boolean", initialValue: false }),
     defineField({ name: "topics", title: "Topics", type: "array", of: [{ type: "reference", to: [{ type: "topic" }] }] }),

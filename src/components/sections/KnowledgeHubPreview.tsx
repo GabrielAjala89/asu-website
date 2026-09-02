@@ -91,20 +91,8 @@ function ProductCard({ product }: { product: Product }) {
         {/* Bottom content */}
         <div className="relative z-10 p-5">
           <p className="text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">
-            {product.pricePaid ? `$${product.pricePaid}` : "Free"}
+            {product.pricePaid ? `£${product.pricePaid}` : "Free"}
           </p>
-          {product.features && product.features.length > 0 && (
-            <div className="mt-3">
-              <p className="text-white text-xs font-bold uppercase tracking-wider mb-2 font-[family-name:var(--font-heading)]">Features</p>
-              <ul className="space-y-1">
-                {product.features.slice(0, 4).map((f, i) => (
-                  <li key={i} className="text-white/80 text-xs flex gap-1.5">
-                    <span className="mt-0.5">•</span>{f}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
           <div className="mt-5 w-full py-2.5 rounded-full bg-white text-center text-[#1b3d6e] text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-wider group-hover:bg-[#F37021] group-hover:text-white transition-colors">
             {label}
           </div>
@@ -124,7 +112,7 @@ const placeholders = [
     label: "VIEW REPORT", bg: "from-green-900/80",
   },
   {
-    id: 2, badge: "AFRICAN SPORTS MARKET DEALS TRACKER", price: "$55",
+    id: 2, badge: "AFRICAN SPORTS MARKET DEALS TRACKER", price: "£599.99",
     description: "Database that tracks commercial deals, sponsorships, broadcast, and investments.",
     features: ["Deal Coverage & Listings","Market Insights & Trends","Data for Strategic Decisions","Contextual Industry Insights"],
     label: "EXPLORE TRACKER", bg: "from-slate-800/80",
@@ -143,7 +131,7 @@ const placeholders = [
   },
 ];
 
-function PlaceholderCard({ badge, price, description, features, label, bg }: typeof placeholders[0]) {
+function PlaceholderCard({ badge, price, label, bg }: typeof placeholders[0]) {
   return (
     <div className="relative rounded-2xl overflow-hidden aspect-[2/3] flex flex-col justify-between bg-[#1b3d6e]">
       <div className={`absolute inset-0 bg-gradient-to-t ${bg} to-transparent`} />
@@ -154,15 +142,6 @@ function PlaceholderCard({ badge, price, description, features, label, bg }: typ
       </div>
       <div className="relative z-10 p-5">
         <p className="text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">{price}</p>
-        <p className="mt-1 text-white/70 text-xs leading-relaxed">{description}</p>
-        <div className="mt-3">
-          <p className="text-white text-xs font-bold uppercase tracking-wider mb-2 font-[family-name:var(--font-heading)]">Features</p>
-          <ul className="space-y-1">
-            {features.map((f, i) => (
-              <li key={i} className="text-white/80 text-xs flex gap-1.5"><span className="mt-0.5">•</span>{f}</li>
-            ))}
-          </ul>
-        </div>
         <div className="mt-5 w-full py-2.5 rounded-full bg-white text-center text-[#1b3d6e] text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-wider">
           {label}
         </div>

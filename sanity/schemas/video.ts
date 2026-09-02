@@ -14,7 +14,8 @@ export const video = defineType({
     defineField({ name: "thumbnail", title: "Thumbnail image", type: "image", options: { hotspot: true }, fields: [
       defineField({ name: "alt", title: "Alt text", type: "string" }),
     ]}),
-    defineField({ name: "description", title: "Description", type: "text", rows: 3 }),
+    defineField({ name: "description", title: "Overview / Description", type: "text", rows: 5, description: "Summary of the video. Include any guest names, titles and organisations here." }),
+    defineField({ name: "keyTakeaways", title: "Key takeaways", type: "array", of: [{ type: "string" }], description: "3–5 bullet points — what viewers will learn from this video." }),
     defineField({ name: "topics", title: "Topics", type: "array", of: [{ type: "reference", to: [{ type: "topic" }] }] }),
     defineField({ name: "featured", title: "Featured", type: "boolean", initialValue: false }),
     defineField({ name: "tierRequired", title: "Access tier required", type: "string",

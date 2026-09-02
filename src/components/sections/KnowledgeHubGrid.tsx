@@ -5,6 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 
+const SPOTIFY_URL = "https://open.spotify.com/show/37o4pqxpyoJzURhSr2dXpe?si=aea0cf5f72184b5a";
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface HubArticle {
@@ -33,6 +35,11 @@ interface HubVideo {
   topics?: { title: string; slug: { current: string } }[];
 }
 
+interface Topic {
+  title: string;
+  slug: { current: string };
+}
+
 interface HubReport {
   _id: string;
   _type: "report";
@@ -41,6 +48,7 @@ interface HubReport {
   subtitle?: string;
   pricePaid?: number;
   coverImage?: { asset?: { url: string }; alt?: string };
+  topics?: Topic[];
 }
 
 interface HubTracker {
@@ -51,6 +59,7 @@ interface HubTracker {
   subtitle?: string;
   pricePaid?: number;
   coverImage?: { asset?: { url: string }; alt?: string };
+  topics?: Topic[];
 }
 
 type Tab = "all" | "reports" | "trackers" | "articles" | "videos";
@@ -60,6 +69,7 @@ interface Props {
   videos: HubVideo[];
   reports: HubReport[];
   trackers: HubTracker[];
+  initialTab?: Tab;
 }
 
 // ─── Placeholder data (shown until Sanity content is added) ──────────────────
@@ -101,10 +111,42 @@ const TABS: { id: Tab; label: string }[] = [
   { id: "videos", label: "Videos" },
 ];
 
+// ─── Topic helpers ────────────────────────────────────────────────────────────
+
+type AnyHubItem = HubArticle | HubVideo | HubReport | HubTracker;
+
+function getTopicsForTab(
+  tab: Tab,
+  articles: HubArticle[],
+  videos: HubVideo[],
+  reports: HubReport[],
+  trackers: HubTracker[],
+): Topic[] {
+  const pool: AnyHubItem[] = [];
+  if (tab === "all" || tab === "articles") pool.push(...articles);
+  if (tab === "all" || tab === "videos")   pool.push(...videos);
+  if (tab === "all" || tab === "reports")  pool.push(...reports);
+  if (tab === "all" || tab === "trackers") pool.push(...trackers);
+
+  const seen = new Map<string, string>();
+  for (const item of pool) {
+    for (const t of item.topics ?? []) {
+      if (!seen.has(t.slug.current)) seen.set(t.slug.current, t.title);
+    }
+  }
+  return [...seen.entries()].map(([slug, title]) => ({ slug: { current: slug }, title }));
+}
+
+function matchesTopic(item: AnyHubItem, activeTopic: string | null): boolean {
+  if (!activeTopic) return true;
+  return item.topics?.some(t => t.slug.current === activeTopic) ?? false;
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 
-export function KnowledgeHubGrid({ articles, videos, reports, trackers }: Props) {
-  const [activeTab, setActiveTab] = useState<Tab>("all");
+export function KnowledgeHubGrid({ articles, videos, reports, trackers, initialTab }: Props) {
+  const [activeTab, setActiveTab] = useState<Tab>(initialTab || "all");
+  const [activeTopic, setActiveTopic] = useState<string | null>(null);
 
   const counts: Record<Tab, number> = {
     all: articles.length + videos.length + reports.length + trackers.length,
@@ -115,17 +157,25 @@ export function KnowledgeHubGrid({ articles, videos, reports, trackers }: Props)
   };
 
   const hasContent = counts.all > 0;
+  const availableTopics = hasContent
+    ? getTopicsForTab(activeTab, articles, videos, reports, trackers)
+    : [];
+
+  function handleTabChange(tab: Tab) {
+    setActiveTab(tab);
+    setActiveTopic(null);
+  }
 
   return (
     <section className="py-14 bg-white min-h-[60vh]">
       <div className="mx-auto max-w-7xl px-6">
 
-        {/* Filter tabs */}
-        <div className="flex flex-wrap gap-2 mb-10 border-b border-gray-100 pb-6">
+        {/* Content-type tabs */}
+        <div className="flex flex-wrap gap-2 pb-4 border-b border-gray-100">
           {TABS.map((tab) => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => handleTabChange(tab.id)}
               className={cn(
                 "px-5 py-2 rounded-full text-sm font-semibold font-[family-name:var(--font-heading)] transition-colors",
                 activeTab === tab.id
@@ -144,7 +194,54 @@ export function KnowledgeHubGrid({ articles, videos, reports, trackers }: Props)
               )}
             </button>
           ))}
+          {/* Podcasts — external link to Spotify */}
+          <a
+            href={SPOTIFY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-2 rounded-full text-sm font-semibold font-[family-name:var(--font-heading)] transition-colors bg-[#f4f7fb] text-[#1b3d6e] hover:bg-[#dde6f0] flex items-center gap-2"
+          >
+            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-[#1DB954] shrink-0" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+            </svg>
+            Podcasts
+          </a>
         </div>
+
+        {/* Topic filters — only shown when there are topics to show */}
+        {availableTopics.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2 pt-4 pb-8">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 font-[family-name:var(--font-heading)] mr-1">
+              Topic:
+            </span>
+            <button
+              onClick={() => setActiveTopic(null)}
+              className={cn(
+                "px-3.5 py-1.5 rounded-full text-xs font-semibold font-[family-name:var(--font-heading)] transition-colors border",
+                activeTopic === null
+                  ? "bg-[#F37021] text-white border-[#F37021]"
+                  : "bg-white text-gray-500 border-gray-200 hover:border-[#F37021] hover:text-[#F37021]"
+              )}
+            >
+              All Topics
+            </button>
+            {availableTopics.map(t => (
+              <button
+                key={t.slug.current}
+                onClick={() => setActiveTopic(t.slug.current)}
+                className={cn(
+                  "px-3.5 py-1.5 rounded-full text-xs font-semibold font-[family-name:var(--font-heading)] transition-colors border",
+                  activeTopic === t.slug.current
+                    ? "bg-[#F37021] text-white border-[#F37021]"
+                    : "bg-white text-gray-500 border-gray-200 hover:border-[#F37021] hover:text-[#F37021]"
+                )}
+              >
+                {t.title}
+              </button>
+            ))}
+          </div>
+        )}
+        {availableTopics.length === 0 && <div className="mb-10" />}
 
         {/* Content */}
         {!hasContent ? (
@@ -152,6 +249,7 @@ export function KnowledgeHubGrid({ articles, videos, reports, trackers }: Props)
         ) : (
           <LiveContent
             activeTab={activeTab}
+            activeTopic={activeTopic}
             articles={articles}
             videos={videos}
             reports={reports}
@@ -165,46 +263,65 @@ export function KnowledgeHubGrid({ articles, videos, reports, trackers }: Props)
 
 // ─── Live content (when Sanity has data) ─────────────────────────────────────
 
-function LiveContent({ activeTab, articles, videos, reports, trackers }: Props & { activeTab: Tab }) {
+function LiveContent({ activeTab, activeTopic, articles, videos, reports, trackers }: Props & { activeTab: Tab; activeTopic: string | null }) {
   const showReports  = activeTab === "all" || activeTab === "reports";
   const showTrackers = activeTab === "all" || activeTab === "trackers";
   const showArticles = activeTab === "all" || activeTab === "articles";
   const showVideos   = activeTab === "all" || activeTab === "videos";
 
+  const filteredReports  = reports.filter(r  => matchesTopic(r, activeTopic));
+  const filteredTrackers = trackers.filter(t  => matchesTopic(t, activeTopic));
+  const filteredArticles = articles.filter(a  => matchesTopic(a, activeTopic));
+  const filteredVideos   = videos.filter(v    => matchesTopic(v, activeTopic));
+
+  const nothingVisible =
+    (showReports  && filteredReports.length  === 0) &&
+    (showTrackers && filteredTrackers.length === 0) &&
+    (showArticles && filteredArticles.length === 0) &&
+    (showVideos   && filteredVideos.length   === 0);
+
+  if (nothingVisible) {
+    return (
+      <div className="py-16 text-center text-gray-400">
+        <p className="text-sm">No content found for this topic yet.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-14">
-      {showReports && reports.length > 0 && (
+      {showReports && filteredReports.length > 0 && (
         <div>
           {activeTab === "all" && <SectionLabel>Reports</SectionLabel>}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {reports.map((r) => <ProductCard key={r._id} item={r} ctaLabel="View Report" href={`/reports/${r.slug.current}`} />)}
+            {filteredReports.map((r) => <ProductCard key={r._id} item={r} ctaLabel="View Report" href={`/reports/${r.slug.current}`} />)}
           </div>
         </div>
       )}
 
-      {showTrackers && trackers.length > 0 && (
+      {showTrackers && filteredTrackers.length > 0 && (
         <div>
           {activeTab === "all" && <SectionLabel>Trackers</SectionLabel>}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {trackers.map((t) => <ProductCard key={t._id} item={t} ctaLabel="Explore Tracker" href={`/trackers/${t.slug.current}`} />)}
+            {filteredTrackers.map((t) => <ProductCard key={t._id} item={t} ctaLabel="Explore Tracker" href={`/trackers/${t.slug.current}`} />)}
           </div>
         </div>
       )}
 
-      {showArticles && articles.length > 0 && (
+      {showArticles && filteredArticles.length > 0 && (
         <div>
           {activeTab === "all" && <SectionLabel>Articles</SectionLabel>}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {articles.map((a) => <ArticleCard key={a._id} article={a} />)}
+            {filteredArticles.map((a) => <ArticleCard key={a._id} article={a} />)}
           </div>
         </div>
       )}
 
-      {showVideos && videos.length > 0 && (
+      {showVideos && filteredVideos.length > 0 && (
         <div>
           {activeTab === "all" && <SectionLabel>Videos</SectionLabel>}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {videos.map((v) => <VideoCard key={v._id} video={v} />)}
+            {filteredVideos.map((v) => <VideoCard key={v._id} video={v} />)}
           </div>
         </div>
       )}
@@ -240,16 +357,6 @@ function PlaceholderGrid({ activeTab }: { activeTab: Tab }) {
                 </div>
                 <div className="relative z-10 p-5">
                   <p className="text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">{p.price}</p>
-                  <div className="mt-3">
-                    <p className="text-white text-[10px] font-bold uppercase tracking-wider mb-2 font-[family-name:var(--font-heading)]">Features</p>
-                    <ul className="space-y-1">
-                      {p.features.map((f) => (
-                        <li key={f} className="text-white/80 text-xs flex gap-1.5">
-                          <span className="mt-0.5 shrink-0">•</span>{f}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
                   <div className="mt-5 w-full py-2.5 rounded-full bg-white text-center text-[#1b3d6e] text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-wider">
                     {p.type === "tracker" ? "Explore Tracker" : "View Report"}
                   </div>
@@ -309,7 +416,7 @@ function ProductCard({
             src={item.coverImage.asset.url}
             alt={item.coverImage.alt || item.title}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
           />
         ) : null}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -324,9 +431,6 @@ function ProductCard({
           <p className="text-2xl font-extrabold text-white font-[family-name:var(--font-heading)]">
             {item.pricePaid ? `£${item.pricePaid}` : "Free"}
           </p>
-          <h3 className="mt-1 text-sm font-bold text-white/90 font-[family-name:var(--font-heading)] leading-snug line-clamp-2">
-            {item.title}
-          </h3>
           <div className="mt-5 w-full py-2.5 rounded-full bg-white text-center text-[#1b3d6e] text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-wider group-hover:bg-[#F37021] group-hover:text-white transition-colors">
             {ctaLabel}
           </div>
@@ -337,7 +441,6 @@ function ProductCard({
 }
 
 function ArticleCard({ article }: { article: HubArticle }) {
-  const isLocked = article.tierRequired && article.tierRequired !== "free";
   return (
     <Link href={`/articles/${article.slug.current}`} className="group block bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       <div className="relative h-48 bg-[#f4f7fb]">
@@ -350,11 +453,6 @@ function ArticleCard({ article }: { article: HubArticle }) {
           />
         ) : (
           <div className="absolute inset-0 bg-[#dde6f0]" />
-        )}
-        {isLocked && (
-          <span className="absolute top-3 right-3 px-2 py-1 rounded-full bg-[#1b3d6e] text-white text-[10px] font-bold font-[family-name:var(--font-heading)] uppercase tracking-wider">
-            ASU Insider
-          </span>
         )}
       </div>
       <div className="p-5">
@@ -381,7 +479,6 @@ function ArticleCard({ article }: { article: HubArticle }) {
 }
 
 function VideoCard({ video }: { video: HubVideo }) {
-  const isLocked = video.tierRequired && video.tierRequired !== "free";
   const mins = video.duration ? Math.floor(video.duration / 60) : null;
   return (
     <Link href={`/videos/${video.slug.current}`} className="group block rounded-2xl overflow-hidden bg-[#1b3d6e] shadow-sm hover:shadow-md transition-shadow">
@@ -404,11 +501,6 @@ function VideoCard({ video }: { video: HubVideo }) {
         {mins && (
           <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/70 text-white text-[10px] font-bold font-[family-name:var(--font-heading)]">
             {mins}m
-          </span>
-        )}
-        {isLocked && (
-          <span className="absolute top-2 right-2 px-2 py-1 rounded-full bg-[#F37021] text-white text-[10px] font-bold font-[family-name:var(--font-heading)] uppercase tracking-wider">
-            ASU Insider
           </span>
         )}
       </div>

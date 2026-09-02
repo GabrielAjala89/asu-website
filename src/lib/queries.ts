@@ -79,6 +79,15 @@ export const LATEST_VIDEOS_QUERY = `
   }
 `;
 
+export const VIDEO_BY_SLUG_QUERY = `
+  *[_type == "video" && slug.current == $slug][0] {
+    _id, title, slug, publishedAt, duration, youtubeUrl, description, keyTakeaways, tierRequired,
+    thumbnail{${imageFields}},
+    author->{${authorFields}},
+    topics[]->{${topicFields}}
+  }
+`;
+
 // ─── Reports ──────────────────────────────────────────────────────────────────
 
 export const ALL_REPORTS_QUERY = `
@@ -90,15 +99,15 @@ export const ALL_REPORTS_QUERY = `
 `;
 
 export const FEATURED_REPORTS_QUERY = `
-  *[_type == "report" && featured == true] | order(publishedAt desc)[0...4] {
-    _id, title, slug, subtitle, pricePaid, priceMember, stripePaymentLink, features,
+  *[(_type == "report" || _type == "tracker") && featured == true] | order(_type asc, publishedAt desc)[0...4] {
+    _id, _type, title, slug, subtitle, pricePaid, priceMember, stripePaymentLink, features,
     coverImage{${imageFields}}
   }
 `;
 
 export const REPORT_BY_SLUG_QUERY = `
   *[_type == "report" && slug.current == $slug][0] {
-    _id, title, slug, subtitle, publishedAt, description, features, pricePaid, priceMember, stripePaymentLink,
+    _id, title, slug, subtitle, publishedAt, description, features, pricePaid, priceMember, stripePaymentLink, emailGateUrl,
     coverImage{${imageFields}},
     "pdfFreeUrl": pdfFree.asset->url,
     "pdfFullUrl": pdfFull.asset->url,
@@ -171,7 +180,7 @@ export const SITE_SETTINGS_QUERY = `
 
 export const KNOWLEDGE_HUB_QUERY = `
 {
-  "articles": *[_type == "article"] | order(publishedAt desc)[0...20] {
+  "articles": *[_type == "article"] | order(publishedAt desc)[0...100] {
     _id, _type, title, slug, publishedAt, readTime, excerpt, tierRequired,
     heroImage{${imageFields}},
     topics[]->{${topicFields}}
@@ -183,11 +192,13 @@ export const KNOWLEDGE_HUB_QUERY = `
   },
   "reports": *[_type == "report"] | order(publishedAt desc)[0...20] {
     _id, _type, title, slug, subtitle, pricePaid, tierRequired,
-    coverImage{${imageFields}}
+    coverImage{${imageFields}},
+    topics[]->{${topicFields}}
   },
   "trackers": *[_type == "tracker"] | order(publishedAt desc)[0...20] {
     _id, _type, title, slug, subtitle, pricePaid, tierRequired,
-    coverImage{${imageFields}}
+    coverImage{${imageFields}},
+    topics[]->{${topicFields}}
   }
 }
 `;

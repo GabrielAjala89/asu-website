@@ -78,6 +78,7 @@ export default async function HomePage() {
                 { src: "/images/trusted-by/uneca.webp",    alt: "UNECA",                              size: "h-24 w-24" },
                 { src: "/images/trusted-by/afcfta.jpg",    alt: "AfCFTA",                             size: "h-20 w-52" },
                 { src: "/images/trusted-by/apo-group.png", alt: "APO Group",                          size: "h-12 w-32" },
+                { src: "/images/afrosport-logo.avif",       alt: "AfroSport Group",                    size: "h-12 w-36" },
               ].map((logo) => (
                 <div key={logo.alt} className={`relative grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 ${logo.size}`}>
                   <Image src={logo.src} alt={logo.alt} fill className="object-contain" />

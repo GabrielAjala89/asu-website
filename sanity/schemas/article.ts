@@ -17,6 +17,9 @@ export const article = defineType({
     defineField({ name: "excerpt", title: "Excerpt (for cards + SEO)", type: "text", rows: 3, validation: (R) => R.required().max(300) }),
     defineField({ name: "body", title: "Body", type: "array", of: [
       { type: "block" },
+      { type: "articleTable" },
+      { type: "youtubeEmbed" },
+      { type: "promoBanner" },
       { type: "image", options: { hotspot: true }, fields: [
         defineField({ name: "caption", title: "Caption", type: "string" }),
         defineField({ name: "alt", title: "Alt text", type: "string" }),

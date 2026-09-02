@@ -10,7 +10,7 @@ interface Testimonial {
   role?: string;
   organisation?: string;
   quote: string;
-  photo?: { asset?: { url: string } };
+  photo?: { asset?: { url: string; metadata?: { dimensions?: { width: number; height: number } } } };
   organisationLogo?: { asset?: { url: string }; alt?: string };
 }
 
@@ -37,13 +37,24 @@ export function TestimonialsCarousel({ testimonials }: TestimonialsCarouselProps
 
   const item = items[current];
 
+  const dims = item.photo?.asset?.metadata?.dimensions;
+  const isPortrait = dims ? dims.height > dims.width : false;
+
+  // For portrait photos, request a pre-cropped landscape version from Sanity CDN
+  // centred at fp-y=0.3 (30% from top = face/upper-torso area).
+  const bgUrl = item.photo?.asset?.url
+    ? isPortrait
+      ? `${item.photo.asset.url}?w=1920&h=900&fit=crop&crop=focalpoint&fp-x=0.5&fp-y=0.3`
+      : item.photo.asset.url
+    : undefined;
+
   return (
     <section className="relative overflow-hidden bg-[#1b3d6e] min-h-[480px] flex items-center">
       {/* Background photo */}
-      {item.photo?.asset?.url && (
+      {bgUrl && (
         <>
           <Image
-            src={item.photo.asset.url}
+            src={bgUrl!}
             alt={item.name}
             fill
             className="object-cover opacity-40"
@@ -70,6 +81,13 @@ export function TestimonialsCarousel({ testimonials }: TestimonialsCarouselProps
             <p className="text-white/60 font-bold text-sm uppercase tracking-wider mb-5 font-[family-name:var(--font-heading)]">
               {item.organisation}
             </p>
+          )}
+
+          {/* Circular avatar — always shows the face regardless of background crop */}
+          {item.photo?.asset?.url && (
+            <div className="relative w-14 h-14 rounded-full overflow-hidden mb-4 ring-2 ring-white/30">
+              <Image src={item.photo.asset.url} alt={item.name} fill className="object-cover object-top" />
+            </div>
           )}
 
           <h3 className="text-2xl md:text-3xl font-extrabold text-white font-[family-name:var(--font-heading)]">
