@@ -29,7 +29,7 @@ const BENEFITS = [
   {
     Icon: Globe,
     title: "Ecosystem Access",
-    body: "Direct access to the investors, federations, brands, and institutions shaping sport business in Africa. The right connections, verified.",
+    body: "Priority access to the professionals, brands, and institutions building Africa's sports business.",
   },
   {
     Icon: Users,
@@ -80,10 +80,10 @@ export default async function AsuInsiderPage() {
                   Your edge in Africa&apos;s sports economy
                 </h2>
                 <p className="mt-4 text-gray-600 leading-relaxed">
-                  ASU Insider is a members-only platform built exclusively for the professionals, brands, federations, and institutions at the forefront of sport business in Africa. It is where trusted intelligence meets verified access.
+                  ASU Insider is built for the decision-makers, investors, brands, and institutions at the forefront of sport business in Africa.
                 </p>
                 <p className="mt-3 text-gray-600 leading-relaxed">
-                  Members gain the insights to evaluate markets, identify opportunities, and make better commercial decisions, alongside direct access to the people and conversations that shape Africa&apos;s sports economy.
+                  Members get early access to ASU&apos;s intelligence briefs, reports, and trackers, alongside priority access to the people and conversations shaping the continent&apos;s sports economy.
                 </p>
               </div>
               <div className="relative h-72 md:h-96 rounded-2xl overflow-hidden">
@@ -104,7 +104,7 @@ export default async function AsuInsiderPage() {
             <div className="text-center mb-12">
               <OrangeLine className="mx-auto" />
               <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                What ASU Insider members will get
+                Membership Benefits
               </h2>
             </div>
             <div className="grid sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
@@ -132,7 +132,7 @@ export default async function AsuInsiderPage() {
                 Be first to know when we launch
               </h2>
               <p className="mt-4 text-white/70 leading-relaxed">
-                Register your interest below and we will be in touch once we go live.
+                Join the waitlist and be first to know when we open.
               </p>
             </div>
             <InsiderForm />
