@@ -33,6 +33,15 @@ interface Deal {
   sectorFocus: string;
 }
 
+interface Stats {
+  totalDeals: number;
+  topSport: string;
+  topSportCount: number;
+  topCountry: string;
+  topCountryCount: number;
+  signedCount: number;
+}
+
 function parseCSVLine(line: string): string[] {
   const fields: string[] = [];
   let field = "";
@@ -80,27 +89,51 @@ function getFlag(country: string): string {
   return FLAGS[country] ?? "";
 }
 
-async function getDeals(): Promise<Deal[]> {
+function topByFrequency(values: string[]): [string, number] {
+  const counts: Record<string, number> = {};
+  for (const v of values) if (v) counts[v] = (counts[v] ?? 0) + 1;
+  const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
+  return top ?? ["—", 0];
+}
+
+async function getTrackerData(): Promise<{ deals: Deal[]; stats: Stats }> {
+  const fallback = { deals: [], stats: { totalDeals: 0, topSport: "—", topSportCount: 0, topCountry: "—", topCountryCount: 0, signedCount: 0 } };
   try {
     const res = await fetch(CSV_URL, { next: { revalidate: 3600 } });
     const text = await res.text();
-    const rows = text
+    const allRows = text
       .split("\n")
       .map((l) => l.trim())
       .filter((l) => l.length > 0)
-      .map(parseCSVLine);
-    return rows
-      .slice(1) // skip header
-      .filter((r) => r.length > 10 && r[1]?.trim())
-      .slice(0, 5)
-      .map((r) => ({
-        date: formatDate(r[1]?.trim() ?? ""),
-        country: r[2]?.trim() ?? "",
-        sport: r[3]?.trim() ?? "",
-        sectorFocus: r[10]?.trim() ?? "",
-      }));
+      .map(parseCSVLine)
+      .slice(1)
+      .filter((r) => r.length > 10 && r[1]?.trim());
+
+    const signed = ["signed", "active", "activated", "confirmed", "renewed"];
+    const signedCount = allRows.filter((r) =>
+      signed.includes((r[11] ?? "").trim().toLowerCase())
+    ).length;
+
+    const [topSport, topSportCount]     = topByFrequency(allRows.map((r) => r[3]?.trim() ?? ""));
+    // Exclude regional/continental entries from top country
+    const countryValues = allRows.map((r) => r[2]?.trim() ?? "").filter(
+      (c) => !["sub-saharan africa", "continental", "global", "pan-africa", "mena", "west africa", "east africa"].includes(c.toLowerCase())
+    );
+    const [topCountry, topCountryCount] = topByFrequency(countryValues);
+
+    const deals = allRows.slice(0, 5).map((r) => ({
+      date: formatDate(r[1]?.trim() ?? ""),
+      country: r[2]?.trim() ?? "",
+      sport: r[3]?.trim() ?? "",
+      sectorFocus: r[10]?.trim() ?? "",
+    }));
+
+    return {
+      deals,
+      stats: { totalDeals: allRows.length, topSport, topSportCount, topCountry, topCountryCount, signedCount },
+    };
   } catch {
-    return [];
+    return fallback;
   }
 }
 
@@ -113,7 +146,7 @@ const PERKS = [
 ];
 
 export default async function DealsTrackerPage() {
-  const deals = await getDeals();
+  const { deals, stats } = await getTrackerData();
 
   return (
     <>
@@ -145,6 +178,63 @@ export default async function DealsTrackerPage() {
                   {tag}
                 </span>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Stats strip ──────────────────────────────────────── */}
+        <section className="bg-white border-b border-[#dde3ee]">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-y md:divide-y-0 divide-[#dde3ee]">
+
+              <div className="px-6 py-8 flex flex-col gap-1">
+                <span className="text-4xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] leading-none tabular-nums">
+                  {stats.totalDeals}
+                </span>
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-1">
+                  Deals in 2026
+                </span>
+                <span className="text-sm text-gray-500 leading-snug mt-0.5">
+                  Tracked &amp; verified by ASU
+                </span>
+              </div>
+
+              <div className="px-6 py-8 flex flex-col gap-1">
+                <span className="text-4xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] leading-none">
+                  {stats.topSport}
+                </span>
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-1">
+                  Most active sport
+                </span>
+                <span className="text-sm text-gray-500 leading-snug mt-0.5">
+                  {stats.topSportCount} deals tracked so far
+                </span>
+              </div>
+
+              <div className="px-6 py-8 flex flex-col gap-1">
+                <span className="text-4xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] leading-none">
+                  {getFlag(stats.topCountry) || ""}{stats.topCountry}
+                </span>
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-1">
+                  Most active market
+                </span>
+                <span className="text-sm text-gray-500 leading-snug mt-0.5">
+                  {stats.topCountryCount} deals this year
+                </span>
+              </div>
+
+              <div className="px-6 py-8 flex flex-col gap-1">
+                <span className="text-4xl font-extrabold text-[#F37021] font-[family-name:var(--font-heading)] leading-none tabular-nums">
+                  {stats.signedCount}
+                </span>
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-1">
+                  Signed &amp; confirmed
+                </span>
+                <span className="text-sm text-gray-500 leading-snug mt-0.5">
+                  Active deals in the market
+                </span>
+              </div>
+
             </div>
           </div>
         </section>
