@@ -45,6 +45,8 @@ interface Stats {
   topCountryCount: number;
   signedCount: number;
   sportBreakdown: { sport: string; count: number }[];
+  disclosedValueM: number;
+  disclosedCount: number;
 }
 
 function parseCSVLine(line: string): string[] {
@@ -94,6 +96,33 @@ function getFlag(country: string): string {
   return FLAGS[country] ?? "";
 }
 
+function parseUSDMillions(raw: string): number | null {
+  if (!raw) return null;
+  if (/undisclosed|not officially/i.test(raw)) return null;
+  const lower = raw.toLowerCase();
+  if (lower === "tbc" || lower === "n/a" || lower === "not disclosed") return null;
+
+  // Range: take midpoint (e.g. "26.7–26.8 million")
+  const rangeM = raw.match(/([\d,]+(?:\.\d+)?)\s*[–\-]\s*([\d,]+(?:\.\d+)?)/);
+  let base: number;
+  if (rangeM) {
+    const a = parseFloat(rangeM[1].replace(/,/g, ""));
+    const b = parseFloat(rangeM[2].replace(/,/g, ""));
+    base = (a + b) / 2;
+  } else {
+    const m = raw.match(/\$?\s*~?\s*([\d,]+(?:\.\d+)?)/);
+    if (!m) return null;
+    base = parseFloat(m[1].replace(/,/g, ""));
+  }
+  if (isNaN(base) || base <= 0) return null;
+
+  if (/billion|bn\b/i.test(lower)) return base * 1000;
+  if (/million/i.test(lower)) return base;
+  if (/\d[mM]\b/.test(raw)) return base;
+  // Raw dollar figure — convert to millions
+  return base / 1_000_000;
+}
+
 function topByFrequency(values: string[]): [string, number] {
   const counts: Record<string, number> = {};
   for (const v of values) if (v) counts[v] = (counts[v] ?? 0) + 1;
@@ -119,6 +148,7 @@ async function getTrackerData(): Promise<{ deals: Deal[]; stats: Stats }> {
       topSport: "—", topSportCount: 0,
       topCountry: "—", topCountryCount: 0,
       signedCount: 0, sportBreakdown: [],
+      disclosedValueM: 0, disclosedCount: 0,
     },
   };
   try {
@@ -154,6 +184,14 @@ async function getTrackerData(): Promise<{ deals: Deal[]; stats: Stats }> {
       .slice(0, 8)
       .map(([sport, count]) => ({ sport, count }));
 
+    // Financial: sum disclosed USD values (col 8)
+    let disclosedValueM = 0;
+    let disclosedCount = 0;
+    for (const r of allRows) {
+      const v = parseUSDMillions(r[8]?.trim() ?? "");
+      if (v !== null) { disclosedValueM += v; disclosedCount++; }
+    }
+
     const deals = allRows.slice(0, 5).map((r) => ({
       date: formatDate(r[1]?.trim() ?? ""),
       country: r[2]?.trim() ?? "",
@@ -169,6 +207,7 @@ async function getTrackerData(): Promise<{ deals: Deal[]; stats: Stats }> {
         topSport, topSportCount,
         topCountry, topCountryCount,
         signedCount, sportBreakdown,
+        disclosedValueM, disclosedCount,
       },
     };
   } catch {
@@ -285,6 +324,30 @@ export default async function DealsTrackerPage() {
             <h2 className="mt-3 mb-10 text-xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
               Market at a Glance
             </h2>
+            {/* Financial headline stat */}
+            {stats.disclosedValueM > 0 && (
+              <div className="mb-8 bg-[#1b3d6e] rounded-2xl p-8 flex flex-col sm:flex-row sm:items-center gap-6">
+                {/* Icon */}
+                <div className="shrink-0 w-16 h-16 rounded-2xl bg-[#F37021]/20 flex items-center justify-center">
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                    <circle cx="16" cy="16" r="15" stroke="#F37021" strokeWidth="2"/>
+                    <text x="16" y="22" textAnchor="middle" fontSize="18" fontWeight="800" fill="#F37021" fontFamily="inherit">$</text>
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <p className="text-xs font-bold uppercase tracking-widest text-[#F37021] font-[family-name:var(--font-heading)] mb-1">
+                    Disclosed Deal Value — 2026 YTD
+                  </p>
+                  <p className="text-4xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-none tabular-nums">
+                    ${Math.round(stats.disclosedValueM)}M+
+                  </p>
+                  <p className="mt-2 text-white/55 text-xs leading-snug max-w-lg">
+                    Based on {stats.disclosedCount} of {stats.totalDeals} deals with disclosed values. The remaining {stats.totalDeals - stats.disclosedCount} deals are undisclosed — the true total is significantly higher.
+                  </p>
+                </div>
+              </div>
+            )}
+
             <div className="grid md:grid-cols-3 gap-8">
 
               {/* Year comparison */}
