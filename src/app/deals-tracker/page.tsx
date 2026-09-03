@@ -153,6 +153,19 @@ export default async function DealsTrackerPage() {
         <section className="py-16 bg-[#f4f7fb]">
           <div className="mx-auto max-w-7xl px-6">
 
+            {/* Free preview notice */}
+            <div className="mb-6 flex items-center gap-3 bg-[#F37021]/10 border border-[#F37021]/25 rounded-xl px-5 py-3.5">
+              <span className="shrink-0 bg-[#F37021] text-white text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded font-[family-name:var(--font-heading)]">
+                Free Preview
+              </span>
+              <p className="text-sm text-gray-600 leading-snug">
+                You&apos;re viewing the 5 most recent deals with 4 fields. The full tracker includes all deals, deal values, parties, sources, and advanced filters.{" "}
+                <Link href="/trackers/african-sports-market-deals-tracker" className="font-semibold text-[#1b3d6e] hover:text-[#F37021] transition-colors underline underline-offset-2">
+                  Get full access →
+                </Link>
+              </p>
+            </div>
+
             <div className="flex items-end justify-between gap-4 flex-wrap mb-6">
               <div>
                 <OrangeLine />
@@ -161,8 +174,7 @@ export default async function DealsTrackerPage() {
                 </h2>
               </div>
               <p className="text-sm text-gray-400 pb-0.5">
-                Showing 5 most recent &middot;{" "}
-                <span className="text-[#F37021] font-semibold">Free preview</span>
+                Showing 5 most recent &middot; 4 of 9 fields shown
               </p>
             </div>
 
@@ -229,7 +241,7 @@ export default async function DealsTrackerPage() {
                   See every deal, not just the headlines
                 </h3>
                 <p className="mt-2 text-white/70 text-sm leading-relaxed max-w-lg">
-                  ASU Insider members access the full tracker — all deals, deal value, parties involved, and source links, with filters by country, sport, and sector.
+                  The full tracker includes all deals, deal value, parties involved, methodology, and source links — with filters by country, sport, and sector.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {PERKS.map((p) => (
@@ -243,10 +255,10 @@ export default async function DealsTrackerPage() {
                 </div>
               </div>
               <Link
-                href="/asu-insider"
+                href="/trackers/african-sports-market-deals-tracker"
                 className="flex-shrink-0 inline-block bg-[#F37021] hover:bg-[#d65a14] text-white text-sm font-bold font-[family-name:var(--font-heading)] px-8 py-4 rounded-full transition-colors text-center whitespace-nowrap"
               >
-                Join ASU Insider →
+                Get Full Access →
               </Link>
             </div>
 

@@ -7,7 +7,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle, ArrowLeft, ExternalLink } from "lucide-react";
-import { DownloadForm } from "@/components/ui/DownloadForm";
 
 export const revalidate = 60;
 
@@ -193,22 +192,27 @@ export default async function TrackerPage({ params }: { params: Promise<{ slug: 
           </div>
         </section>
 
-        {/* ── Sample request ────────────────────────────────────────────── */}
+        {/* ── Free preview CTA ──────────────────────────────────────────── */}
         <section className="py-16 bg-[#f4f7fb]">
-          <div className="mx-auto max-w-xl px-6">
-            <OrangeLine />
-            <h2 className="mt-4 text-2xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] mb-2">
-              Request a Free Sample
-            </h2>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              See the data before you commit. Enter your details and we&apos;ll send you a sample of the tracker — a structured, decision-ready snapshot of commercial activity across Africa&apos;s sports market.
-            </p>
-            <div className="bg-[#1b3d6e] rounded-2xl p-8">
-              <DownloadForm
-                contentTitle={tracker.title}
-                contentType="tracker"
-                stripeLink={tracker.stripePaymentLink}
-              />
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="flex flex-col md:flex-row items-center gap-8 bg-white rounded-2xl border border-[#dde3ee] p-8 md:p-10">
+              <div className="flex-1">
+                <span className="inline-block bg-[#F37021]/10 text-[#F37021] text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded font-[family-name:var(--font-heading)] mb-3">
+                  Free Preview
+                </span>
+                <h2 className="text-xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] leading-snug">
+                  See real data before you commit
+                </h2>
+                <p className="mt-2 text-gray-600 text-sm leading-relaxed max-w-lg">
+                  Browse the 5 most recent deals from the live tracker — no sign-up required. The full version includes all deals, deal values, parties, methodology, and source links.
+                </p>
+              </div>
+              <Link
+                href="/deals-tracker"
+                className="flex-shrink-0 inline-block border-2 border-[#1b3d6e] text-[#1b3d6e] hover:bg-[#1b3d6e] hover:text-white text-sm font-bold font-[family-name:var(--font-heading)] px-8 py-3.5 rounded-full transition-colors text-center whitespace-nowrap"
+              >
+                Browse Free Preview →
+              </Link>
             </div>
           </div>
         </section>
