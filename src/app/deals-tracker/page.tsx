@@ -11,8 +11,11 @@ export const metadata = {
     "Track the latest signed deals, partnerships, and investments across Africa's sports economy. Verified and updated weekly by ASU.",
 };
 
-const CSV_URL =
+const CSV_URL_2026 =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQwfVa1av_8miAE8shipaI58BjTz98lNXCOoXQPMpu7bY_qCPLjVTcTU9IBjMpcvoV03F-sVLTEvvCc/pub?gid=900243820&single=true&output=csv";
+
+const CSV_URL_2025 =
+  "https://docs.google.com/spreadsheets/d/e/2PACX-1vQwfVa1av_8miAE8shipaI58BjTz98lNXCOoXQPMpu7bY_qCPLjVTcTU9IBjMpcvoV03F-sVLTEvvCc/pub?gid=0&single=true&output=csv";
 
 const FLAGS: Record<string, string> = {
   "Algeria": "🇩🇿", "Angola": "🇦🇴", "Botswana": "🇧🇼", "Burkina Faso": "🇧🇫",
@@ -35,11 +38,13 @@ interface Deal {
 
 interface Stats {
   totalDeals: number;
+  totalDeals2025: number;
   topSport: string;
   topSportCount: number;
   topCountry: string;
   topCountryCount: number;
   signedCount: number;
+  sportBreakdown: { sport: string; count: number }[];
 }
 
 function parseCSVLine(line: string): string[] {
@@ -96,30 +101,58 @@ function topByFrequency(values: string[]): [string, number] {
   return top ?? ["—", 0];
 }
 
+function parseRows(text: string) {
+  return text
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0)
+    .map(parseCSVLine)
+    .slice(1)
+    .filter((r) => r.length > 10 && r[1]?.trim());
+}
+
 async function getTrackerData(): Promise<{ deals: Deal[]; stats: Stats }> {
-  const fallback = { deals: [], stats: { totalDeals: 0, topSport: "—", topSportCount: 0, topCountry: "—", topCountryCount: 0, signedCount: 0 } };
+  const fallback = {
+    deals: [],
+    stats: {
+      totalDeals: 0, totalDeals2025: 0,
+      topSport: "—", topSportCount: 0,
+      topCountry: "—", topCountryCount: 0,
+      signedCount: 0, sportBreakdown: [],
+    },
+  };
   try {
-    const res = await fetch(CSV_URL, { next: { revalidate: 3600 } });
-    const text = await res.text();
-    const allRows = text
-      .split("\n")
-      .map((l) => l.trim())
-      .filter((l) => l.length > 0)
-      .map(parseCSVLine)
-      .slice(1)
-      .filter((r) => r.length > 10 && r[1]?.trim());
+    const [res2026, res2025] = await Promise.all([
+      fetch(CSV_URL_2026, { next: { revalidate: 3600 } }),
+      fetch(CSV_URL_2025, { next: { revalidate: 3600 } }),
+    ]);
+    const [text2026, text2025] = await Promise.all([res2026.text(), res2025.text()]);
+
+    const allRows   = parseRows(text2026);
+    const rows2025  = parseRows(text2025);
 
     const signed = ["signed", "active", "activated", "confirmed", "renewed"];
     const signedCount = allRows.filter((r) =>
       signed.includes((r[11] ?? "").trim().toLowerCase())
     ).length;
 
-    const [topSport, topSportCount]     = topByFrequency(allRows.map((r) => r[3]?.trim() ?? ""));
-    // Exclude regional/continental entries from top country
+    const [topSport, topSportCount] = topByFrequency(allRows.map((r) => r[3]?.trim() ?? ""));
+
     const countryValues = allRows.map((r) => r[2]?.trim() ?? "").filter(
       (c) => !["sub-saharan africa", "continental", "global", "pan-africa", "mena", "west africa", "east africa"].includes(c.toLowerCase())
     );
     const [topCountry, topCountryCount] = topByFrequency(countryValues);
+
+    // Sport breakdown: top 8 by deal count
+    const sportCounts: Record<string, number> = {};
+    for (const r of allRows) {
+      const s = r[3]?.trim();
+      if (s) sportCounts[s] = (sportCounts[s] ?? 0) + 1;
+    }
+    const sportBreakdown = Object.entries(sportCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([sport, count]) => ({ sport, count }));
 
     const deals = allRows.slice(0, 5).map((r) => ({
       date: formatDate(r[1]?.trim() ?? ""),
@@ -130,7 +163,13 @@ async function getTrackerData(): Promise<{ deals: Deal[]; stats: Stats }> {
 
     return {
       deals,
-      stats: { totalDeals: allRows.length, topSport, topSportCount, topCountry, topCountryCount, signedCount },
+      stats: {
+        totalDeals: allRows.length,
+        totalDeals2025: rows2025.length,
+        topSport, topSportCount,
+        topCountry, topCountryCount,
+        signedCount, sportBreakdown,
+      },
     };
   } catch {
     return fallback;
@@ -233,6 +272,82 @@ export default async function DealsTrackerPage() {
                 <span className="text-sm text-gray-500 leading-snug mt-0.5">
                   Active deals in the market
                 </span>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        {/* ── Infographics ─────────────────────────────────────── */}
+        <section className="py-16 bg-white">
+          <div className="mx-auto max-w-7xl px-6">
+            <OrangeLine />
+            <h2 className="mt-3 mb-10 text-xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+              Market at a Glance
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8">
+
+              {/* Year comparison */}
+              <div className="bg-[#f4f7fb] rounded-2xl p-8 flex flex-col justify-between">
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-widest text-[#F37021] font-[family-name:var(--font-heading)] mb-4">
+                    Year on Year
+                  </p>
+                  <div className="space-y-6">
+                    <div>
+                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">2025 — Full Year</p>
+                      <p className="text-5xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] leading-none tabular-nums">
+                        {stats.totalDeals2025}
+                      </p>
+                      <p className="text-sm text-gray-500 mt-1">deals tracked</p>
+                    </div>
+                    <div className="border-t border-[#dde3ee] pt-6">
+                      <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">2026 — Year to Date</p>
+                      <p className="text-5xl font-extrabold text-[#F37021] font-[family-name:var(--font-heading)] leading-none tabular-nums">
+                        {stats.totalDeals}
+                      </p>
+                      <p className="text-sm text-gray-500 mt-1">deals tracked so far</p>
+                    </div>
+                  </div>
+                </div>
+                <p className="mt-8 text-xs text-gray-400 leading-snug">
+                  2026 figure reflects deals tracked through the current date. Full-year total will grow.
+                </p>
+              </div>
+
+              {/* Sport breakdown chart */}
+              <div className="md:col-span-2 bg-[#f4f7fb] rounded-2xl p-8">
+                <p className="text-xs font-bold uppercase tracking-widest text-[#F37021] font-[family-name:var(--font-heading)] mb-6">
+                  2026 Deals by Sport
+                </p>
+                {stats.sportBreakdown.length > 0 ? (
+                  <div className="space-y-4">
+                    {stats.sportBreakdown.map(({ sport, count }) => {
+                      const pct = Math.round((count / stats.sportBreakdown[0].count) * 100);
+                      return (
+                        <div key={sport} className="flex items-center gap-4">
+                          <span className="w-28 shrink-0 text-sm font-semibold text-gray-700 text-right font-[family-name:var(--font-heading)] truncate">
+                            {sport}
+                          </span>
+                          <div className="flex-1 bg-[#e4eaf5] rounded-full h-3 overflow-hidden">
+                            <div
+                              className="h-3 rounded-full bg-[#1b3d6e] transition-all"
+                              style={{ width: `${pct}%` }}
+                            />
+                          </div>
+                          <span className="w-6 shrink-0 text-sm font-bold text-[#1b3d6e] font-[family-name:var(--font-heading)] tabular-nums">
+                            {count}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  <p className="text-gray-400 text-sm">Data unavailable.</p>
+                )}
+                <p className="mt-6 text-xs text-gray-400">
+                  Based on {stats.totalDeals} deals tracked in 2026 year to date.
+                </p>
               </div>
 
             </div>
