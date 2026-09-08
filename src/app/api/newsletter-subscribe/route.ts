@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       resend.emails.send({
         from: FROM,
         to: email,
-        subject: "Welcome to ASU — Africa's sports economy, in your inbox",
+        subject: "Welcome. You're now part of the ASU network",
         html: welcomeHtml({ firstName, jobTitle, company }),
       }),
     ]);
@@ -67,7 +67,7 @@ function welcomeHtml({ firstName, jobTitle, company }: { firstName: string; jobT
   <tr><td style="background:#1b3d6e;padding:32px 40px;">
     <p style="margin:0 0 8px;color:#F37021;font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;">Africa Sports Unified</p>
     <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:800;line-height:1.3;">
-      Welcome to ASU — Africa's sports economy, in your inbox
+      Welcome. You're now part of the ASU network
     </h1>
   </td></tr>
 
