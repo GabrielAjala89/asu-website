@@ -1,12 +1,14 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { OrangeLine } from "@/components/ui/OrangeLine";
+import { FreeMemberCTA } from "@/components/ui/FreeMemberCTA";
 import { sanityFetch } from "@/lib/sanity";
 import { TRACKER_BY_SLUG_QUERY } from "@/lib/queries";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CheckCircle, ArrowLeft, ExternalLink } from "lucide-react";
+import { Suspense } from "react";
 
 export const revalidate = 60;
 
@@ -214,6 +216,15 @@ export default async function TrackerPage({ params }: { params: Promise<{ slug: 
                 Browse Free Preview →
               </Link>
             </div>
+          </div>
+        </section>
+
+        {/* ── Free member CTA ───────────────────────────────────────────── */}
+        <section className="py-16 bg-white border-t border-gray-100">
+          <div className="mx-auto max-w-7xl px-6">
+            <Suspense fallback={null}>
+              <FreeMemberCTA />
+            </Suspense>
           </div>
         </section>
 
