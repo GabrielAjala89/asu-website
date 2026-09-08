@@ -2,7 +2,7 @@ import { Resend } from "resend";
 import { createHmac } from "crypto";
 import { createClient } from "@sanity/client";
 import { NextResponse } from "next/server";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM   = `Africa Sports Unified <${process.env.RESEND_FROM_EMAIL ?? "gabriel@asunified.com"}>`;
@@ -55,17 +55,75 @@ function parseCSVLine(line: string): string[] {
   return fields;
 }
 
+const NAVY   = "1b3d6e";
+const ORANGE = "F37021";
+
 async function build2025Excel(): Promise<Buffer> {
   const res  = await fetch(CSV_2025);
   const text = await res.text();
-  const rows = text.split("\n").map((l) => l.trim()).filter(Boolean).map(parseCSVLine);
+  const allRows = text.split("\n").map((l) => l.trim()).filter(Boolean).map(parseCSVLine);
+  const headers  = allRows[0] ?? [];
+  const dataRows = allRows.slice(1);
 
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws["!cols"] = rows[0]?.map(() => ({ wch: 24 })) ?? [];
-  XLSX.utils.book_append_sheet(wb, ws, "ASU Deals 2025");
+  const wb   = new ExcelJS.Workbook();
+  wb.creator = "Africa Sports Unified";
+  wb.created = new Date();
 
-  return Buffer.from(XLSX.write(wb, { type: "buffer", bookType: "xlsx" }));
+  const ws = wb.addWorksheet("ASU Deals 2025", {
+    views: [{ state: "frozen", ySplit: 3 }],
+  });
+
+  // ── Row 1: ASU branding banner ────────────────────────────────
+  ws.mergeCells(1, 1, 1, headers.length || 10);
+  const brandCell = ws.getCell("A1");
+  brandCell.value = "Africa Sports Unified  |  African Sports Market Deals Tracker — 2025 Full Year";
+  brandCell.font  = { name: "Calibri", size: 13, bold: true, color: { argb: "FFFFFFFF" } };
+  brandCell.fill  = { type: "pattern", pattern: "solid", fgColor: { argb: `FF${NAVY}` } };
+  brandCell.alignment = { vertical: "middle", horizontal: "left", indent: 1 };
+  ws.getRow(1).height = 28;
+
+  // ── Row 2: subtitle / source line ────────────────────────────
+  ws.mergeCells(2, 1, 2, headers.length || 10);
+  const subCell = ws.getCell("A2");
+  subCell.value = `Source: asunified.com  |  For professional use only. Not for redistribution.`;
+  subCell.font  = { name: "Calibri", size: 9, italic: true, color: { argb: "FFFFFFFF" } };
+  subCell.fill  = { type: "pattern", pattern: "solid", fgColor: { argb: `FF${ORANGE}` } };
+  subCell.alignment = { vertical: "middle", horizontal: "left", indent: 1 };
+  ws.getRow(2).height = 18;
+
+  // ── Row 3: column headers ─────────────────────────────────────
+  const headerRow = ws.addRow(headers);
+  headerRow.eachCell((cell) => {
+    cell.font  = { name: "Calibri", size: 10, bold: true, color: { argb: "FFFFFFFF" } };
+    cell.fill  = { type: "pattern", pattern: "solid", fgColor: { argb: `FF${NAVY}` } };
+    cell.alignment = { vertical: "middle", wrapText: false };
+    cell.border = { bottom: { style: "thin", color: { argb: `FF${ORANGE}` } } };
+  });
+  ws.getRow(3).height = 20;
+
+  // ── Data rows ─────────────────────────────────────────────────
+  dataRows.forEach((row, i) => {
+    const exRow = ws.addRow(row);
+    const bg    = i % 2 === 0 ? "FFF4F7FB" : "FFFFFFFF";
+    exRow.eachCell({ includeEmpty: true }, (cell) => {
+      cell.font      = { name: "Calibri", size: 10 };
+      cell.fill      = { type: "pattern", pattern: "solid", fgColor: { argb: bg } };
+      cell.alignment = { vertical: "middle", wrapText: false };
+    });
+    exRow.height = 18;
+  });
+
+  // ── Column widths ─────────────────────────────────────────────
+  ws.columns.forEach((col, i) => {
+    const maxLen = Math.max(
+      headers[i]?.length ?? 10,
+      ...dataRows.map((r) => (r[i] ?? "").length)
+    );
+    col.width = Math.min(Math.max(maxLen + 2, 12), 50);
+  });
+
+  const buf = await wb.xlsx.writeBuffer();
+  return Buffer.from(buf);
 }
 
 export async function GET(req: Request) {
