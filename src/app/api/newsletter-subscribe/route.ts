@@ -10,15 +10,14 @@ const HS_FORM_ID = "f75cf6de-9bdc-4fcc-b5c2-9ec5236bfa33";
 
 export async function POST(req: Request) {
   try {
-    const { firstName, lastName, email, company, jobTitle } = await req.json();
+    const { firstName, email, company, jobTitle } = await req.json();
 
-    if (!email || !firstName || !lastName) {
+    if (!email || !firstName) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
     const hsFields = [
       { objectTypeId: "0-1", name: "firstname",  value: firstName },
-      { objectTypeId: "0-1", name: "lastname",   value: lastName },
       { objectTypeId: "0-1", name: "email",      value: email },
       ...(company  ? [{ objectTypeId: "0-1", name: "company",   value: company }]  : []),
       ...(jobTitle ? [{ objectTypeId: "0-1", name: "jobtitle",  value: jobTitle }] : []),
