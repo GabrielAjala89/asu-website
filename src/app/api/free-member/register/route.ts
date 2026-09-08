@@ -4,12 +4,11 @@ import { NextResponse } from "next/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM   = `Africa Sports Unified <${process.env.RESEND_FROM_EMAIL ?? "gabriel@asunified.com"}>`;
-const SITE   = "https://asunified.com";
 const SECRET = process.env.FREE_MEMBER_TOKEN_SECRET!;
 
 function createToken(data: object): string {
-  const payload  = Buffer.from(JSON.stringify({ ...data, exp: Date.now() + 24 * 60 * 60 * 1000 })).toString("base64url");
-  const sig      = createHmac("sha256", SECRET).update(payload).digest("base64url");
+  const payload = Buffer.from(JSON.stringify({ ...data, exp: Date.now() + 48 * 60 * 60 * 1000 })).toString("base64url");
+  const sig     = createHmac("sha256", SECRET).update(payload).digest("base64url");
   return `${payload}.${sig}`;
 }
 
@@ -21,8 +20,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
+    // Derive base URL from the incoming request so it works on any domain/subdomain
+    const { protocol, host } = new URL(req.url);
+    const base      = `${protocol}//${host}`;
     const token     = createToken({ firstName, email, company, jobTitle, sector });
-    const verifyUrl = `${SITE}/api/free-member/verify?token=${token}`;
+    const verifyUrl = `${base}/api/free-member/verify?token=${token}`;
 
     await resend.emails.send({
       from: FROM,
