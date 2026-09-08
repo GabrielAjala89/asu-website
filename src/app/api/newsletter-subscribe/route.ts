@@ -10,11 +10,19 @@ const HS_FORM_ID = "f75cf6de-9bdc-4fcc-b5c2-9ec5236bfa33";
 
 export async function POST(req: Request) {
   try {
-    const { firstName, email } = await req.json();
+    const { firstName, lastName, email, company, jobTitle } = await req.json();
 
-    if (!email || !firstName) {
+    if (!email || !firstName || !lastName) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
+
+    const hsFields = [
+      { objectTypeId: "0-1", name: "firstname",  value: firstName },
+      { objectTypeId: "0-1", name: "lastname",   value: lastName },
+      { objectTypeId: "0-1", name: "email",      value: email },
+      ...(company  ? [{ objectTypeId: "0-1", name: "company",   value: company }]  : []),
+      ...(jobTitle ? [{ objectTypeId: "0-1", name: "jobtitle",  value: jobTitle }] : []),
+    ];
 
     await Promise.all([
       // Submit to HubSpot Forms API — saves contact to CRM, no token needed
@@ -24,10 +32,7 @@ export async function POST(req: Request) {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            fields: [
-              { objectTypeId: "0-1", name: "firstname", value: firstName },
-              { objectTypeId: "0-1", name: "email", value: email },
-            ],
+            fields: hsFields,
             context: {
               pageUri: SITE,
               pageName: "ASU Newsletter",
@@ -40,7 +45,7 @@ export async function POST(req: Request) {
         from: FROM,
         to: email,
         subject: "Welcome to ASU — Africa's sports economy, in your inbox",
-        html: welcomeHtml(firstName),
+        html: welcomeHtml({ firstName, jobTitle, company }),
       }),
     ]);
 
@@ -51,7 +56,7 @@ export async function POST(req: Request) {
   }
 }
 
-function welcomeHtml(firstName: string) {
+function welcomeHtml({ firstName, jobTitle, company }: { firstName: string; jobTitle?: string; company?: string }) {
   return `<!DOCTYPE html>
 <html lang="en">
 <body style="margin:0;padding:0;background:#f4f7fb;font-family:Arial,Helvetica,sans-serif;">
@@ -70,6 +75,7 @@ function welcomeHtml(firstName: string) {
   <!-- Body -->
   <tr><td style="padding:40px;">
     <p style="margin:0 0 16px;color:#374151;font-size:16px;">Hi ${firstName},</p>
+    ${(jobTitle || company) ? `<p style="margin:0 0 16px;color:#9ca3af;font-size:13px;">${[jobTitle, company].filter(Boolean).join(" · ")}</p>` : ""}
     <p style="margin:0 0 16px;color:#374151;font-size:16px;line-height:1.6;">
       Thank you for subscribing. You've just joined a community of 4,000+ investors, executives, rights holders, and decision-makers shaping the future of sport across the African continent, and we're glad to have you with us.
     </p>

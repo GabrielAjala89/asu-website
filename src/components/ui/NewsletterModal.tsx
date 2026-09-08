@@ -6,7 +6,10 @@ import { X, CheckCircle } from "lucide-react";
 export function NewsletterModal() {
   const [open, setOpen]           = useState(false);
   const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName]   = useState("");
   const [email, setEmail]         = useState("");
+  const [company, setCompany]     = useState("");
+  const [jobTitle, setJobTitle]   = useState("");
   const [status, setStatus]       = useState<"idle" | "loading" | "success" | "error">("idle");
 
   useEffect(() => {
@@ -22,7 +25,7 @@ export function NewsletterModal() {
       const res = await fetch("/api/newsletter-subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName, email }),
+        body: JSON.stringify({ firstName, lastName, email, company, jobTitle }),
       });
       if (!res.ok) throw new Error();
       setStatus("success");
@@ -97,19 +100,37 @@ export function NewsletterModal() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5 font-[family-name:var(--font-heading)]">
-                      First name
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      placeholder="Your first name"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1b3d6e]/30 focus:border-[#1b3d6e] transition"
-                    />
+                  {/* First + Last name row */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5 font-[family-name:var(--font-heading)]">
+                        First name
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        placeholder="First"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1b3d6e]/30 focus:border-[#1b3d6e] transition"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5 font-[family-name:var(--font-heading)]">
+                        Last name
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        placeholder="Last"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1b3d6e]/30 focus:border-[#1b3d6e] transition"
+                      />
+                    </div>
                   </div>
+
+                  {/* Email */}
                   <div>
                     <label className="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5 font-[family-name:var(--font-heading)]">
                       Email address
@@ -122,6 +143,34 @@ export function NewsletterModal() {
                       placeholder="you@example.com"
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1b3d6e]/30 focus:border-[#1b3d6e] transition"
                     />
+                  </div>
+
+                  {/* Company + Job title row */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5 font-[family-name:var(--font-heading)]">
+                        Company <span className="normal-case tracking-normal text-gray-400 font-normal">(optional)</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
+                        placeholder="Organisation"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1b3d6e]/30 focus:border-[#1b3d6e] transition"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5 font-[family-name:var(--font-heading)]">
+                        Job title <span className="normal-case tracking-normal text-gray-400 font-normal">(optional)</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={jobTitle}
+                        onChange={(e) => setJobTitle(e.target.value)}
+                        placeholder="Your role"
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1b3d6e]/30 focus:border-[#1b3d6e] transition"
+                      />
+                    </div>
                   </div>
 
                   {status === "error" && (
