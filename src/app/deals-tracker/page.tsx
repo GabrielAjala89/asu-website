@@ -1,6 +1,8 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { OrangeLine } from "@/components/ui/OrangeLine";
+import { FreeMemberCTA } from "@/components/ui/FreeMemberCTA";
+import { Suspense } from "react";
 import Link from "next/link";
 
 export const revalidate = 3600;
@@ -500,6 +502,13 @@ export default async function DealsTrackerPage() {
               </div>
               {/* Gradient fade suggesting more below */}
               <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#f4f7fb] to-transparent rounded-b-xl pointer-events-none" />
+            </div>
+
+            {/* Free member CTA */}
+            <div className="mt-8">
+              <Suspense fallback={null}>
+                <FreeMemberCTA />
+              </Suspense>
             </div>
 
             {/* Unlock CTA */}
