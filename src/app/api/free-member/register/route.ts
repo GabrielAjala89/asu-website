@@ -81,7 +81,7 @@ function verificationHtml({ firstName, verifyUrl }: { firstName: string; verifyU
     <p style="margin:0 0 4px;color:#374151;font-size:13px;font-weight:700;">Africa Sports Unified</p>
     <p style="margin:0;color:#9ca3af;font-size:12px;">
       Pan-African Focused. Globally Connected. ·
-      <a href="${SITE}" style="color:#1b3d6e;text-decoration:none;">asunified.com</a>
+      <a href="https://asunified.com" style="color:#1b3d6e;text-decoration:none;">asunified.com</a>
     </p>
   </td></tr>
 

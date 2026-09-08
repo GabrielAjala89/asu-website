@@ -116,7 +116,7 @@ export async function GET(req: Request) {
     }).catch(() => null);
 
     // Serve the Excel file directly
-    return new Response(excelBuffer, {
+    return new Response(new Uint8Array(excelBuffer), {
       status:  200,
       headers: {
         "Content-Type":        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
