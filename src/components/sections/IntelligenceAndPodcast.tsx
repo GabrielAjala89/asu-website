@@ -73,7 +73,7 @@ export function IntelligenceAndPodcast() {
                 Conversations with leaders shaping the Pan-African sports economy
               </p>
               <Link
-                href="https://open.spotify.com"
+                href="https://open.spotify.com/show/37o4pqxpyoJzURhSr2dXpe?si=aea0cf5f72184b5a&nd=1&dlsi=5d2d82368f7e498f"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block mt-3 text-[#F37021] text-sm font-semibold hover:underline font-[family-name:var(--font-heading)]"
