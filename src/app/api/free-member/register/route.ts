@@ -25,7 +25,10 @@ async function addToZoho({ firstName, email, company, jobTitle }: {
       refresh_token: process.env.ZOHO_REFRESH_TOKEN!,
     }),
   });
-  const { access_token } = await tokenRes.json() as { access_token: string };
+  const tokenBody = await tokenRes.json() as { access_token?: string; error?: string };
+  console.log("[free-member/register] Zoho token status:", tokenRes.status, "error:", tokenBody.error ?? "none");
+  const { access_token } = tokenBody;
+  if (!access_token) throw new Error(`Zoho token exchange failed: ${tokenBody.error}`);
 
   const contactInfo = JSON.stringify({
     "Contact Email": email,
@@ -46,8 +49,8 @@ async function addToZoho({ firstName, email, company, jobTitle }: {
       contactinfo: contactInfo,
     }),
   });
-  const zohoBody = await zohoRes.json().catch(() => null);
-  console.log("[free-member/register] Zoho response:", JSON.stringify(zohoBody));
+  const zohoText = await zohoRes.text();
+  console.log("[free-member/register] Zoho subscribe status:", zohoRes.status, "body:", zohoText);
 }
 
 export async function POST(req: Request) {
