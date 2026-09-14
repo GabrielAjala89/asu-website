@@ -34,7 +34,7 @@ async function addToZoho({ firstName, email, company, jobTitle }: {
     ...(jobTitle ? { "Job Title": jobTitle } : {}),
   });
 
-  await fetch("https://campaigns.zoho.com/api/v1.1/json/listsubscribe", {
+  const zohoRes = await fetch("https://campaigns.zoho.com/api/v1.1/json/listsubscribe", {
     method:  "POST",
     headers: {
       Authorization:  `Zoho-oauthtoken ${access_token}`,
@@ -46,6 +46,8 @@ async function addToZoho({ firstName, email, company, jobTitle }: {
       contactinfo: contactInfo,
     }),
   });
+  const zohoBody = await zohoRes.json().catch(() => null);
+  console.log("[free-member/register] Zoho response:", JSON.stringify(zohoBody));
 }
 
 export async function POST(req: Request) {
@@ -68,7 +70,7 @@ export async function POST(req: Request) {
         subject: "Confirm your email — your 2025 ASU Deals Dataset is waiting",
         html: verificationHtml({ firstName, verifyUrl }),
       }),
-      addToZoho({ firstName, email, company, jobTitle }).catch(() => null),
+      addToZoho({ firstName, email, company, jobTitle }).catch((e) => console.error("[free-member/register] Zoho failed:", e)),
     ]);
 
     return NextResponse.json({ success: true });

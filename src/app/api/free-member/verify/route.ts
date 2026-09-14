@@ -165,13 +165,13 @@ export async function GET(req: Request) {
       ).catch(() => null),
     ]);
 
-    // Fire a brief welcome email in the background — don't await it
-    resend.emails.send({
+    // Send welcome email before returning the file
+    await resend.emails.send({
       from: FROM,
       to:   email,
       subject: "Welcome to ASU — you're now a free member",
       html: welcomeHtml({ firstName, company, jobTitle }),
-    }).catch(() => null);
+    }).catch((e) => console.error("[free-member/verify] welcome email failed:", e));
 
     // Serve the Excel file directly
     return new Response(new Uint8Array(excelBuffer), {
