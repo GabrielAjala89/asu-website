@@ -61,7 +61,7 @@ export function InsiderForm() {
             name="firstName"
             type="text"
             required
-            placeholder="Gabriel"
+            placeholder="Your first name"
             className="w-full px-4 py-2.5 rounded-xl bg-white/10 text-white placeholder:text-white/30 border border-white/20 focus:outline-none focus:border-[#F37021] text-sm transition-colors"
           />
         </div>
@@ -102,7 +102,7 @@ export function InsiderForm() {
           name="organisation"
           type="text"
           required
-          placeholder="Africa Sports Unified"
+          placeholder="Your company"
           className="w-full px-4 py-2.5 rounded-xl bg-white/10 text-white placeholder:text-white/30 border border-white/20 focus:outline-none focus:border-[#F37021] text-sm transition-colors"
         />
       </div>
