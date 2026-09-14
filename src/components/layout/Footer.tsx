@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail } from "lucide-react";
 import { NewsletterModal } from "@/components/ui/NewsletterModal";
+import { FooterEmailButton } from "@/components/ui/FooterEmailButton";
 
 const SPOTIFY_URL = "https://open.spotify.com/show/37o4pqxpyoJzURhSr2dXpe?si=aea0cf5f72184b5a";
 
@@ -80,9 +80,7 @@ export function Footer() {
               Our Socials
             </p>
             <div className="flex flex-wrap gap-3 mb-5">
-              <SocialIcon href="mailto:info@asunified.com" label="Email us">
-                <Mail size={15} />
-              </SocialIcon>
+              <FooterEmailButton />
               <SocialIcon href="https://www.linkedin.com/company/africa-sports-unified/" label="LinkedIn" external>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>
