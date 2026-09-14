@@ -1,9 +1,9 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { OrangeLine } from "@/components/ui/OrangeLine";
-import { Button } from "@/components/ui/Button";
 import { sanityFetch } from "@/lib/sanity";
 import { ALL_CASE_STUDIES_QUERY } from "@/lib/queries";
+import { CaseStudyLink, WorkWithASUButton } from "@/components/ui/ConsultEnquiryButtons";
 import Image from "next/image";
 import Link from "next/link";
 import { Map, BarChart2 } from "lucide-react";
@@ -181,12 +181,7 @@ export default async function ConsultPage() {
                 </div>
 
                 <div className="pt-2">
-                  <a
-                    href="mailto:info@asunified.com?subject=Case Study Request: UNECA AfCFTA"
-                    className="inline-flex items-center gap-2 text-sm font-bold text-[#1b3d6e] font-[family-name:var(--font-heading)] hover:text-[#F37021] transition-colors"
-                  >
-                    Request the full case study →
-                  </a>
+                  <CaseStudyLink />
                 </div>
               </div>
             </div>
@@ -207,9 +202,7 @@ export default async function ConsultPage() {
                   If you&apos;re looking for strategic counsel, a trusted intelligence partner, or simply want to explore how ASU Advisory can support your objectives — we&apos;d welcome the conversation.
                 </p>
                 <div className="mt-8">
-                  <Button href="mailto:info@asunified.com" variant="secondary" size="lg">
-                    Work with ASU →
-                  </Button>
+                  <WorkWithASUButton />
                 </div>
               </div>
               {/* Right */}
