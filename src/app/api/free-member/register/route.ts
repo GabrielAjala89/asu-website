@@ -66,15 +66,13 @@ export async function POST(req: Request) {
     const token     = createToken({ firstName, email, company, jobTitle, sector });
     const verifyUrl = `${base}/api/free-member/verify?token=${token}`;
 
-    await Promise.all([
-      resend.emails.send({
-        from: FROM,
-        to:   email,
-        subject: "Confirm your email — your 2025 ASU Deals Dataset is waiting",
-        html: verificationHtml({ firstName, verifyUrl }),
-      }),
-      addToZoho({ firstName, email, company, jobTitle }).catch((e) => console.error("[free-member/register] Zoho failed:", e)),
-    ]);
+    await resend.emails.send({
+      from: FROM,
+      to:   email,
+      subject: "Confirm your email — your 2025 ASU Deals Dataset is waiting",
+      html: verificationHtml({ firstName, verifyUrl }),
+    });
+    // Zoho integration pending — list key needs confirming
 
     return NextResponse.json({ success: true });
   } catch (err) {
