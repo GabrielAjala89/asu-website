@@ -155,7 +155,6 @@ export async function GET(req: Request) {
           body: JSON.stringify({
             fields: [
               { objectTypeId: "0-1", name: "firstname", value: firstName },
-              { objectTypeId: "0-1", name: "lastname",  value: "-" },
               { objectTypeId: "0-1", name: "email",     value: email },
               ...(company  ? [{ objectTypeId: "0-1", name: "company",  value: company }]  : []),
               ...(jobTitle ? [{ objectTypeId: "0-1", name: "jobtitle", value: jobTitle }] : []),
