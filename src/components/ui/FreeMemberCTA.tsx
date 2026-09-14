@@ -47,13 +47,13 @@ export function FreeMemberCTA() {
               Free Membership
             </span>
             <h2 className="text-xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] leading-snug">
-              Want the full 2025 dataset?
+              Join the ASU free tier
             </h2>
             <p className="mt-2 text-gray-600 text-sm leading-relaxed max-w-lg">
-              Become a free ASU member and get all 70 deals from 2025 — the complete picture of a full year of African sports market activity. Delivered to your inbox as an Excel file, instantly.
+              Sign up free and get the full 2025 Deals Dataset, our fortnightly newsletter, and access to free reports — everything you need to stay across Africa&apos;s sports economy.
             </p>
             <ul className="mt-3 space-y-1">
-              {["70 verified deals — full year 2025", "All fields included", "Free — no payment required"].map((item) => (
+              {["Full 2025 Deals Dataset — 70 deals, all fields", "Fortnightly newsletter — intelligence and analysis", "Access to free ASU reports"].map((item) => (
                 <li key={item} className="flex items-center gap-2 text-sm text-gray-500">
                   <span className="text-[#F37021] font-bold">✓</span>
                   {item}
@@ -66,7 +66,7 @@ export function FreeMemberCTA() {
               onClick={() => setModalOpen(true)}
               className="inline-block bg-[#1b3d6e] hover:bg-[#14305a] text-white text-sm font-bold font-[family-name:var(--font-heading)] px-8 py-4 rounded-full transition-colors text-center whitespace-nowrap"
             >
-              Become a free member →
+              Join ASU — Free →
             </button>
             <p className="mt-2 text-center text-xs text-gray-400">Confirm email. Download instantly.</p>
           </div>

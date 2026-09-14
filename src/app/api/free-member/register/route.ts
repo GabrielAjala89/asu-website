@@ -12,26 +12,64 @@ function createToken(data: object): string {
   return `${payload}.${sig}`;
 }
 
+async function addToZoho({ firstName, email, company, jobTitle }: {
+  firstName: string; email: string; company?: string; jobTitle?: string;
+}) {
+  const tokenRes = await fetch("https://accounts.zoho.com/oauth/v2/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type:    "refresh_token",
+      client_id:     process.env.ZOHO_CLIENT_ID!,
+      client_secret: process.env.ZOHO_CLIENT_SECRET!,
+      refresh_token: process.env.ZOHO_REFRESH_TOKEN!,
+    }),
+  });
+  const { access_token } = await tokenRes.json() as { access_token: string };
+
+  const contactInfo = JSON.stringify({
+    "Contact Email": email,
+    "First Name":    firstName,
+    ...(company  ? { "Company":   company }   : {}),
+    ...(jobTitle ? { "Job Title": jobTitle } : {}),
+  });
+
+  await fetch("https://campaigns.zoho.com/api/v1.1/json/listsubscribe", {
+    method:  "POST",
+    headers: {
+      Authorization:  `Zoho-oauthtoken ${access_token}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      resfmt:      "JSON",
+      listkey:     process.env.ZOHO_LIST_KEY!,
+      contactinfo: contactInfo,
+    }),
+  });
+}
+
 export async function POST(req: Request) {
   try {
     const { firstName, email, company, jobTitle, sector } = await req.json();
 
-    if (!email || !firstName) {
+    if (!email || !firstName || !company || !jobTitle) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Derive base URL from the incoming request so it works on any domain/subdomain
     const { protocol, host } = new URL(req.url);
     const base      = `${protocol}//${host}`;
     const token     = createToken({ firstName, email, company, jobTitle, sector });
     const verifyUrl = `${base}/api/free-member/verify?token=${token}`;
 
-    await resend.emails.send({
-      from: FROM,
-      to:   email,
-      subject: "Confirm your email — your 2025 ASU Deals Dataset is waiting",
-      html: verificationHtml({ firstName, verifyUrl }),
-    });
+    await Promise.all([
+      resend.emails.send({
+        from: FROM,
+        to:   email,
+        subject: "Confirm your email — your 2025 ASU Deals Dataset is waiting",
+        html: verificationHtml({ firstName, verifyUrl }),
+      }),
+      addToZoho({ firstName, email, company, jobTitle }).catch(() => null),
+    ]);
 
     return NextResponse.json({ success: true });
   } catch (err) {

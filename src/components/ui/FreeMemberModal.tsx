@@ -69,10 +69,10 @@ export function FreeMemberModal({ open, onClose }: Props) {
                 Free ASU Membership
               </p>
               <h2 className="text-xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-snug">
-                Get the full 2025 Deals Dataset
+                Join the ASU free tier
               </h2>
               <p className="mt-1.5 text-sm text-white/70">
-                70 deals. Full year. Free — confirm your email and it&apos;s yours.
+                Get our fortnightly newsletter, the full 2025 Deals Dataset, and access to free reports — no charge.
               </p>
             </div>
             <button
@@ -135,21 +135,21 @@ export function FreeMemberModal({ open, onClose }: Props) {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5 font-[family-name:var(--font-heading)]">
-                    Company <span className="normal-case tracking-normal text-gray-400 font-normal">(optional)</span>
+                    Company
                   </label>
                   <input
-                    type="text"
+                    type="text" required
                     value={company} onChange={(e) => setCompany(e.target.value)}
-                    placeholder="Organisation"
+                    placeholder="Your organisation"
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1b3d6e]/30 focus:border-[#1b3d6e] transition"
                   />
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-500 uppercase tracking-widest mb-1.5 font-[family-name:var(--font-heading)]">
-                    Job title <span className="normal-case tracking-normal text-gray-400 font-normal">(optional)</span>
+                    Job title
                   </label>
                   <input
-                    type="text"
+                    type="text" required
                     value={jobTitle} onChange={(e) => setJobTitle(e.target.value)}
                     placeholder="Your role"
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#1b3d6e]/30 focus:border-[#1b3d6e] transition"
@@ -182,7 +182,7 @@ export function FreeMemberModal({ open, onClose }: Props) {
                 disabled={status === "loading"}
                 className="w-full bg-[#F37021] hover:bg-[#d65a14] disabled:opacity-60 text-white font-bold font-[family-name:var(--font-heading)] text-sm py-3.5 rounded-full transition-colors"
               >
-                {status === "loading" ? "Sending confirmation…" : "Become a free member →"}
+                {status === "loading" ? "Sending confirmation…" : "Join ASU — Free →"}
               </button>
 
               <p className="text-center text-xs text-gray-400 leading-snug">
