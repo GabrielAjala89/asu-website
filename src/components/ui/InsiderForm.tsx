@@ -73,7 +73,7 @@ export function InsiderForm() {
             name="lastName"
             type="text"
             required
-            placeholder="Ajala"
+            placeholder="Your last name"
             className="w-full px-4 py-2.5 rounded-xl bg-white/10 text-white placeholder:text-white/30 border border-white/20 focus:outline-none focus:border-[#F37021] text-sm transition-colors"
           />
         </div>
@@ -88,7 +88,7 @@ export function InsiderForm() {
           name="jobTitle"
           type="text"
           required
-          placeholder="Head of Partnerships"
+          placeholder="Your job title"
           className="w-full px-4 py-2.5 rounded-xl bg-white/10 text-white placeholder:text-white/30 border border-white/20 focus:outline-none focus:border-[#F37021] text-sm transition-colors"
         />
       </div>
