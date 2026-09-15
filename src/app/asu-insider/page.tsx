@@ -132,7 +132,7 @@ export default async function AsuInsiderPage() {
                 Be first to know when we launch
               </h2>
               <p className="mt-4 text-white/70 leading-relaxed">
-                Join the waitlist and be first to know when we open. By registering, you&apos;ll also become a free ASU member — giving you immediate access to our fortnightly newsletter, the 2025 Deals Dataset, and free reports.
+                Join the waitlist and be first to know when we open. Not yet a free ASU member? Registering here automatically makes you one, including access to the 2025 Deals Dataset and our fortnightly newsletter.
               </p>
             </div>
             <InsiderForm />
