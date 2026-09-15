@@ -132,6 +132,13 @@ export function InsiderForm() {
       >
         {state === 'loading' ? 'Submitting…' : 'Register Your Interest →'}
       </button>
+
+      <p className="text-white/50 text-xs leading-relaxed text-center pt-1">
+        Join the waitlist and be first to know when we open.{' '}
+        <span className="text-white/40 italic">
+          Not yet a free ASU member? Registering here automatically makes you one, including access to the 2025 Deals Dataset and our fortnightly newsletter.
+        </span>
+      </p>
     </form>
   );
 }
