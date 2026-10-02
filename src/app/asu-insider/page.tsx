@@ -39,7 +39,7 @@ const BENEFITS = [
   {
     Icon: Bell,
     title: "Act on opportunities first",
-    body: "Regular alerts on tenders, partnerships and senior appointments across the continent.",
+    body: "Tenders, partnership opportunities and senior appointments across the continent, curated for you in every Insider Brief.",
   },
   {
     Icon: Calendar,
