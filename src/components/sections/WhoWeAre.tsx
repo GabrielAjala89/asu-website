@@ -13,16 +13,10 @@ export function WhoWeAre() {
             Who We Are
           </h2>
           <p className="mt-2 text-lg font-bold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-            Pan-African focused. Globally Connected.
+            Pan African focus. Global connections.
           </p>
           <p className="mt-4 text-base text-gray-600 leading-relaxed">
-            Africa Sports Unified (ASU) is an intelligence and advisory platform shaping how sport is
-            understood, valued, and executed as an economic sector across Africa.
-          </p>
-          <p className="mt-3 text-base text-gray-600 leading-relaxed">
-            We work with governments, investors, rights holders and institutions to provide market
-            intelligence, strategic advisory, and ecosystem access enabling better decisions, stronger
-            partnerships, and long-term growth.
+            Africa&apos;s sports economy is growing fast, but reliable data and trusted relationships are hard to find. ASU closes that gap. We help governments, investors, rights holders and brands understand the market, find the right partners and make decisions that create lasting value.
           </p>
           <Link
             href="/about"
@@ -36,16 +30,16 @@ export function WhoWeAre() {
         <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-6">
           <ServiceCard
             tag="ASU INSIDER"
-            title="Your Leverage in the African Sports Market"
-            description="A private membership for decision-makers shaping Africa's sports economy. Where strategy, access & influence meet."
-            ctaLabel="Join ASU Insider Today"
+            title="Never make an African sports decision blind."
+            description="ASU Insider is the membership for brands, rights holders, investors and governments who need trusted data and access to the people who decide."
+            ctaLabel="Explore ASU Insider"
             ctaHref="/asu-insider"
             imageSrc="/images/asu-insider-card.jpg"
           />
           <ServiceCard
             tag="Advisory"
-            title="Strategic Advisory for Sport Led Growth"
-            description="Delivering sport-led strategies aligned to economic growth, trade, and long-term value creation for governments, rights holders, investors, brands, and institutions."
+            title="Turn sport into economic growth."
+            description="Strategic advice for governments, rights holders, investors and brands, designing sport plans that attract investment, unlock commercial revenue and deliver long term value."
             ctaLabel="View Advisory Services"
             ctaHref="/consult"
             imageSrc="/images/advisory-card.jpg"

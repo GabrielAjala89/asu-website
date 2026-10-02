@@ -30,7 +30,7 @@ export function KnowledgeHubPreview({ products }: KnowledgeHubPreviewProps) {
             The ASU Knowledge Hub
           </h2>
           <p className="mt-2 text-lg font-bold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-            Decision-grade intelligence shaping Africa&apos;s sports economy.
+            Intelligence you can act on: reports and data on Africa&apos;s sports economy, built to inform real commercial decisions.
           </p>
         </div>
 

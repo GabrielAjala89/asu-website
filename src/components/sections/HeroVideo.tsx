@@ -36,12 +36,14 @@ export function HeroVideo() {
       <div className="relative z-10 w-full pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="max-w-3xl">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.02] font-[family-name:var(--font-heading)]">
+            <p className="text-sm md:text-base font-bold text-white/60 uppercase tracking-widest font-[family-name:var(--font-heading)] mb-4">
               Powering the Business of Sport in Africa
+            </p>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.02] font-[family-name:var(--font-heading)]">
+              Make better decisions in Africa&apos;s sports economy.
             </h1>
             <p className="mt-5 text-lg md:text-xl text-white/80 max-w-xl leading-relaxed">
-              Intelligence, advisory, and ecosystem access for organisations
-              shaping Africa&apos;s sports economy.
+              Trusted intelligence, expert advice and access to the people who decide, for organisations investing in, sponsoring and running sport across Africa.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button href="/asu-insider" variant="primary" size="lg">

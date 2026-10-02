@@ -24,8 +24,7 @@ export function EngageSection() {
             Engage With Africa Sports Unified
           </h2>
           <p className="mt-3 text-gray-600 leading-relaxed">
-            We work with decision-makers shaping Africa&apos;s sports economy, providing the
-            clarity, access, and insight required to lead with confidence.
+            Whether you are entering a new market, building a partnership or shaping policy, we provide the clarity, access and insight to lead with confidence.
           </p>
         </div>
 

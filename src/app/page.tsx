@@ -48,7 +48,7 @@ export default async function HomePage() {
                   Newsletter engagement rate
                 </p>
                 <p className="mt-1 text-white/40 text-xs">
-                  vs. 2.64% global average
+                  Nearly 9x the global average
                 </p>
               </div>
 

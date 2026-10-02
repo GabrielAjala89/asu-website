@@ -5,13 +5,14 @@ import { InsiderForm } from "@/components/ui/InsiderForm";
 import { sanityFetch } from "@/lib/sanity";
 import { ALL_TRUSTED_BY_QUERY } from "@/lib/queries";
 import Image from "next/image";
-import { BarChart2, Globe, Users } from "lucide-react";
+import Link from "next/link";
+import { BarChart2, Globe, Users, Bell, Calendar } from "lucide-react";
 
 export const revalidate = 60;
 
 export const metadata = {
   title: "ASU Insider",
-  description: "ASU Insider — a members-only platform for decision-makers, investors, and institutions shaping Africa's sports economy.",
+  description: "ASU Insider — market intelligence and verified access for sponsors, rights holders and investors making commercial decisions in Africa's sports economy.",
 };
 
 interface TrustedBy {
@@ -23,18 +24,47 @@ interface TrustedBy {
 const BENEFITS = [
   {
     Icon: BarChart2,
-    title: "Market Intelligence",
-    body: "Access to ASU's full library of reports, trackers, and data-driven briefings — covering deals, investments, media rights, and commercial trends across the continent.",
+    title: "Know where the money is moving",
+    body: "A monthly Insider Brief and quarterly deals and investment intelligence briefings, drawn from ASU's trackers.",
   },
   {
     Icon: Globe,
-    title: "Ecosystem Access",
-    body: "Priority access to the professionals, brands, and institutions building Africa's sports business.",
+    title: "Enter new markets with confidence",
+    body: "Market reports and insights on the countries and sectors that matter to your business.",
   },
   {
     Icon: Users,
-    title: "Events & Roundtables",
-    body: "Invitations to ASU roundtables, curated briefings, and exclusive conversations with the decision-makers building Africa's sports economy.",
+    title: "Reach the people who decide",
+    body: "A verified members directory and introduction requests, so you know who to approach and how to reach them.",
+  },
+  {
+    Icon: Bell,
+    title: "Act on opportunities first",
+    body: "Regular alerts on tenders, partnerships and senior appointments across the continent.",
+  },
+  {
+    Icon: Calendar,
+    title: "Build relationships in the room",
+    body: "Member meetups at key industry events.",
+  },
+];
+
+const AUDIENCES = [
+  {
+    label: "Sponsors and brands",
+    body: "Justify your African investment with real deal comparables and market entry intelligence, not guesswork.",
+  },
+  {
+    label: "Rights holders",
+    body: "Price and package your rights against what the market is actually paying, and find the sponsors most likely to buy.",
+  },
+  {
+    label: "Investors",
+    body: "See where capital is moving across African sport before you commit your own.",
+  },
+  {
+    label: "Governments and IGOs",
+    body: "Understand the commercial landscape your federations operate in, and find the partners and investment to grow sport beyond public budgets.",
   },
 ];
 
@@ -58,33 +88,52 @@ export default async function AsuInsiderPage() {
           <div className="absolute inset-0 bg-gradient-to-t from-[#1b3d6e]/90 via-[#1b3d6e]/50 to-transparent" />
           <div className="relative z-10 mx-auto max-w-7xl px-6 w-full pb-16 md:pb-24">
             <span className="inline-block mb-4 px-4 py-1.5 rounded-full bg-[#F37021] text-white text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-widest">
-              Coming Soon
+              ASU Insider &nbsp;|&nbsp; Founding membership now open
             </span>
             <OrangeLine />
             <h1 className="mt-4 text-4xl md:text-6xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight max-w-3xl">
-              ASU Insider
+              Make commercial decisions in African sport with data and people you can trust.
             </h1>
             <p className="mt-4 text-white/80 text-base md:text-xl max-w-2xl leading-relaxed">
-              The membership for decision-makers, investors, and institutions shaping Africa&apos;s sports economy. Intelligence, ecosystem access, and exclusive conversations in one place.
+              ASU Insider gives sponsors, rights holders and investors the market intelligence and verified access they need to act with confidence across Africa&apos;s sports economy.
             </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#join"
+                className="inline-block px-6 py-3.5 rounded-full bg-[#F37021] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#d65a14] transition-colors"
+              >
+                Join as an individual
+              </a>
+              <Link
+                href="/consult"
+                className="inline-block px-6 py-3.5 rounded-full border border-white/60 text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-white/10 transition-colors"
+              >
+                Enquire for your organisation
+              </Link>
+            </div>
           </div>
         </section>
 
-        {/* ── What is ASU Insider ──────────────────────────────────────────── */}
+        {/* ── What changes when you join ───────────────────────────────────── */}
         <section className="py-20 bg-white">
           <div className="mx-auto max-w-7xl px-6">
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div>
                 <OrangeLine />
                 <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                  Your edge in Africa&apos;s sports economy
+                  What changes when you join
                 </h2>
                 <p className="mt-4 text-gray-600 leading-relaxed">
-                  ASU Insider is built for the decision-makers, investors, brands, and institutions at the forefront of sport business in Africa.
+                  Africa&apos;s sports economy is growing faster than the information available to navigate it. Decisions worth millions are still made on instinct and personal networks. ASU Insider closes that gap.
                 </p>
-                <p className="mt-3 text-gray-600 leading-relaxed">
-                  Members get early access to ASU&apos;s intelligence briefs, reports, and trackers, alongside priority access to the people and conversations shaping the continent&apos;s sports economy.
-                </p>
+                <div className="mt-6 space-y-5">
+                  {AUDIENCES.map((a) => (
+                    <div key={a.label}>
+                      <p className="font-bold text-[#1b3d6e] font-[family-name:var(--font-heading)] text-sm">{a.label}</p>
+                      <p className="mt-1 text-gray-600 text-sm leading-relaxed">{a.body}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="relative h-72 md:h-96 rounded-2xl overflow-hidden">
                 <Image
@@ -98,16 +147,16 @@ export default async function AsuInsiderPage() {
           </div>
         </section>
 
-        {/* ── What you'll get ──────────────────────────────────────────────── */}
+        {/* ── How ASU Insider helps you decide ────────────────────────────── */}
         <section className="py-20 bg-[#f4f7fb]">
           <div className="mx-auto max-w-7xl px-6">
             <div className="text-center mb-12">
               <OrangeLine className="mx-auto" />
               <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                Membership Benefits
+                How ASU Insider helps you decide
               </h2>
             </div>
-            <div className="grid sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
               {BENEFITS.map((b) => (
                 <div key={b.title} className="bg-white rounded-2xl p-8">
                   <b.Icon size={36} className="text-[#F37021]" strokeWidth={1.5} />
@@ -121,18 +170,63 @@ export default async function AsuInsiderPage() {
           </div>
         </section>
 
-        {/* ── Registration CTA ─────────────────────────────────────────────── */}
-        <section className="py-24 bg-[#1b3d6e]">
+        {/* ── Two ways to join ─────────────────────────────────────────────── */}
+        <section className="py-20 bg-white">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="text-center mb-12">
+              <OrangeLine className="mx-auto" />
+              <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+                Two ways to join
+              </h2>
+            </div>
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {/* Individual */}
+              <div className="border border-[#dde3ee] rounded-2xl p-8 flex flex-col">
+                <span className="inline-block mb-4 px-3 py-1 rounded-full bg-[#F37021]/10 text-[#F37021] text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-widest self-start">
+                  For individuals
+                </span>
+                <p className="text-gray-600 leading-relaxed flex-1">
+                  For professionals who want to make better decisions in African sport. Founding member rates are available for early members.
+                </p>
+                <a
+                  href="#join"
+                  className="mt-8 inline-block text-center px-6 py-3.5 rounded-full bg-[#1b3d6e] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#142e54] transition-colors"
+                >
+                  Join the founding list
+                </a>
+              </div>
+              {/* Organisation */}
+              <div className="border border-[#dde3ee] rounded-2xl p-8 flex flex-col bg-[#1b3d6e]">
+                <span className="inline-block mb-4 px-3 py-1 rounded-full bg-white/15 text-white text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-widest self-start">
+                  For organisations
+                </span>
+                <p className="text-white/75 leading-relaxed flex-1">
+                  For brands, rights holders, investors, governments and institutions that need deeper data, team access and intelligence tailored to their markets. Packages are shaped around your needs.
+                </p>
+                <p className="mt-4 text-white/50 text-xs leading-relaxed">
+                  We are working with a small number of founding partners to shape the platform. Places are limited.
+                </p>
+                <Link
+                  href="/consult"
+                  className="mt-8 inline-block text-center px-6 py-3.5 rounded-full bg-[#F37021] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#d65a14] transition-colors"
+                >
+                  Enquire about a tailored package
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Not ready to join? Start free. ───────────────────────────────── */}
+        <section id="join" className="py-24 bg-[#1b3d6e]">
           <div className="mx-auto max-w-xl px-6">
             <div className="text-center mb-10">
-              <span className="inline-block mb-4 px-4 py-1.5 rounded-full bg-[#F37021] text-white text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-widest">
-                Coming Soon
-              </span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight">
-                Be first to know when we launch
+              <OrangeLine className="mx-auto" />
+              <h2 className="mt-4 text-3xl md:text-4xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight">
+                Not ready to join? Start free.
               </h2>
               <p className="mt-4 text-white/70 leading-relaxed">
-                Join the waitlist and be first to know when we open. Whether you&apos;re already a free member or joining us for the first time, we&apos;d love to have you on the list. New members will also get immediate access to the 2025 Deals Dataset and our fortnightly newsletter.
+                Get the fortnightly ASU newsletter, executive summaries of every ASU report and the 2025 Deals Sheet, free.
               </p>
             </div>
             <InsiderForm />
