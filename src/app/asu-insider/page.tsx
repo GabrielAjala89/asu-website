@@ -1,11 +1,10 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { OrangeLine } from "@/components/ui/OrangeLine";
-import { InsiderForm } from "@/components/ui/InsiderForm";
+import { TwoWaysToJoin } from "@/components/ui/TwoWaysToJoin";
 import { sanityFetch } from "@/lib/sanity";
 import { ALL_TRUSTED_BY_QUERY } from "@/lib/queries";
 import Image from "next/image";
-import Link from "next/link";
 import { BarChart2, Globe, Users, Bell, Calendar } from "lucide-react";
 
 export const revalidate = 60;
@@ -28,24 +27,24 @@ const BENEFITS = [
     body: "A monthly Insider Brief and quarterly deals and investment intelligence briefings, drawn from ASU's trackers.",
   },
   {
-    Icon: Globe,
-    title: "Enter new markets with confidence",
-    body: "Market reports and insights on the countries and sectors that matter to your business.",
-  },
-  {
-    Icon: Users,
-    title: "Reach the people who decide",
-    body: "A verified members directory and introduction requests, so you know who to approach and how to reach them.",
-  },
-  {
     Icon: Bell,
     title: "Act on opportunities first",
     body: "Regular alerts on tenders, partnerships and senior appointments across the continent.",
   },
   {
+    Icon: Globe,
+    title: "Enter new markets with confidence",
+    body: "Market reports and insights on the countries and sectors that matter to your business.",
+  },
+  {
     Icon: Calendar,
     title: "Build relationships in the room",
     body: "Member meetups at key industry events.",
+  },
+  {
+    Icon: Users,
+    title: "Reach the people who decide",
+    body: "A verified members directory and introduction requests, so you know who to approach and how to reach them.",
   },
 ];
 
@@ -99,17 +98,17 @@ export default async function AsuInsiderPage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
-                href="#join"
+                href="#two-ways"
                 className="inline-block px-6 py-3.5 rounded-full bg-[#F37021] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#d65a14] transition-colors"
               >
                 Join as an individual
               </a>
-              <Link
-                href="/consult"
+              <a
+                href="#two-ways"
                 className="inline-block px-6 py-3.5 rounded-full border border-white/60 text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-white/10 transition-colors"
               >
                 Enquire for your organisation
-              </Link>
+              </a>
             </div>
           </div>
         </section>
@@ -171,67 +170,7 @@ export default async function AsuInsiderPage() {
         </section>
 
         {/* ── Two ways to join ─────────────────────────────────────────────── */}
-        <section className="py-20 bg-white">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="text-center mb-12">
-              <OrangeLine className="mx-auto" />
-              <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                Two ways to join
-              </h2>
-            </div>
-            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {/* Individual */}
-              <div className="border border-[#dde3ee] rounded-2xl p-8 flex flex-col">
-                <span className="inline-block mb-4 px-3 py-1 rounded-full bg-[#F37021]/10 text-[#F37021] text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-widest self-start">
-                  For individuals
-                </span>
-                <p className="text-gray-600 leading-relaxed flex-1">
-                  For professionals who want to make better decisions in African sport. Founding member rates are available for early members.
-                </p>
-                <a
-                  href="#join"
-                  className="mt-8 inline-block text-center px-6 py-3.5 rounded-full bg-[#1b3d6e] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#142e54] transition-colors"
-                >
-                  Join the founding list
-                </a>
-              </div>
-              {/* Organisation */}
-              <div className="border border-[#dde3ee] rounded-2xl p-8 flex flex-col bg-[#1b3d6e]">
-                <span className="inline-block mb-4 px-3 py-1 rounded-full bg-white/15 text-white text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-widest self-start">
-                  For organisations
-                </span>
-                <p className="text-white/75 leading-relaxed flex-1">
-                  For brands, rights holders, investors, governments and institutions that need deeper data, team access and intelligence tailored to their markets. Packages are shaped around your needs.
-                </p>
-                <p className="mt-4 text-white/50 text-xs leading-relaxed">
-                  We are working with a small number of founding partners to shape the platform. Places are limited.
-                </p>
-                <Link
-                  href="/consult"
-                  className="mt-8 inline-block text-center px-6 py-3.5 rounded-full bg-[#F37021] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#d65a14] transition-colors"
-                >
-                  Enquire about a tailored package
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── Not ready to join? Start free. ───────────────────────────────── */}
-        <section id="join" className="py-24 bg-[#1b3d6e]">
-          <div className="mx-auto max-w-xl px-6">
-            <div className="text-center mb-10">
-              <OrangeLine className="mx-auto" />
-              <h2 className="mt-4 text-3xl md:text-4xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight">
-                Not ready to join? Start free.
-              </h2>
-              <p className="mt-4 text-white/70 leading-relaxed">
-                Get the fortnightly ASU newsletter, executive summaries of every ASU report and the 2025 Deals Sheet, free.
-              </p>
-            </div>
-            <InsiderForm />
-          </div>
-        </section>
+        <TwoWaysToJoin />
 
         {/* ── Trusted By ───────────────────────────────────────────────────── */}
         {trustedBy.length > 0 && (
