@@ -27,24 +27,24 @@ const BENEFITS = [
     body: "A monthly Insider Brief and quarterly deals and investment intelligence briefings, drawn from ASU's trackers.",
   },
   {
-    Icon: Bell,
-    title: "Act on opportunities first",
-    body: "Regular alerts on tenders, partnerships and senior appointments across the continent.",
-  },
-  {
     Icon: Globe,
     title: "Enter new markets with confidence",
     body: "Market reports and insights on the countries and sectors that matter to your business.",
   },
   {
-    Icon: Calendar,
-    title: "Build relationships in the room",
-    body: "Member meetups at key industry events.",
-  },
-  {
     Icon: Users,
     title: "Reach the people who decide",
     body: "A verified members directory and introduction requests, so you know who to approach and how to reach them.",
+  },
+  {
+    Icon: Bell,
+    title: "Act on opportunities first",
+    body: "Regular alerts on tenders, partnerships and senior appointments across the continent.",
+  },
+  {
+    Icon: Calendar,
+    title: "Build relationships in the room",
+    body: "Member meetups at key industry events.",
   },
 ];
 
@@ -155,9 +155,10 @@ export default async function AsuInsiderPage() {
                 How ASU Insider helps you decide
               </h2>
             </div>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {BENEFITS.map((b) => (
-                <div key={b.title} className="bg-white rounded-2xl p-8">
+            {/* 6-col grid: top 3 cards each span 2 cols, bottom 2 staggered by 1 col — W shape */}
+            <div className="grid grid-cols-6 gap-6 max-w-5xl mx-auto">
+              {BENEFITS.slice(0, 3).map((b) => (
+                <div key={b.title} className="col-span-6 sm:col-span-3 lg:col-span-2 bg-white rounded-2xl p-8">
                   <b.Icon size={36} className="text-[#F37021]" strokeWidth={1.5} />
                   <h3 className="mt-4 text-base font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
                     {b.title}
@@ -165,6 +166,22 @@ export default async function AsuInsiderPage() {
                   <p className="mt-2 text-sm text-gray-600 leading-relaxed">{b.body}</p>
                 </div>
               ))}
+              {/* 4th card: offset right by 1 col so it sits under the gap between card 1 and 2 */}
+              {(() => { const b = BENEFITS[3]; const Icon = b.Icon; return (
+                <div className="col-span-6 sm:col-span-3 lg:col-start-2 lg:col-span-2 bg-white rounded-2xl p-8">
+                  <Icon size={36} className="text-[#F37021]" strokeWidth={1.5} />
+                  <h3 className="mt-4 text-base font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">{b.title}</h3>
+                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">{b.body}</p>
+                </div>
+              ); })()}
+              {/* 5th card: offset right by 3 cols so it sits under the gap between card 2 and 3 */}
+              {(() => { const b = BENEFITS[4]; const Icon = b.Icon; return (
+                <div className="col-span-6 sm:col-span-3 lg:col-start-4 lg:col-span-2 bg-white rounded-2xl p-8">
+                  <Icon size={36} className="text-[#F37021]" strokeWidth={1.5} />
+                  <h3 className="mt-4 text-base font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">{b.title}</h3>
+                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">{b.body}</p>
+                </div>
+              ); })()}
             </div>
           </div>
         </section>
