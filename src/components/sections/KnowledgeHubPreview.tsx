@@ -36,14 +36,14 @@ export function KnowledgeHubPreview({ products }: KnowledgeHubPreviewProps) {
 
         {/* Product cards grid */}
         {products && products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {products.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </div>
         ) : (
           /* Placeholder cards shown when no Sanity content yet */
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {placeholders.map((p) => (
               <PlaceholderCard key={p.id} {...p} />
             ))}
@@ -106,25 +106,19 @@ function ProductCard({ product }: { product: Product }) {
 
 const placeholders = [
   {
-    id: 1, badge: "2025 AFCON OVERVIEW REPORT", price: "$100",
-    description: "Strategic, data-driven analysis of the 2025 Africa Cup of Nations tournament",
-    features: ["Commercial & Financial Insights","Media & Broadcast Impact","Sporting & Competitive Summary","Host & Infrastructure Evaluation"],
-    label: "VIEW REPORT", bg: "from-green-900/80",
-  },
-  {
-    id: 2, badge: "AFRICAN SPORTS MARKET DEALS TRACKER", price: "£599.99",
+    id: 1, badge: "AFRICAN SPORTS MARKET DEALS TRACKER", price: "£599.99",
     description: "Database that tracks commercial deals, sponsorships, broadcast, and investments.",
     features: ["Deal Coverage & Listings","Market Insights & Trends","Data for Strategic Decisions","Contextual Industry Insights"],
     label: "EXPLORE TRACKER", bg: "from-slate-800/80",
   },
   {
-    id: 3, badge: "2023 AFCON OVERVIEW REPORT", price: "$145",
-    description: "Comprehensive analysis of the 2023 Africa Cup of Nations (AFCON)",
-    features: ["Tournament Summary & Stats","Competitive Insights","Commercial & Media Impact","Socio-economic Impact"],
-    label: "VIEW REPORT", bg: "from-stone-700/80",
+    id: 2, badge: "2025 AFCON OVERVIEW REPORT", price: "$100",
+    description: "Strategic, data-driven analysis of the 2025 Africa Cup of Nations tournament",
+    features: ["Commercial & Financial Insights","Media & Broadcast Impact","Sporting & Competitive Summary","Host & Infrastructure Evaluation"],
+    label: "VIEW REPORT", bg: "from-green-900/80",
   },
   {
-    id: 4, badge: "2025 AFRICAN SPORTS MARKET TRENDS REPORT", price: "$25",
+    id: 3, badge: "2025 AFRICAN SPORTS MARKET TRENDS REPORT", price: "$25",
     description: "Comprehensive industry analysis released by Africa Sports Unified",
     features: ["Digital Transformation as a Growth Driver","Investment Trends and Challenges","Importance of Grassroots Development","Strategic Insights for Stakeholders"],
     label: "VIEW REPORT", bg: "from-orange-900/80",

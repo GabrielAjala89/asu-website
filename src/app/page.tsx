@@ -4,11 +4,11 @@ import { HeroVideo } from "@/components/sections/HeroVideo";
 import { WhoWeAre } from "@/components/sections/WhoWeAre";
 import Image from "next/image";
 import { KnowledgeHubPreview } from "@/components/sections/KnowledgeHubPreview";
-import { IntelligenceAndPodcast } from "@/components/sections/IntelligenceAndPodcast";
 import { TestimonialsCarousel } from "@/components/sections/TestimonialsCarousel";
 import { EngageSection } from "@/components/sections/EngageSection";
 import { sanityFetch } from "@/lib/sanity";
 import { FEATURED_REPORTS_QUERY, ALL_TESTIMONIALS_QUERY } from "@/lib/queries";
+import { MarketOpportunity } from "@/components/sections/MarketOpportunity";
 
 // Revalidate every 60 seconds — fresh content without a full redeploy
 export const revalidate = 60;
@@ -25,6 +25,14 @@ export default async function HomePage() {
       <Navbar transparent />
       <main>
         <HeroVideo />
+
+        {/* ── Market opportunity ────────────────────────────────────────── */}
+        <MarketOpportunity
+          stat="0.5% vs 2%"
+          line1="Sport contributes 0.5% of Africa's GDP. The global average is 2%."
+          line2="That gap is the opportunity. The question is whether you are positioned to capture it."
+          button={{ label: "Get the intelligence", href: "/knowledge-hub" }}
+        />
 
         {/* ── Community stats bar ───────────────────────────────────────── */}
         <section className="bg-[#1b3d6e] py-10">
@@ -45,7 +53,7 @@ export default async function HomePage() {
                   22.8%
                 </p>
                 <p className="mt-2 text-white/70 text-sm font-[family-name:var(--font-heading)] font-semibold uppercase tracking-wider">
-                  Newsletter engagement rate
+                  Newsletter click through rate
                 </p>
                 <p className="mt-1 text-white/40 text-xs">
                   Nearly 9x the global average
@@ -90,7 +98,6 @@ export default async function HomePage() {
 
         <WhoWeAre />
         <KnowledgeHubPreview products={products as never[]} />
-        <IntelligenceAndPodcast />
         <TestimonialsCarousel testimonials={testimonials as never[]} />
         <EngageSection />
       </main>

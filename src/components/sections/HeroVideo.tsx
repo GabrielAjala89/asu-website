@@ -47,7 +47,7 @@ export function HeroVideo() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Button href="/asu-insider" variant="primary" size="lg">
-                Join ASU Insider
+                Explore ASU Insider
               </Button>
               <Button href="/consult" variant="ghost" size="lg">
                 Work With ASU

@@ -1,13 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
-type ModalState = 'none' | 'individual' | 'org';
+type ModalState = 'none' | 'open';
 type FormState = 'idle' | 'loading' | 'success' | 'error';
+type MembershipType = 'individual' | 'org';
 
 export function TwoWaysToJoin() {
   const [modal, setModal] = useState<ModalState>('none');
+
+  useEffect(() => {
+    function handleHash() {
+      if (window.location.hash === '#request-briefing') setModal('open');
+    }
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
+  function closeModal() {
+    setModal('none');
+    window.history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
 
   return (
     <>
@@ -16,147 +31,47 @@ export function TwoWaysToJoin() {
           <div className="text-center mb-12">
             <div className="mx-auto w-10 h-[3px] bg-[#F37021] rounded-full" />
             <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-              Two ways to join
+              Join by invitation
             </h2>
           </div>
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* Individual */}
-            <div className="border border-[#dde3ee] rounded-2xl p-8 flex flex-col">
-              <span className="inline-block mb-4 px-3 py-1 rounded-full bg-[#F37021]/10 text-[#F37021] text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-widest self-start">
-                For individuals
-              </span>
+          <div className="max-w-lg mx-auto">
+            <div id="request-briefing" className="border border-[#dde3ee] rounded-2xl p-8 flex flex-col">
               <p className="text-gray-600 leading-relaxed flex-1">
-                For professionals who want to make better decisions in African sport. Founding member rates are available for early members.
+                We are welcoming a first group of members ahead of opening ASU Insider more widely in 2027. Request an invitation to a private briefing and we will send you everything you need.
               </p>
               <button
-                onClick={() => setModal('individual')}
+                onClick={() => setModal('open')}
                 className="mt-8 w-full text-center px-6 py-3.5 rounded-full bg-[#1b3d6e] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#142e54] transition-colors"
               >
-                Join the founding list
-              </button>
-            </div>
-            {/* Organisation */}
-            <div className="border border-[#dde3ee] rounded-2xl p-8 flex flex-col bg-[#1b3d6e]">
-              <span className="inline-block mb-4 px-3 py-1 rounded-full bg-white/15 text-white text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-widest self-start">
-                For organisations
-              </span>
-              <p className="text-white/75 leading-relaxed flex-1">
-                For brands, rights holders, investors, governments and institutions that need deeper data, team access and intelligence tailored to their markets. Packages are shaped around your needs.
-              </p>
-              <p className="mt-4 text-white/40 text-xs leading-relaxed">
-                We are working with a small number of founding partners to shape the platform. Places are limited.
-              </p>
-              <button
-                onClick={() => setModal('org')}
-                className="mt-8 w-full text-center px-6 py-3.5 rounded-full bg-[#F37021] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#d65a14] transition-colors"
-              >
-                Enquire about a tailored package
+                Request a briefing invitation
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Modals */}
-      {modal === 'individual' && (
-        <IndividualModal onClose={() => setModal('none')} />
-      )}
-      {modal === 'org' && (
-        <OrgModal onClose={() => setModal('none')} />
-      )}
+      {modal === 'open' && <BriefingModal onClose={closeModal} />}
     </>
   );
 }
 
-/* ─────────────────── Individual modal ─────────────────── */
+/* ─────────────────── Unified briefing modal ─────────────────── */
 
-function IndividualModal({ onClose }: { onClose: () => void }) {
+function BriefingModal({ onClose }: { onClose: () => void }) {
   const [state, setState] = useState<FormState>('idle');
+  const [membershipType, setMembershipType] = useState<MembershipType>('individual');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setState('loading');
     const form = e.currentTarget;
-    const get = (n: string) => (form.elements.namedItem(n) as HTMLInputElement).value.trim();
+    const get = (n: string) =>
+      (form.elements.namedItem(n) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement)?.value?.trim() ?? '';
+    const checked = (n: string) =>
+      (form.elements.namedItem(n) as HTMLInputElement)?.checked ?? false;
+
     try {
-      const res = await fetch('/api/insider-register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName:    get('firstName'),
-          lastName:     get('lastName'),
-          email:        get('email'),
-          jobTitle:     get('jobTitle'),
-          organisation: get('organisation'),
-          role:         get('role'),
-        }),
-      });
-      if (!res.ok) throw new Error();
-      setState('success');
-    } catch {
-      setState('error');
-    }
-  }
-
-  return (
-    <Modal title="Join the founding list" onClose={onClose}>
-      {state === 'success' ? (
-        <SuccessMessage
-          heading="You're on the list"
-          body="We'll be in touch as soon as ASU Insider opens. Check your inbox for your free dataset."
-        />
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="First name" name="firstName" placeholder="First name" required />
-            <Field label="Last name"  name="lastName"  placeholder="Last name"  required />
-          </div>
-          <Field label="Email address" name="email" type="email" placeholder="you@organisation.com" required />
-          <Field label="Job title"     name="jobTitle"     placeholder="Your job title" required />
-          <Field label="Organisation"  name="organisation" placeholder="Your organisation" required />
-          <div>
-            <label className="block text-[#1b3d6e] text-[10px] font-bold uppercase tracking-widest font-[family-name:var(--font-heading)] mb-1.5">
-              What best describes you?
-            </label>
-            <select
-              name="role"
-              required
-              className="w-full px-4 py-2.5 rounded-xl bg-[#f4f7fb] text-gray-700 border border-[#dde3ee] focus:outline-none focus:border-[#1b3d6e] text-sm"
-            >
-              <option value="">Select one…</option>
-              <option>Sponsor or brand</option>
-              <option>Rights holder</option>
-              <option>Investor</option>
-              <option>Government or IGO</option>
-              <option>Other</option>
-            </select>
-          </div>
-          {state === 'error' && <p className="text-red-500 text-xs">Something went wrong — please try again.</p>}
-          <button
-            type="submit"
-            disabled={state === 'loading'}
-            className="mt-2 w-full px-6 py-4 rounded-full bg-[#F37021] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#d65a14] transition-colors disabled:opacity-60"
-          >
-            {state === 'loading' ? 'Submitting…' : 'Join the founding list →'}
-          </button>
-        </form>
-      )}
-    </Modal>
-  );
-}
-
-/* ─────────────────── Organisation modal ─────────────────── */
-
-function OrgModal({ onClose }: { onClose: () => void }) {
-  const [state, setState] = useState<FormState>('idle');
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setState('loading');
-    const form = e.currentTarget;
-    const get = (n: string) => (form.elements.namedItem(n) as HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement).value.trim();
-    try {
-      const res = await fetch('/api/org-enquiry', {
+      const res = await fetch('/api/briefing-request', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -164,10 +79,13 @@ function OrgModal({ onClose }: { onClose: () => void }) {
           lastName:           get('lastName'),
           jobTitle:           get('jobTitle'),
           organisation:       get('organisation'),
-          orgType:            get('orgType'),
           email:              get('email'),
-          marketsOfInterest:  get('marketsOfInterest'),
-          commercialDecision: get('commercialDecision'),
+          membershipType,
+          preferredDate:      get('preferredDate'),
+          orgType:            membershipType === 'org' ? get('orgType') : undefined,
+          marketsOfInterest:  membershipType === 'org' ? get('marketsOfInterest') : undefined,
+          commercialDecision: membershipType === 'org' ? get('commercialDecision') : undefined,
+          privateConversation: membershipType === 'org' ? checked('privateConversation') : undefined,
         }),
       });
       if (!res.ok) throw new Error();
@@ -178,11 +96,11 @@ function OrgModal({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <Modal title="Enquire about a tailored package" onClose={onClose}>
+    <Modal title="Request a briefing invitation" onClose={onClose}>
       {state === 'success' ? (
         <SuccessMessage
-          heading="Enquiry received"
-          body="We'll be in touch shortly to discuss how ASU Insider can work for your organisation."
+          heading="Request received"
+          body="We will be in touch to confirm your briefing invitation. Check your inbox for a confirmation."
         />
       ) : (
         <form onSubmit={handleSubmit} className="space-y-3">
@@ -190,45 +108,89 @@ function OrgModal({ onClose }: { onClose: () => void }) {
             <Field label="First name" name="firstName" placeholder="First name" required />
             <Field label="Last name"  name="lastName"  placeholder="Last name"  required />
           </div>
-          <Field label="Job title"    name="jobTitle"    placeholder="Your job title" required />
-          <Field label="Organisation" name="organisation" placeholder="Organisation name" required />
-          <div>
-            <label className="block text-[#1b3d6e] text-[10px] font-bold uppercase tracking-widest font-[family-name:var(--font-heading)] mb-1.5">
-              Organisation type
-            </label>
-            <select
-              name="orgType"
-              required
-              className="w-full px-4 py-2.5 rounded-xl bg-[#f4f7fb] text-gray-700 border border-[#dde3ee] focus:outline-none focus:border-[#1b3d6e] text-sm"
-            >
-              <option value="">Select one…</option>
-              <option>Sponsor or brand</option>
-              <option>Rights holder</option>
-              <option>Investor</option>
-              <option>Government or IGO</option>
-              <option>Other</option>
-            </select>
-          </div>
+          <Field label="Job title"    name="jobTitle"    placeholder="Your job title"       required />
+          <Field label="Organisation" name="organisation" placeholder="Your organisation"   required />
           <Field label="Email address" name="email" type="email" placeholder="you@organisation.com" required />
-          <Field label="Markets of interest" name="marketsOfInterest" placeholder="e.g. Nigeria, East Africa, MENA…" />
+
+          {/* Membership type toggle */}
           <div>
-            <label className="block text-[#1b3d6e] text-[10px] font-bold uppercase tracking-widest font-[family-name:var(--font-heading)] mb-1.5">
-              What commercial decision are you facing in the next 12 months?
-            </label>
-            <textarea
-              name="commercialDecision"
-              rows={3}
-              placeholder="Brief description…"
-              className="w-full px-4 py-2.5 rounded-xl bg-[#f4f7fb] text-gray-700 border border-[#dde3ee] focus:outline-none focus:border-[#1b3d6e] text-sm resize-none"
-            />
+            <p className="block text-[#1b3d6e] text-[10px] font-bold uppercase tracking-widest font-[family-name:var(--font-heading)] mb-2">
+              Are you joining as an individual or for your organisation?
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              {(['individual', 'org'] as MembershipType[]).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => setMembershipType(t)}
+                  className={`py-2.5 rounded-xl text-sm font-bold font-[family-name:var(--font-heading)] transition-colors ${
+                    membershipType === t
+                      ? 'bg-[#1b3d6e] text-white'
+                      : 'bg-[#f4f7fb] text-[#1b3d6e] border border-[#dde3ee] hover:border-[#1b3d6e]'
+                  }`}
+                >
+                  {t === 'individual' ? 'Individual' : 'Organisation'}
+                </button>
+              ))}
+            </div>
           </div>
-          {state === 'error' && <p className="text-red-500 text-xs">Something went wrong — please try again.</p>}
+
+          <Field label="Preferred briefing date (optional)" name="preferredDate" placeholder="e.g. early November, week of 18 Nov" />
+
+          {/* Org-only fields */}
+          {membershipType === 'org' && (
+            <div className="space-y-3 pt-1">
+              <div>
+                <label className="block text-[#1b3d6e] text-[10px] font-bold uppercase tracking-widest font-[family-name:var(--font-heading)] mb-1.5">
+                  Organisation type
+                </label>
+                <select
+                  name="orgType"
+                  required
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f4f7fb] text-gray-700 border border-[#dde3ee] focus:outline-none focus:border-[#1b3d6e] text-sm"
+                >
+                  <option value="">Select one…</option>
+                  <option>Sponsor or brand</option>
+                  <option>Rights holder</option>
+                  <option>Investor</option>
+                  <option>Government or IGO</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <Field label="Markets of interest" name="marketsOfInterest" placeholder="e.g. Nigeria, East Africa, MENA…" />
+              <div>
+                <label className="block text-[#1b3d6e] text-[10px] font-bold uppercase tracking-widest font-[family-name:var(--font-heading)] mb-1.5">
+                  What commercial decision are you facing in the next 12 months?
+                </label>
+                <textarea
+                  name="commercialDecision"
+                  rows={3}
+                  placeholder="Brief description…"
+                  className="w-full px-4 py-2.5 rounded-xl bg-[#f4f7fb] text-gray-700 border border-[#dde3ee] focus:outline-none focus:border-[#1b3d6e] text-sm resize-none"
+                />
+              </div>
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  name="privateConversation"
+                  className="mt-1 h-4 w-4 rounded border-[#dde3ee] accent-[#1b3d6e]"
+                />
+                <span className="text-sm text-gray-600 font-[family-name:var(--font-body)] leading-snug">
+                  I would prefer a private conversation
+                </span>
+              </label>
+            </div>
+          )}
+
+          {state === 'error' && (
+            <p className="text-red-500 text-xs">Something went wrong — please try again.</p>
+          )}
           <button
             type="submit"
             disabled={state === 'loading'}
-            className="mt-2 w-full px-6 py-4 rounded-full bg-[#1b3d6e] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#142e54] transition-colors disabled:opacity-60"
+            className="mt-2 w-full px-6 py-4 rounded-full bg-[#F37021] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#d65a14] transition-colors disabled:opacity-60"
           >
-            {state === 'loading' ? 'Sending…' : 'Send enquiry →'}
+            {state === 'loading' ? 'Submitting…' : 'Request briefing invitation →'}
           </button>
         </form>
       )}

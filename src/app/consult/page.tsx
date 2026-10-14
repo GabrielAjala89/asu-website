@@ -4,6 +4,7 @@ import { OrangeLine } from "@/components/ui/OrangeLine";
 import { sanityFetch } from "@/lib/sanity";
 import { ALL_CASE_STUDIES_QUERY } from "@/lib/queries";
 import { CaseStudyLink, WorkWithASUButton } from "@/components/ui/ConsultEnquiryButtons";
+import { MarketOpportunity } from "@/components/sections/MarketOpportunity";
 import Image from "next/image";
 import Link from "next/link";
 import { Map, BarChart2 } from "lucide-react";
@@ -66,6 +67,12 @@ export default async function ConsultPage() {
             </div>
           </div>
         </section>
+
+        {/* ── Market opportunity ───────────────────────────────────────────── */}
+        <MarketOpportunity
+          line1="Sport is 0.5% of Africa's GDP. Globally, it's 2%."
+          line2="We help governments and institutions turn sport into measurable economic value."
+        />
 
         {/* ── How We Work ──────────────────────────────────────────────────── */}
         <section className="py-20 bg-white">

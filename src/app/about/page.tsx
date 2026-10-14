@@ -3,7 +3,7 @@ import { Footer } from "@/components/layout/Footer";
 import { OrangeLine } from "@/components/ui/OrangeLine";
 import { EngageSection } from "@/components/sections/EngageSection";
 import Image from "next/image";
-import { Network, Users, Briefcase } from "lucide-react";
+import Link from "next/link";
 
 export const revalidate = 60;
 
@@ -11,39 +11,6 @@ export const metadata = {
   title: "About",
   description: "Africa Sports Unified is the leading Pan-African sport intelligence and advisory firm — connecting decision-makers, investors, and institutions across the continent's sports economy.",
 };
-
-const PILLARS = [
-  {
-    title: "Intelligence",
-    description:
-      "Original research, data, and analysis covering media rights, sponsorship, infrastructure investment, and talent pipelines across the African sports economy.",
-    bg: "bg-[#1b3d6e]",
-    Icon: Network,
-  },
-  {
-    title: "Ecosystem",
-    description:
-      "ASU Insider connects the professionals, investors, and organisations shaping African sport, creating the conditions for collaboration, deals, and knowledge exchange.",
-    bg: "bg-[#F37021]",
-    Icon: Users,
-  },
-  {
-    title: "Advisory",
-    description:
-      "Strategic counsel for federations, investors, sponsors, and governments navigating African sport. We bring on-the-ground expertise and continental relationships.",
-    bg: "bg-[#1b3d6e]",
-    Icon: Briefcase,
-  },
-];
-
-const BOARD_MEMBERS = [
-  { name: "Advisory Member", role: "Title · Organisation" },
-  { name: "Advisory Member", role: "Title · Organisation" },
-  { name: "Advisory Member", role: "Title · Organisation" },
-  { name: "Advisory Member", role: "Title · Organisation" },
-  { name: "Advisory Member", role: "Title · Organisation" },
-  { name: "Advisory Member", role: "Title · Organisation" },
-];
 
 export default function AboutPage() {
   return (
@@ -72,38 +39,40 @@ export default function AboutPage() {
           </div>
         </section>
 
-        {/* ── Why We Built This ─────────────────────────────────────────────── */}
+        {/* ── The Challenge ─────────────────────────────────────────────────── */}
         <section className="py-20 bg-white">
           <div className="mx-auto max-w-4xl px-6">
             <OrangeLine />
             <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-              Why We Built This
+              The Challenge
             </h2>
             <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
-              During a postgraduate research project at Birkbeck University, our founder, Gabriel Ajala, set out to write a dissertation on the Nigerian Professional Football League. The data wasn&apos;t there. The reports didn&apos;t exist. The resources that any stakeholder would take for granted in a mature sports market simply weren&apos;t available for Africa.
+              ASU began with a dissertation. While researching the Nigerian Professional Football League for my postgraduate studies, I looked for the data and reporting any serious market analysis needs, and found very little. When I raised this with people working in the industry, the answer was always the same: &ldquo;there is no go to place for this.&rdquo;
             </p>
             <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
-              When he raised this with people working inside the industry, the response was consistent: <span className="font-bold italic text-gray-900">there is no go-to place for this.</span> That gap between the scale of Africa&apos;s sports economy and the quality of intelligence available to navigate it is why Africa Sports Unified exists. Not as a response to a market opportunity, but as a solution to a problem we experienced firsthand.
+              That gap, between the scale of Africa&apos;s sports economy and the support available to grow it, is why ASU exists.
             </p>
-            <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
-              Everything ASU produces is built on that original frustration. The people making decisions about African sport deserve the same quality of intelligence, data, and strategic support available anywhere else in the world. We built ASU to close that gap. And we&apos;re not done yet.
+            <p className="mt-8 text-sm font-bold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+              Gabriel Ajala, Founder
             </p>
           </div>
         </section>
 
-        {/* ── Our Belief + Our Mission (shared gray bg) ─────────────────────── */}
+        {/* ── Why ASU Exists + Our Mission ──────────────────────────────────── */}
         <section className="py-20 bg-[#f4f7fb]">
-          {/* Belief + Mission side by side */}
           <div className="mx-auto max-w-7xl px-6">
             <div className="grid md:grid-cols-2 gap-12">
 
               <div>
                 <OrangeLine />
                 <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                  Our Belief
+                  Why ASU Exists
                 </h2>
                 <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
-                  We believe a thriving Pan-African sports market drives growth across Africa and Abroad. Sport connects people, markets, capital, and ideas. It creates opportunities for investment, employment, and national pride. At ASU, we recognise this potential and are committed to realising it through intelligence, advisory, and ecosystem building.
+                  Sport contributes an estimated 0.5% of Africa&apos;s GDP, against a global average of 2%. Closing that gap would quadruple the sector&apos;s economic contribution. Getting there takes more than ambition. It takes reliable market intelligence and the strategic expertise to act on it. ASU brings both, advising governments, investors, rights holders and brands on how to unlock that value.
+                </p>
+                <p className="mt-4 text-xs text-gray-400 font-[family-name:var(--font-heading)]">
+                  Source: African Union Sports Council
                 </p>
               </div>
 
@@ -113,33 +82,76 @@ export default function AboutPage() {
                   Our Mission
                 </h2>
                 <p className="mt-5 text-gray-700 leading-relaxed text-base md:text-lg">
-                  Our mission is to shape and support the growth of Africa&apos;s sports economy through intelligence, advisory, and ecosystem access.
+                  To grow sport&apos;s contribution to Africa&apos;s economy by giving the organisations that shape it the advice, intelligence and connections to succeed.
                 </p>
               </div>
 
             </div>
           </div>
+        </section>
 
-          {/* Pillar boxes */}
-          <div className="mx-auto max-w-7xl px-6 mt-16">
-            <p className="text-[#1b3d6e] font-bold text-sm uppercase tracking-wider font-[family-name:var(--font-heading)] mb-8">
-              We do this by:
-            </p>
+        {/* ── What We Do ────────────────────────────────────────────────────── */}
+        <section className="py-20 bg-white">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="text-center mb-12">
+              <OrangeLine className="mx-auto" />
+              <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+                What We Do
+              </h2>
+            </div>
             <div className="grid md:grid-cols-3 gap-6">
-              {PILLARS.map((p) => (
-                <div key={p.title} className={`${p.bg} rounded-2xl p-10 flex flex-col items-center text-center`}>
-                  <p.Icon size={44} className="text-white" strokeWidth={1.5} />
-                  <h3 className="mt-5 text-lg font-extrabold text-white font-[family-name:var(--font-heading)]">
-                    {p.title}
-                  </h3>
-                  <p className="mt-3 text-sm text-white/80 leading-relaxed">{p.description}</p>
-                </div>
-              ))}
+
+              {/* Advisory */}
+              <div className="rounded-2xl bg-[#1b3d6e] p-10 flex flex-col">
+                <h3 className="text-xl font-extrabold text-white font-[family-name:var(--font-heading)]">
+                  Advisory
+                </h3>
+                <p className="mt-4 text-white/75 text-sm leading-relaxed flex-1">
+                  Strategic advice for governments, federations, rights holders, investors and brands, from commercial strategy to policy and investment readiness.
+                </p>
+                <Link
+                  href="/consult"
+                  className="mt-8 inline-block w-full text-center px-6 py-3 rounded-full bg-[#F37021] text-white text-sm font-bold font-[family-name:var(--font-heading)] hover:bg-[#d65a14] transition-colors"
+                >
+                  View Advisory Services
+                </Link>
+              </div>
+
+              {/* Intelligence */}
+              <div className="rounded-2xl border border-[#dde3ee] p-10 flex flex-col">
+                <h3 className="text-xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+                  Intelligence
+                </h3>
+                <p className="mt-4 text-gray-600 text-sm leading-relaxed flex-1">
+                  Original research and analysis on deals, media rights, sponsorship and investment across the continent, including the ASU Deals Tracker and market reports.
+                </p>
+                <Link
+                  href="/knowledge-hub"
+                  className="mt-8 inline-block w-full text-center px-6 py-3 rounded-full bg-[#1b3d6e] text-white text-sm font-bold font-[family-name:var(--font-heading)] hover:bg-[#142e54] transition-colors"
+                >
+                  Explore the Knowledge Hub
+                </Link>
+              </div>
+
+              {/* ASU Insider */}
+              <div className="rounded-2xl border border-[#dde3ee] p-10 flex flex-col">
+                <h3 className="text-xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+                  ASU Insider
+                </h3>
+                <p className="mt-4 text-gray-600 text-sm leading-relaxed flex-1">
+                  A membership connecting decision makers with the intelligence and people they need to act with confidence.
+                </p>
+                <Link
+                  href="/asu-insider"
+                  className="mt-8 inline-block w-full text-center px-6 py-3 rounded-full bg-[#1b3d6e] text-white text-sm font-bold font-[family-name:var(--font-heading)] hover:bg-[#142e54] transition-colors"
+                >
+                  Explore ASU Insider
+                </Link>
+              </div>
+
             </div>
           </div>
         </section>
-
-        {/* Advisory Board — hidden until real members are confirmed */}
 
         <EngageSection />
       </main>

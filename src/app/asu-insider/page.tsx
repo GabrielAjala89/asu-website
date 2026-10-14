@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { OrangeLine } from "@/components/ui/OrangeLine";
 import { TwoWaysToJoin } from "@/components/ui/TwoWaysToJoin";
+import { NotReadyToJoin } from "@/components/ui/NotReadyToJoin";
 import { sanityFetch } from "@/lib/sanity";
 import { ALL_TRUSTED_BY_QUERY } from "@/lib/queries";
 import Image from "next/image";
@@ -87,7 +88,7 @@ export default async function AsuInsiderPage() {
           <div className="absolute inset-0 bg-gradient-to-t from-[#1b3d6e]/90 via-[#1b3d6e]/50 to-transparent" />
           <div className="relative z-10 mx-auto max-w-7xl px-6 w-full pb-16 md:pb-24">
             <span className="inline-block mb-4 px-4 py-1.5 rounded-full bg-[#F37021] text-white text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-widest">
-              ASU Insider &nbsp;|&nbsp; Founding membership now open
+              ASU Insider &nbsp;|&nbsp; Private briefings now open
             </span>
             <OrangeLine />
             <h1 className="mt-4 text-4xl md:text-6xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight max-w-3xl">
@@ -96,18 +97,12 @@ export default async function AsuInsiderPage() {
             <p className="mt-4 text-white/80 text-base md:text-xl max-w-2xl leading-relaxed">
               ASU Insider gives sponsors, rights holders and investors the market intelligence and verified access they need to act with confidence across Africa&apos;s sports economy.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-8">
               <a
-                href="#two-ways"
+                href="#request-briefing"
                 className="inline-block px-6 py-3.5 rounded-full bg-[#F37021] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#d65a14] transition-colors"
               >
-                Join as an individual
-              </a>
-              <a
-                href="#two-ways"
-                className="inline-block px-6 py-3.5 rounded-full border border-white/60 text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-white/10 transition-colors"
-              >
-                Enquire for your organisation
+                Request a briefing invitation
               </a>
             </div>
           </div>
@@ -186,8 +181,20 @@ export default async function AsuInsiderPage() {
           </div>
         </section>
 
-        {/* ── Two ways to join ─────────────────────────────────────────────── */}
+        {/* ── Join by invitation ───────────────────────────────────────────── */}
         <TwoWaysToJoin />
+
+        {/* ── Not ready to join? Start free. ──────────────────────────────── */}
+        <NotReadyToJoin />
+
+        {/* ── Network line ─────────────────────────────────────────────────── */}
+        <section className="py-10 bg-white border-t border-gray-100">
+          <div className="mx-auto max-w-7xl px-6 text-center">
+            <p className="text-sm font-bold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
+              Built on a network of 4,300+ industry leaders across 10+ countries.
+            </p>
+          </div>
+        </section>
 
         {/* ── Trusted By ───────────────────────────────────────────────────── */}
         {trustedBy.length > 0 && (
@@ -213,6 +220,7 @@ export default async function AsuInsiderPage() {
             </div>
           </section>
         )}
+
 
       </main>
       <Footer />

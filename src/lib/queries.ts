@@ -99,7 +99,7 @@ export const ALL_REPORTS_QUERY = `
 `;
 
 export const FEATURED_REPORTS_QUERY = `
-  *[(_type == "report" || _type == "tracker") && featured == true] | order(_type asc, publishedAt desc)[0...4] {
+  *[(_type == "report" || _type == "tracker") && featured == true] | order(publishedAt desc)[0...3] {
     _id, _type, title, slug, subtitle, pricePaid, priceMember, stripePaymentLink, features,
     coverImage{${imageFields}}
   }
