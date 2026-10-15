@@ -18,7 +18,7 @@ interface ButtonProps {
 }
 
 const variants: Record<ButtonVariant, string> = {
-  primary:   "bg-[#F37021] text-white hover:bg-[#d65a14] border-transparent",
+  primary:   "bg-[#E8630A] text-[#030000] hover:bg-[#B04A06] hover:text-white border-transparent",
   secondary: "bg-[#1b3d6e] text-white hover:bg-[#122a4b] border-transparent",
   outline:   "bg-transparent text-[#1b3d6e] border-[#1b3d6e] hover:bg-[#1b3d6e] hover:text-white",
   ghost:     "bg-transparent text-white border-white hover:bg-white hover:text-[#1b3d6e]",
@@ -35,9 +35,9 @@ export function Button({
   href, onClick, className, type = "button", disabled, external,
 }: ButtonProps) {
   const base = cn(
-    "inline-flex items-center justify-center gap-2 rounded-full border font-semibold",
+    "inline-flex items-center justify-center gap-2 rounded border font-semibold",
     "font-[family-name:var(--font-heading)] tracking-wide transition-all duration-200",
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F37021] focus-visible:ring-offset-2",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E8630A] focus-visible:ring-offset-2",
     "disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap",
     variants[variant],
     sizes[size],

@@ -80,6 +80,7 @@ function BriefingModal({ onClose }: { onClose: () => void }) {
           jobTitle:           get('jobTitle'),
           organisation:       get('organisation'),
           email:              get('email'),
+          role:               get('role'),
           membershipType,
           preferredDate:      get('preferredDate'),
           orgType:            membershipType === 'org' ? get('orgType') : undefined,
@@ -111,6 +112,25 @@ function BriefingModal({ onClose }: { onClose: () => void }) {
           <Field label="Job title"    name="jobTitle"    placeholder="Your job title"       required />
           <Field label="Organisation" name="organisation" placeholder="Your organisation"   required />
           <Field label="Email address" name="email" type="email" placeholder="you@organisation.com" required />
+
+          {/* Role */}
+          <div>
+            <label className="block text-[#1b3d6e] text-[10px] font-bold uppercase tracking-widest font-[family-name:var(--font-heading)] mb-1.5">
+              Which best describes you?
+            </label>
+            <select
+              name="role"
+              required
+              className="w-full px-4 py-2.5 rounded-xl bg-[#f4f7fb] text-gray-700 border border-[#dde3ee] focus:outline-none focus:border-[#1b3d6e] text-sm"
+            >
+              <option value="">Select one…</option>
+              <option>Brand or sponsor</option>
+              <option>Investor</option>
+              <option>Rights holder or federation</option>
+              <option>Government</option>
+              <option>Other</option>
+            </select>
+          </div>
 
           {/* Membership type toggle */}
           <div>

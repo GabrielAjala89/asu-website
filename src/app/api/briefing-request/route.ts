@@ -22,7 +22,7 @@ export async function POST(req: Request) {
   try {
     const {
       firstName, lastName, jobTitle, organisation, email,
-      membershipType, preferredDate,
+      role, membershipType, preferredDate,
       orgType, marketsOfInterest, commercialDecision, privateConversation,
     } = await req.json();
 
@@ -38,6 +38,7 @@ export async function POST(req: Request) {
       jobTitle,
       organisation,
       email,
+      role:                role || null,
       membershipType:      membershipType ?? 'individual',
       preferredDate:       preferredDate || null,
       orgType:             orgType || null,
@@ -74,7 +75,7 @@ export async function POST(req: Request) {
         from:    FROM,
         to:      NOTIFY,
         subject: `New briefing request — ${firstName} ${lastName}`,
-        html:    notifyHtml({ firstName, lastName, jobTitle, organisation, email, membershipType, preferredDate, orgType, marketsOfInterest, commercialDecision, privateConversation }),
+        html:    notifyHtml({ firstName, lastName, jobTitle, organisation, email, role, membershipType, preferredDate, orgType, marketsOfInterest, commercialDecision, privateConversation }),
       }),
       resend.emails.send({
         from:    FROM,
@@ -102,7 +103,7 @@ function row(label: string, value?: string | boolean | null) {
 
 function notifyHtml(d: {
   firstName: string; lastName: string; jobTitle?: string; organisation?: string;
-  email: string; membershipType?: string; preferredDate?: string;
+  email: string; role?: string; membershipType?: string; preferredDate?: string;
   orgType?: string; marketsOfInterest?: string; commercialDecision?: string; privateConversation?: boolean;
 }) {
   const typeLabel = d.membershipType === 'org' ? 'Organisation' : 'Individual';
@@ -122,6 +123,7 @@ function notifyHtml(d: {
       ${row('Email',               d.email)}
       ${row('Job title',           d.jobTitle)}
       ${row('Organisation',        d.organisation)}
+      ${row('Role type',           d.role)}
       ${row('Joining as',          typeLabel)}
       ${row('Preferred date',      d.preferredDate)}
       ${d.membershipType === 'org' ? `

@@ -21,10 +21,17 @@ interface TestimonialsCarouselProps {
 const FALLBACK_TESTIMONIALS: Testimonial[] = [
   {
     _id: "1",
-    name: "Testimonial coming soon",
-    role: "Role",
-    organisation: "Organisation",
-    quote: "We are gathering testimonials from industry leaders. Check back soon.",
+    name: "Ben Sadler",
+    role: "Former CEO",
+    organisation: "Alive & Kicking",
+    quote: "ASU have been pivotal in AK's growth since our first introduction in 2019. Thanks to ASU's support, AK became the first African manufacturer of FIFA licensed footballs, opening us up to new markets and driving an additional 27,000 ball sales in 2022, an increase of 64% from the previous year.",
+  },
+  {
+    _id: "2",
+    name: "Gelson Fernandes",
+    role: "Former FIFA Player Representative and International Football Player",
+    organisation: "FIFA",
+    quote: "Africa Sports Unified is building something important — a credible, evidence-based platform that gives African sport the visibility and strategic support it deserves on the global stage.",
   },
 ];
 

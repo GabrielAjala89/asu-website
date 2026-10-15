@@ -6,7 +6,7 @@ import { NotReadyToJoin } from "@/components/ui/NotReadyToJoin";
 import { sanityFetch } from "@/lib/sanity";
 import { ALL_TRUSTED_BY_QUERY } from "@/lib/queries";
 import Image from "next/image";
-import { BarChart2, Globe, Users, Bell, Calendar } from "lucide-react";
+import { InsiderTestimonials } from "@/components/sections/InsiderTestimonials";
 
 export const revalidate = 60;
 
@@ -23,48 +23,76 @@ interface TrustedBy {
 
 const BENEFITS = [
   {
-    Icon: BarChart2,
+    num: "01",
     title: "Know where the money is moving",
-    body: "A monthly Insider Brief and quarterly deals and investment intelligence briefings, drawn from ASU's trackers.",
+    body: "The monthly Insider Brief, deals and investment intelligence from ASU's trackers, and country market snapshots on the markets that matter to your business.",
   },
   {
-    Icon: Globe,
-    title: "Enter new markets with confidence",
-    body: "Market reports and insights on the countries and sectors that matter to your business.",
-  },
-  {
-    Icon: Users,
+    num: "02",
     title: "Reach the people who decide",
-    body: "A verified members directory and introduction requests, so you know who to approach and how to reach them.",
+    body: "The ASU Directory of organisations across African sport, by country, sport and sector. Tell us who you need to meet: where we know the right person, we will make the introduction.",
   },
   {
-    Icon: Bell,
-    title: "Act on opportunities first",
-    body: "Tenders, partnership opportunities and senior appointments across the continent, curated for you in every Insider Brief.",
-  },
-  {
-    Icon: Calendar,
+    num: "03",
     title: "Build relationships in the room",
-    body: "Member meetups at key industry events.",
+    body: "Invite only member briefings with senior leaders, plus meetups at key industry events.",
   },
 ];
 
-const AUDIENCES = [
+const WHO_FOR = [
   {
-    label: "Sponsors and brands",
-    body: "Justify your African investment with real deal comparables and market entry intelligence, not guesswork.",
+    title: "Brands and sponsors",
+    voice: '"I need evidence to justify spending in Africa."',
+    bullets: [
+      "Benchmark deals before you sign",
+      "See which brands are active, where and in which sports",
+      "Shortlist properties worth backing",
+    ],
   },
   {
-    label: "Rights holders",
-    body: "Price and package your rights against what the market is actually paying, and find the sponsors most likely to buy.",
+    title: "Investors",
+    voice: '"I can\'t invest blind."',
+    bullets: [
+      "Track deal flow and disclosed values by market",
+      "Use country snapshots to size opportunities",
+      "Find the operators behind the assets",
+    ],
   },
   {
-    label: "Investors",
-    body: "See where capital is moving across African sport before you commit your own.",
+    title: "Rights holders and federations",
+    voice: '"I\'m pricing deals without benchmarks."',
+    bullets: [
+      "Compare your deals with the market",
+      "See which sponsors are spending, and on what",
+      "Find the brands that fit your property",
+    ],
   },
   {
-    label: "Governments and IGOs",
-    body: "Understand the commercial landscape your federations operate in, and find the partners and investment to grow sport beyond public budgets.",
+    title: "Government leaders",
+    voice: '"We need sport to raise its own revenue."',
+    bullets: [
+      "See how other markets commercialise sport",
+      "Track investment and policy trends across the continent",
+      "Meet private sector partners at member briefings",
+    ],
+  },
+];
+
+const HOW_STEPS = [
+  {
+    num: "1",
+    title: "Request a briefing",
+    body: "Tell us who you are and what you are working on. We will invite you to the right session.",
+  },
+  {
+    num: "2",
+    title: "Join a short group briefing",
+    body: "See the intelligence, hear how membership works and ask us anything.",
+  },
+  {
+    num: "3",
+    title: "Decide, with the early member rate",
+    body: "Early member places close on 30 November 2026.",
   },
 ];
 
@@ -76,7 +104,7 @@ export default async function AsuInsiderPage() {
       <Navbar />
       <main>
 
-        {/* ── Hero ─────────────────────────────────────────────────────────── */}
+        {/* ── Hero ─────────────────────────────────────────────────────── */}
         <section className="relative min-h-[75vh] flex items-end overflow-hidden">
           <Image
             src="/images/asu-insider-hero.jpg"
@@ -87,107 +115,116 @@ export default async function AsuInsiderPage() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1b3d6e]/90 via-[#1b3d6e]/50 to-transparent" />
           <div className="relative z-10 mx-auto max-w-7xl px-6 w-full pb-16 md:pb-24">
-            <span className="inline-block mb-4 px-4 py-1.5 rounded-full bg-[#F37021] text-white text-xs font-bold font-[family-name:var(--font-heading)] uppercase tracking-widest">
-              ASU Insider &nbsp;|&nbsp; Private briefings now open
-            </span>
+            <div className="flex flex-wrap gap-2 mb-5 font-[family-name:var(--font-heading)]">
+              <span className="px-3 py-1.5 rounded-sm bg-[#E8630A] text-[#030000] text-xs font-bold uppercase tracking-widest">
+                Private briefings now open
+              </span>
+              <span className="px-3 py-1.5 rounded-sm border border-white/60 text-white text-xs font-bold uppercase tracking-widest">
+                Early member places close 30 November
+              </span>
+            </div>
             <OrangeLine />
-            <h1 className="mt-4 text-4xl md:text-6xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight max-w-3xl">
+            <p className="mt-4 text-base font-bold text-[#F4A26B] font-[family-name:var(--font-heading)] uppercase tracking-[0.14em]">ASU Insider</p>
+            <h1 className="mt-2 text-4xl md:text-6xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-tight max-w-[18ch]">
               Make commercial decisions in African sport with data and people you can trust.
             </h1>
-            <p className="mt-4 text-white/80 text-base md:text-xl max-w-2xl leading-relaxed">
+            <p className="mt-4 text-white/80 text-base md:text-xl max-w-[46rem] leading-relaxed">
               ASU Insider gives sponsors, rights holders and investors the market intelligence and verified access they need to act with confidence across Africa&apos;s sports economy.
             </p>
-            <div className="mt-8">
+            <div className="mt-8 flex flex-wrap gap-4">
               <a
                 href="#request-briefing"
-                className="inline-block px-6 py-3.5 rounded-full bg-[#F37021] text-white font-bold font-[family-name:var(--font-heading)] text-sm hover:bg-[#d65a14] transition-colors"
+                className="inline-block px-7 py-[18px] rounded bg-[#E8630A] text-[#030000] font-bold font-[family-name:var(--font-heading)] text-base hover:bg-[#B04A06] hover:text-white transition-colors"
               >
                 Request a briefing invitation
+              </a>
+              <a
+                href="#free"
+                className="inline-block px-7 py-[18px] rounded border-2 border-white text-white font-bold font-[family-name:var(--font-heading)] text-base hover:bg-white hover:text-[#1b3d6e] transition-colors"
+              >
+                Join ASU Insider – free
               </a>
             </div>
           </div>
         </section>
 
-        {/* ── What changes when you join ───────────────────────────────────── */}
-        <section className="py-20 bg-white">
+        {/* ── How ASU Insider helps you decide ────────────────────────── */}
+        <section className="py-24 bg-white">
           <div className="mx-auto max-w-7xl px-6">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <OrangeLine />
-                <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                  What changes when you join
-                </h2>
-                <p className="mt-4 text-gray-600 leading-relaxed">
-                  Africa&apos;s sports economy is growing faster than the information available to navigate it. Decisions worth millions are still made on instinct and personal networks. ASU Insider closes that gap.
-                </p>
-                <div className="mt-6 space-y-5">
-                  {AUDIENCES.map((a) => (
-                    <div key={a.label}>
-                      <p className="font-bold text-[#1b3d6e] font-[family-name:var(--font-heading)] text-sm">{a.label}</p>
-                      <p className="mt-1 text-gray-600 text-sm leading-relaxed">{a.body}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="relative h-72 md:h-96 rounded-2xl overflow-hidden">
-                <Image
-                  src="/images/asu-insider-page.jpg"
-                  alt="ASU Insider networking event"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── How ASU Insider helps you decide ────────────────────────────── */}
-        <section className="py-20 bg-[#f4f7fb]">
-          <div className="mx-auto max-w-7xl px-6">
-            <div className="text-center mb-12">
-              <OrangeLine className="mx-auto" />
-              <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                How ASU Insider helps you decide
-              </h2>
-            </div>
-            {/* 6-col grid: top 3 cards each span 2 cols, bottom 2 staggered by 1 col — W shape */}
-            <div className="grid grid-cols-6 gap-6 max-w-5xl mx-auto">
-              {BENEFITS.slice(0, 3).map((b) => (
-                <div key={b.title} className="col-span-6 sm:col-span-3 lg:col-span-2 bg-white rounded-2xl p-8">
-                  <b.Icon size={36} className="text-[#F37021]" strokeWidth={1.5} />
-                  <h3 className="mt-4 text-base font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
-                    {b.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">{b.body}</p>
+            <h2 className="font-[family-name:var(--font-heading)] font-extrabold text-[clamp(1.8rem,3vw,2.5rem)] text-[#1b3d6e] mb-12 leading-tight">
+              How ASU Insider helps you decide
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {BENEFITS.map((b) => (
+                <div key={b.num} className="bg-[#F5F6F8] rounded p-9 flex flex-col gap-3">
+                  <p className="font-[family-name:var(--font-heading)] font-bold text-sm text-[#B04A06]">{b.num}</p>
+                  <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">{b.title}</h3>
+                  <p className="text-[17px] leading-relaxed text-[#4A4A4A]">{b.body}</p>
                 </div>
               ))}
-              {/* 4th card: offset right by 1 col so it sits under the gap between card 1 and 2 */}
-              {(() => { const b = BENEFITS[3]; const Icon = b.Icon; return (
-                <div className="col-span-6 sm:col-span-3 lg:col-start-2 lg:col-span-2 bg-white rounded-2xl p-8">
-                  <Icon size={36} className="text-[#F37021]" strokeWidth={1.5} />
-                  <h3 className="mt-4 text-base font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">{b.title}</h3>
-                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">{b.body}</p>
-                </div>
-              ); })()}
-              {/* 5th card: offset right by 3 cols so it sits under the gap between card 2 and 3 */}
-              {(() => { const b = BENEFITS[4]; const Icon = b.Icon; return (
-                <div className="col-span-6 sm:col-span-3 lg:col-start-4 lg:col-span-2 bg-white rounded-2xl p-8">
-                  <Icon size={36} className="text-[#F37021]" strokeWidth={1.5} />
-                  <h3 className="mt-4 text-base font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">{b.title}</h3>
-                  <p className="mt-2 text-sm text-gray-600 leading-relaxed">{b.body}</p>
-                </div>
-              ); })()}
             </div>
           </div>
         </section>
 
-        {/* ── Join by invitation ───────────────────────────────────────────── */}
+        {/* ── Who it is for ───────────────────────────────────────────── */}
+        <section className="py-24 bg-[#F5F6F8]">
+          <div className="mx-auto max-w-7xl px-6 flex flex-col gap-10">
+            <div className="flex flex-col gap-3">
+              <h2 className="font-[family-name:var(--font-heading)] font-extrabold text-[clamp(1.8rem,3vw,2.5rem)] text-[#1b3d6e] leading-tight">
+                Who it is for
+              </h2>
+              <p className="text-lg text-[#4A5D7A]">Find your role. Here is what membership does for you.</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {WHO_FOR.map((w) => (
+                <div key={w.title} className="bg-white rounded p-8 flex flex-col gap-4">
+                  <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">{w.title}</h3>
+                  <p className="text-base text-[#4A4A4A] italic">{w.voice}</p>
+                  <ul className="space-y-1 pl-5 list-disc text-base text-[#4A4A4A] leading-relaxed">
+                    {w.bullets.map((b) => <li key={b}>{b}</li>)}
+                  </ul>
+                </div>
+              ))}
+            </div>
+            <p className="text-center text-base text-[#4A5D7A]">
+              Need support for your whole institution?{" "}
+              <a href="/advisory" className="font-[family-name:var(--font-heading)] font-bold text-[#1b3d6e] hover:text-[#E8630A] transition-colors">
+                See ASU Advisory
+              </a>
+            </p>
+          </div>
+        </section>
+
+        {/* ── Testimonials ─────────────────────────────────────────────── */}
+        <InsiderTestimonials />
+
+        {/* ── How joining works ────────────────────────────────────────── */}
+        <section className="py-24 bg-[#1b3d6e]">
+          <div className="mx-auto max-w-7xl px-6 flex flex-col gap-11">
+            <h2 className="font-[family-name:var(--font-heading)] font-extrabold text-[clamp(1.8rem,3vw,2.5rem)] text-white leading-tight">
+              How joining works
+            </h2>
+            <ol className="grid grid-cols-1 md:grid-cols-3 gap-8 list-none p-0 m-0">
+              {HOW_STEPS.map((s) => (
+                <li key={s.num} className="flex flex-col gap-3">
+                  <span className="font-[family-name:var(--font-heading)] font-extrabold text-5xl text-[#F4A26B]">{s.num}</span>
+                  <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-white">{s.title}</h3>
+                  <p className="text-[17px] leading-relaxed text-[#E3E9F2]">{s.body}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* ── Join by invitation ───────────────────────────────────────── */}
         <TwoWaysToJoin />
 
-        {/* ── Not ready to join? Start free. ──────────────────────────────── */}
-        <NotReadyToJoin />
+        {/* ── Not ready to join? Start free. ──────────────────────────── */}
+        <div id="free">
+          <NotReadyToJoin />
+        </div>
 
-        {/* ── Network line ─────────────────────────────────────────────────── */}
+        {/* ── Network line ─────────────────────────────────────────────── */}
         <section className="py-10 bg-white border-t border-gray-100">
           <div className="mx-auto max-w-7xl px-6 text-center">
             <p className="text-sm font-bold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
@@ -196,7 +233,7 @@ export default async function AsuInsiderPage() {
           </div>
         </section>
 
-        {/* ── Trusted By ───────────────────────────────────────────────────── */}
+        {/* ── Trusted By ───────────────────────────────────────────────── */}
         {trustedBy.length > 0 && (
           <section className="py-14 bg-white border-t border-gray-100">
             <div className="mx-auto max-w-7xl px-6">
@@ -220,7 +257,6 @@ export default async function AsuInsiderPage() {
             </div>
           </section>
         )}
-
 
       </main>
       <Footer />

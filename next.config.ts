@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      { source: "/consult", destination: "/advisory", permanent: true },
+      { source: "/consult/:path*", destination: "/advisory/:path*", permanent: true },
+      { source: "/knowledge-hub", destination: "/intelligence", permanent: true },
+      { source: "/knowledge-hub/:path*", destination: "/intelligence/:path*", permanent: true },
+    ];
+  },
   images: {
     remotePatterns: [
       // Sanity CDN — for all CMS images

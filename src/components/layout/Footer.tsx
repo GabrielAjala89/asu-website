@@ -7,8 +7,8 @@ const SPOTIFY_URL = "https://open.spotify.com/show/37o4pqxpyoJzURhSr2dXpe?si=aea
 
 const QUICK_LINKS = [
   { label: "About",         href: "/about" },
-  { label: "Knowledge Hub", href: "/knowledge-hub" },
-  { label: "Consulting",    href: "/consult" },
+  { label: "Intelligence",  href: "/intelligence" },
+  { label: "Advisory",      href: "/advisory" },
   { label: "ASU Insider",   href: "/asu-insider" },
 ];
 
@@ -28,17 +28,13 @@ export function Footer() {
           <div className="flex-1">
             {/* Logo */}
             <div className="flex items-center gap-3 mb-8">
-              <div className="relative w-9 h-9 shrink-0">
-                <Image
-                  src="/images/asu-logo-white.png"
-                  alt="Africa Sports Unified"
-                  fill
-                  className="object-contain"
-                />
-              </div>
-              <span className="font-[family-name:var(--font-heading)] font-extrabold text-sm uppercase tracking-tight">
-                Africa Sports Unified
-              </span>
+              <Image
+                src="/images/asu-logo-white-notagline.webp"
+                alt="Africa Sports Unified"
+                width={160}
+                height={36}
+                className="object-contain h-9 w-auto"
+              />
             </div>
 
             {/* Quick Links */}

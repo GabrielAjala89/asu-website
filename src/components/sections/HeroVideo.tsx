@@ -36,33 +36,23 @@ export function HeroVideo() {
       <div className="relative z-10 w-full pb-16 md:pb-24">
         <div className="mx-auto max-w-7xl px-6">
           <div className="max-w-3xl">
-            <p className="text-sm md:text-base font-bold text-white/60 uppercase tracking-widest font-[family-name:var(--font-heading)] mb-4">
-              Powering the Business of Sport in Africa
+            <p className="text-sm font-bold text-[#F4A26B] uppercase tracking-[0.14em] font-[family-name:var(--font-heading)] mb-4">
+              Africa Sports Unified
             </p>
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.02] font-[family-name:var(--font-heading)]">
-              Make better decisions in Africa&apos;s sports economy.
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-[1.08] font-[family-name:var(--font-heading)] max-w-[16ch]">
+              Commercial intelligence and advisory for African sport.
             </h1>
-            <p className="mt-5 text-lg md:text-xl text-white/80 max-w-xl leading-relaxed">
-              Trusted intelligence, expert advice and access to the people who decide, for organisations investing in, sponsoring and running sport across Africa.
+            <p className="mt-6 text-lg md:text-xl text-[#E3E9F2] max-w-[46rem] leading-relaxed">
+              We advise the governments, federations, brands and investors shaping Africa&apos;s sports economy, backed by the deals and market data we track.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button href="/asu-insider" variant="primary" size="lg">
-                Explore ASU Insider
+            <div className="mt-8 flex flex-wrap gap-4">
+              <Button href="/advisory" variant="primary" size="lg">
+                Book a strategy call
               </Button>
-              <Button href="/consult" variant="ghost" size="lg">
-                Work With ASU
+              <Button href="/asu-insider" variant="ghost" size="lg">
+                Join ASU Insider – free
               </Button>
             </div>
-          </div>
-
-          {/* Slider dots — decorative, matching Figma */}
-          <div className="mt-10 flex gap-2">
-            {[0, 1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className={`h-1 rounded-full transition-all ${i === 3 ? "w-8 bg-white" : "w-2 bg-white/40"}`}
-              />
-            ))}
           </div>
         </div>
       </div>
