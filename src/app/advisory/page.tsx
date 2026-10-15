@@ -249,8 +249,13 @@ export default function AdvisoryPage() {
         {/* ── Led by ───────────────────────────────────────────────────── */}
         <section id="lead" className="py-24">
           <div className="mx-auto max-w-7xl px-6 flex flex-wrap gap-12 items-center">
-            <div className="flex-1 min-w-[280px] max-w-[360px] aspect-[4/5] bg-[#F5F6F8] rounded flex items-center justify-center text-[#4A5D7A] text-sm border-2 border-dashed border-[#C4CAD3]">
-              [Photo of Gabriel — coming soon]
+            <div className="flex-1 min-w-[280px] max-w-[360px] relative aspect-[4/5] rounded overflow-hidden">
+              <Image
+                src="/images/gabriel-ajala.jpg"
+                alt="Gabriel Ajala, Founder, Africa Sports Unified"
+                fill
+                className="object-cover object-top"
+              />
             </div>
             <div className="flex-[999] min-w-0 flex flex-col gap-5">
               <p className="font-[family-name:var(--font-heading)] text-sm font-bold uppercase tracking-[0.12em] text-[#B04A06]">Led by</p>
