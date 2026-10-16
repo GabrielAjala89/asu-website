@@ -67,10 +67,9 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
               priority
             />
           </div>
-          <div className="font-[family-name:var(--font-heading)] font-extrabold leading-none">
-            <span className="text-[13px] tracking-tight uppercase text-white">Africa Sports Unified</span>
-            <span className="block text-[8px] uppercase tracking-[0.2em] font-medium text-white/60">The Voice of African Sports Business</span>
-          </div>
+          <span className="font-[family-name:var(--font-heading)] font-extrabold text-[13px] tracking-tight uppercase text-white">
+            Africa Sports Unified
+          </span>
         </Link>
 
         {/* Desktop nav */}
