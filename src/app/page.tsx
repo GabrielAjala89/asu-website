@@ -7,8 +7,6 @@ import { DealsTrackerCharts } from "@/components/sections/DealsTrackerCharts";
 import { InsiderClosingBand } from "@/components/sections/InsiderClosingBand";
 import { TestimonialsCarousel } from "@/components/sections/TestimonialsCarousel";
 import Image from "next/image";
-import { sanityFetch } from "@/lib/sanity";
-import { ALL_TESTIMONIALS_QUERY } from "@/lib/queries";
 
 export const revalidate = 60;
 
@@ -19,9 +17,7 @@ const TRUSTED_BY = [
   { src: "/images/trusted-by/afcfta.jpg", alt: "AfCFTA",  size: "h-16 w-44" },
 ];
 
-export default async function HomePage() {
-  const testimonials = await sanityFetch(ALL_TESTIMONIALS_QUERY).catch(() => []);
-
+export default function HomePage() {
   return (
     <>
       <Navbar transparent />
@@ -49,7 +45,7 @@ export default async function HomePage() {
 
         <DealsTrackerStats />
         <AdvisoryWhoWeWorkWith />
-        <TestimonialsCarousel testimonials={(testimonials as never[]).slice(0, 2)} />
+        <TestimonialsCarousel testimonials={[]} />
         <DealsTrackerCharts />
         <InsiderClosingBand />
       </main>
