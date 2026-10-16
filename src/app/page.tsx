@@ -49,7 +49,7 @@ export default async function HomePage() {
 
         <DealsTrackerStats />
         <AdvisoryWhoWeWorkWith />
-        <TestimonialsCarousel testimonials={testimonials as never[]} />
+        <TestimonialsCarousel testimonials={(testimonials as never[]).slice(0, 2)} />
         <DealsTrackerCharts />
         <InsiderClosingBand />
       </main>
