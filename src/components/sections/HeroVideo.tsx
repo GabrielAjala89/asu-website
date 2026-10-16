@@ -47,7 +47,7 @@ export function HeroVideo() {
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Button href="/advisory" variant="primary" size="lg">
-                Book a strategy call
+                Learn more
               </Button>
               <Button href="/asu-insider" variant="ghost" size="lg">
                 Join ASU Insider – free

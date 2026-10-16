@@ -57,15 +57,20 @@ export function Navbar({ transparent = false }: { transparent?: boolean }) {
       <div className="mx-auto max-w-7xl px-6 h-18 flex items-center justify-between py-4">
 
         {/* Logo */}
-        <Link href="/" className="shrink-0">
-          <Image
-            src="/images/asu-logo-white-notagline.webp"
-            alt="Africa Sports Unified"
-            height={40}
-            width={200}
-            className="object-contain h-10 w-auto"
-            priority
-          />
+        <Link href="/" className="shrink-0 flex items-center gap-2.5">
+          <div className="relative w-10 h-10 shrink-0">
+            <Image
+              src="/images/asu-logo-white.png"
+              alt=""
+              fill
+              className="object-contain"
+              priority
+            />
+          </div>
+          <div className="font-[family-name:var(--font-heading)] font-extrabold leading-none">
+            <span className="text-[13px] tracking-tight uppercase text-white">Africa Sports Unified</span>
+            <span className="block text-[8px] uppercase tracking-[0.2em] font-medium text-white/60">The Voice of African Sports Business</span>
+          </div>
         </Link>
 
         {/* Desktop nav */}

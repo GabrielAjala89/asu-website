@@ -53,7 +53,7 @@ const HOW_STEPS = [
 
 const WAYS_TO_WORK = [
   { title: "Project",               body: "A defined piece of work with a clear scope, timeline and outcome." },
-  { title: "Retainer",              body: "Ongoing strategic counsel and intelligence, on call as decisions arise." },
+  { title: "Retainer",              body: "Ongoing strategic advisory and intelligence, on call as decisions arise." },
   { title: "Commissioned research", body: "Market studies, data and reports built around your question." },
 ];
 
@@ -134,7 +134,7 @@ export default function AdvisoryPage() {
                 How we work
               </p>
               <h2 className="font-[family-name:var(--font-heading)] font-extrabold text-[clamp(1.8rem,3.2vw,2.7rem)] text-white leading-tight max-w-[24ch]">
-                We build the evidence base before we give the counsel.
+                We build the evidence base before we give the advice.
               </h2>
             </div>
             <ol className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 list-none p-0 m-0">

@@ -136,10 +136,10 @@ export default function AboutPage() {
         </section>
 
         {/* ── Mission band ─────────────────────────────────────────────── */}
-        <section className="bg-[#1b3d6e] py-16">
-          <div className="mx-auto max-w-7xl px-6 flex flex-col gap-4">
+        <section className="bg-[#1b3d6e] py-10">
+          <div className="mx-auto max-w-7xl px-6 flex flex-col gap-3">
             <p className="font-[family-name:var(--font-heading)] text-sm font-bold uppercase tracking-[0.12em] text-[#F4A26B]">Our mission</p>
-            <p className="font-[family-name:var(--font-heading)] font-extrabold text-[clamp(1.5rem,2.8vw,2.2rem)] text-white leading-snug max-w-[36rem]">
+            <p className="font-[family-name:var(--font-heading)] font-extrabold text-[clamp(1.5rem,2.8vw,2.2rem)] text-white leading-snug">
               To grow sport&apos;s contribution to Africa&apos;s economy by giving the organisations that shape it the advice, intelligence and connections to succeed.
             </p>
           </div>

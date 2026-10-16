@@ -53,7 +53,7 @@ export function AdvisoryWhoWeWorkWith() {
             href="/advisory"
             className="px-8 py-[18px] rounded font-[family-name:var(--font-heading)] font-bold text-base bg-[#E8630A] text-[#030000] hover:bg-[#B04A06] hover:text-white transition-colors"
           >
-            Book a strategy call
+            Learn more
           </Link>
         </div>
       </div>

@@ -26,16 +26,16 @@ export function TwoWaysToJoin() {
 
   return (
     <>
-      <section id="two-ways" className="py-20 bg-white">
-        <div className="mx-auto max-w-7xl px-6">
+      <section id="two-ways" className="py-20 bg-white h-full flex flex-col">
+        <div className="mx-auto max-w-7xl px-6 flex-1 flex flex-col">
           <div className="text-center mb-12">
             <div className="mx-auto w-10 h-[3px] bg-[#F37021] rounded-full" />
             <h2 className="mt-4 text-2xl md:text-3xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)]">
               Join by invitation
             </h2>
           </div>
-          <div className="max-w-lg mx-auto">
-            <div id="request-briefing" className="border border-[#dde3ee] rounded-2xl p-8 flex flex-col">
+          <div className="max-w-lg mx-auto flex-1 flex flex-col">
+            <div id="request-briefing" className="border border-[#dde3ee] rounded-2xl p-8 flex flex-col flex-1">
               <p className="text-gray-600 leading-relaxed flex-1">
                 We are welcoming a first group of members ahead of opening ASU Insider more widely in 2027. Request an invitation to a private briefing and we will send you everything you need.
               </p>
