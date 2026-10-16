@@ -24,12 +24,13 @@ const FALLBACK_TESTIMONIALS: Testimonial[] = [
     name: "Ben Sadler",
     role: "Former CEO, Alive & Kicking",
     quote: "ASU have been pivotal in AK's growth since our first introduction in 2019. Thanks to ASU's support, AK became the first African manufacturer of FIFA licensed footballs, opening us up to new markets and driving an additional 27,000 ball sales in 2022, an increase of 64% from the previous year.",
+    photo: { asset: { url: "/images/testimonial-ben.jpg" } },
   },
   {
     _id: "2",
     name: "Gelson Fernandes",
-    role: "Former FIFA Player Representative and International Football Player",
-    quote: "Africa Sports Unified is building something important — a credible, evidence-based platform that gives African sport the visibility and strategic support it deserves on the global stage.",
+    role: "Deputy Chief Member Associations Officer and Director for Africa",
+    quote: "Africa Sports Unified is helping to strengthen dialogue and insight around the development of sport across Africa. By bringing together stakeholders from across the ecosystem, ASU plays an important role in shaping informed conversations about the growth and future of sport on the continent.",
     photo: { asset: { url: "/images/testimonial-gelson.jpg" } },
   },
 ];
