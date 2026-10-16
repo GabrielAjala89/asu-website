@@ -8,7 +8,7 @@ const SITE = 'https://asunified.com';
 const CONSULT = `${SITE}/consult`;
 
 const writeClient = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? 'placeholder',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production',
   apiVersion: '2024-06-01',
   useCdn: false,

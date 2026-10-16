@@ -11,7 +11,7 @@ const HS_PORTAL_ID  = '25075380';
 const HS_FORM_ID    = 'f75cf6de-9bdc-4fcc-b5c2-9ec5236bfa33'; // free member form — captures the contact
 
 const sanity = createClient({
-  projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+  projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? 'placeholder',
   dataset:    process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production',
   apiVersion: '2024-06-01',
   useCdn:     false,

@@ -9,7 +9,7 @@ const SITE   = "https://asunified.com";
 const SECRET = process.env.FREE_MEMBER_TOKEN_SECRET!;
 
 const readClient = createClient({
-  projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+  projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? 'placeholder',
   dataset:    process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production",
   apiVersion: "2024-06-01",
   useCdn:     false,

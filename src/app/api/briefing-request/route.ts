@@ -11,7 +11,7 @@ const HS_PORTAL_ID       = '25075380';
 const HS_INSIDER_FORM_ID = '4ebbab0b-cd45-466b-8bba-e6469b358dfa';
 
 const sanity = createClient({
-  projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+  projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? 'placeholder',
   dataset:    process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production',
   apiVersion: '2024-06-01',
   useCdn:     false,

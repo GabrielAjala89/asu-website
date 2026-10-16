@@ -16,7 +16,7 @@ const CSV_2025 =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQwfVa1av_8miAE8shipaI58BjTz98lNXCOoXQPMpu7bY_qCPLjVTcTU9IBjMpcvoV03F-sVLTEvvCc/pub?gid=0&single=true&output=csv";
 
 const writeClient = createClient({
-  projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
+  projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? 'placeholder',
   dataset:    process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production",
   apiVersion: "2024-06-01",
   useCdn:     false,
