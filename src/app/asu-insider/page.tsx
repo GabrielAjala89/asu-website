@@ -166,8 +166,8 @@ export default async function AsuInsiderPage() {
               {BENEFITS.map((b) => (
                 <div key={b.num} className="bg-[#F5F6F8] rounded p-9 flex flex-col gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-[#1b3d6e]/8 flex items-center justify-center shrink-0">
-                      <b.Icon size={20} className="text-[#1b3d6e]" strokeWidth={1.5} />
+                    <div className="w-10 h-10 rounded-lg bg-[#E8630A]/10 flex items-center justify-center shrink-0">
+                      <b.Icon size={20} className="text-[#E8630A]" strokeWidth={1.5} />
                     </div>
                     <p className="font-[family-name:var(--font-heading)] font-bold text-sm text-[#B04A06]">{b.num}</p>
                   </div>
@@ -182,6 +182,21 @@ export default async function AsuInsiderPage() {
         {/* ── Who it is for ───────────────────────────────────────────── */}
         <section className="py-24 bg-[#F5F6F8]">
           <div className="mx-auto max-w-7xl px-6 flex flex-col gap-10">
+            <div className="relative rounded-xl overflow-hidden h-56 md:h-72">
+              <Image
+                src="/images/asu-insider-page.jpg"
+                alt="ASU Insider community"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#1b3d6e]/70 via-[#1b3d6e]/30 to-transparent" />
+              <div className="relative z-10 h-full flex flex-col justify-center px-10 max-w-[32rem]">
+                <p className="font-[family-name:var(--font-heading)] font-bold text-sm uppercase tracking-[0.12em] text-[#F4A26B] mb-2">ASU Insider</p>
+                <p className="font-[family-name:var(--font-heading)] font-extrabold text-[clamp(1.4rem,2.4vw,2rem)] text-white leading-tight">
+                  Intelligence built for the people who make commercial decisions.
+                </p>
+              </div>
+            </div>
             <div className="flex flex-col gap-3">
               <h2 className="font-[family-name:var(--font-heading)] font-extrabold text-[clamp(1.8rem,3vw,2.5rem)] text-[#1b3d6e] leading-tight">
                 Who it is for
@@ -191,8 +206,8 @@ export default async function AsuInsiderPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {WHO_FOR.map((w) => (
                 <div key={w.title} className="bg-white rounded p-8 flex flex-col gap-4">
-                  <div className="w-11 h-11 rounded-lg bg-[#1b3d6e]/8 flex items-center justify-center">
-                    <w.Icon size={22} className="text-[#1b3d6e]" strokeWidth={1.5} />
+                  <div className="w-11 h-11 rounded-lg bg-[#E8630A]/10 flex items-center justify-center">
+                    <w.Icon size={22} className="text-[#E8630A]" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">{w.title}</h3>
                   <p className="text-base text-[#4A4A4A] italic">{w.voice}</p>

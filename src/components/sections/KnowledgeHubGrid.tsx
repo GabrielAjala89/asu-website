@@ -170,9 +170,9 @@ export function KnowledgeHubGrid({ articles, videos, reports, trackers, initialT
     <section className="py-14 bg-white min-h-[60vh]">
       <div className="mx-auto max-w-7xl px-6">
 
-        {/* Content-type tabs */}
+        {/* Content-type tabs — hide tabs with no content */}
         <div className="flex flex-wrap gap-2 pb-4 border-b border-gray-100">
-          {TABS.map((tab) => (
+          {TABS.filter(tab => tab.id === "all" || counts[tab.id] > 0).map((tab) => (
             <button
               key={tab.id}
               onClick={() => handleTabChange(tab.id)}
@@ -263,21 +263,56 @@ export function KnowledgeHubGrid({ articles, videos, reports, trackers, initialT
 
 // ─── Live content (when Sanity has data) ─────────────────────────────────────
 
-function LiveContent({ activeTab, activeTopic, articles, videos, reports, trackers }: Props & { activeTab: Tab; activeTopic: string | null }) {
-  const showReports  = activeTab === "all" || activeTab === "reports";
-  const showTrackers = activeTab === "all" || activeTab === "trackers";
-  const showArticles = activeTab === "all" || activeTab === "articles";
-  const showVideos   = activeTab === "all" || activeTab === "videos";
+type TypedItem =
+  | { kind: "article"; item: HubArticle }
+  | { kind: "video";   item: HubVideo }
+  | { kind: "report";  item: HubReport }
+  | { kind: "tracker"; item: HubTracker };
 
+function getDate(x: TypedItem): string {
+  return (x.kind === "article" || x.kind === "video") ? (x.item.publishedAt ?? "") : "";
+}
+
+function LiveContent({ activeTab, activeTopic, articles, videos, reports, trackers }: Props & { activeTab: Tab; activeTopic: string | null }) {
   const filteredReports  = reports.filter(r  => matchesTopic(r, activeTopic));
   const filteredTrackers = trackers.filter(t  => matchesTopic(t, activeTopic));
   const filteredArticles = articles.filter(a  => matchesTopic(a, activeTopic));
   const filteredVideos   = videos.filter(v    => matchesTopic(v, activeTopic));
 
+  // "All" tab: merge everything and sort newest first
+  if (activeTab === "all") {
+    const all: TypedItem[] = [
+      ...filteredArticles.map(item => ({ kind: "article" as const, item })),
+      ...filteredVideos.map(item   => ({ kind: "video"   as const, item })),
+      ...filteredReports.map(item  => ({ kind: "report"  as const, item })),
+      ...filteredTrackers.map(item => ({ kind: "tracker" as const, item })),
+    ].sort((a, b) => getDate(b).localeCompare(getDate(a)));
+
+    if (all.length === 0) {
+      return <div className="py-16 text-center text-gray-400"><p className="text-sm">No content published yet — check back soon.</p></div>;
+    }
+
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {all.map(({ kind, item }) => {
+          if (kind === "article") return <ArticleCard key={item._id} article={item} />;
+          if (kind === "video")   return <VideoCard   key={item._id} video={item} />;
+          if (kind === "report")  return <ProductCard key={item._id} item={item} ctaLabel="View Report"      href={`/reports/${item.slug.current}`} />;
+          return                         <ProductCard key={item._id} item={item} ctaLabel="Explore Tracker" href={`/trackers/${item.slug.current}`} />;
+        })}
+      </div>
+    );
+  }
+
+  const showReports  = activeTab === "reports";
+  const showTrackers = activeTab === "trackers";
+  const showArticles = activeTab === "articles";
+  const showVideos   = activeTab === "videos";
+
   const nothingVisible =
-    (showReports  && filteredReports.length  === 0) &&
-    (showTrackers && filteredTrackers.length === 0) &&
-    (showArticles && filteredArticles.length === 0) &&
+    (showReports  && filteredReports.length  === 0) ||
+    (showTrackers && filteredTrackers.length === 0) ||
+    (showArticles && filteredArticles.length === 0) ||
     (showVideos   && filteredVideos.length   === 0);
 
   if (nothingVisible) {
@@ -291,38 +326,23 @@ function LiveContent({ activeTab, activeTopic, articles, videos, reports, tracke
   return (
     <div className="space-y-14">
       {showReports && filteredReports.length > 0 && (
-        <div>
-          {activeTab === "all" && <SectionLabel>Reports</SectionLabel>}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {filteredReports.map((r) => <ProductCard key={r._id} item={r} ctaLabel="View Report" href={`/reports/${r.slug.current}`} />)}
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {filteredReports.map((r) => <ProductCard key={r._id} item={r} ctaLabel="View Report" href={`/reports/${r.slug.current}`} />)}
         </div>
       )}
-
       {showTrackers && filteredTrackers.length > 0 && (
-        <div>
-          {activeTab === "all" && <SectionLabel>Trackers</SectionLabel>}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {filteredTrackers.map((t) => <ProductCard key={t._id} item={t} ctaLabel="Explore Tracker" href={`/trackers/${t.slug.current}`} />)}
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {filteredTrackers.map((t) => <ProductCard key={t._id} item={t} ctaLabel="Explore Tracker" href={`/trackers/${t.slug.current}`} />)}
         </div>
       )}
-
       {showArticles && filteredArticles.length > 0 && (
-        <div>
-          {activeTab === "all" && <SectionLabel>Articles</SectionLabel>}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredArticles.map((a) => <ArticleCard key={a._id} article={a} />)}
-          </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredArticles.map((a) => <ArticleCard key={a._id} article={a} />)}
         </div>
       )}
-
       {showVideos && filteredVideos.length > 0 && (
-        <div>
-          {activeTab === "all" && <SectionLabel>Videos</SectionLabel>}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredVideos.map((v) => <VideoCard key={v._id} video={v} />)}
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredVideos.map((v) => <VideoCard key={v._id} video={v} />)}
         </div>
       )}
     </div>

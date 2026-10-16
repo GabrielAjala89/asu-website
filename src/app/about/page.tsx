@@ -157,8 +157,8 @@ export default function AboutPage() {
                   key={w.title}
                   className={`rounded p-9 flex flex-col ${w.highlight ? "bg-[#1b3d6e]" : "border border-gray-200"}`}
                 >
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${w.highlight ? "bg-white/15" : "bg-[#1b3d6e]/8"}`}>
-                    <w.Icon size={24} className={w.highlight ? "text-[#F4A26B]" : "text-[#1b3d6e]"} strokeWidth={1.5} />
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${w.highlight ? "bg-white/15" : "bg-[#E8630A]/10"}`}>
+                    <w.Icon size={24} className={w.highlight ? "text-[#F4A26B]" : "text-[#E8630A]"} strokeWidth={1.5} />
                   </div>
                   <h3 className={`font-[family-name:var(--font-heading)] font-extrabold text-xl ${w.highlight ? "text-white" : "text-[#1b3d6e]"}`}>
                     {w.title}

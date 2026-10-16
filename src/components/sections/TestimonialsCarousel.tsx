@@ -30,6 +30,7 @@ const FALLBACK_TESTIMONIALS: Testimonial[] = [
     name: "Gelson Fernandes",
     role: "Former FIFA Player Representative and International Football Player",
     quote: "Africa Sports Unified is building something important — a credible, evidence-based platform that gives African sport the visibility and strategic support it deserves on the global stage.",
+    photo: { asset: { url: "/images/testimonial-gelson.jpg" } },
   },
 ];
 

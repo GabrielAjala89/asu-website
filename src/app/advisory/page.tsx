@@ -113,8 +113,8 @@ export default function AdvisoryPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {SERVICES.map(({ Icon, title, bullets }) => (
                 <div key={title} className="bg-[#F5F6F8] rounded p-8 flex flex-col gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-[#1b3d6e]/8 flex items-center justify-center">
-                    <Icon size={24} className="text-[#1b3d6e]" strokeWidth={1.5} />
+                  <div className="w-12 h-12 rounded-lg bg-[#E8630A]/10 flex items-center justify-center">
+                    <Icon size={24} className="text-[#E8630A]" strokeWidth={1.5} />
                   </div>
                   <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">{title}</h3>
                   <ul className="space-y-1 pl-5 list-disc text-base text-[#4A4A4A] leading-relaxed">

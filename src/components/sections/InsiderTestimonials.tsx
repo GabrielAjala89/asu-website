@@ -1,17 +1,21 @@
 "use client";
 
+import Image from "next/image";
+
 const TESTIMONIALS = [
   {
     id: "1",
     quote: "Africa Sports Unified is creating an important platform for African sport, one that gives stakeholders the opportunity to showcase what is being done across the continent and engage in meaningful conversations around development. A lot is being done in Africa, but we do not always have the spaces to share this with the world. Platforms like the ASU Connex Summit are therefore critical in shaping visibility, mindset, and collaboration. If we manage to be unified, we will manage to succeed and initiatives like ASU play an important role in making that happen.",
     name: "Kenny Jean-Marie",
     role: "Former Head of Member Associations Division, FIFA",
+    photo: "/images/testimonial-kenny.jpg",
   },
   {
     id: "2",
     quote: "Africa Sports Unified is bringing the right people into the room to have the conversations that are often avoided but critical to the growth of sport across the continent. Real progress will depend on better alignment across stakeholders, and ASU is helping to move that forward.",
     name: "Abiola Ijasanmi",
     role: "Former Chief Operating Officer, CAF",
+    photo: "/images/testimonial-abiola.jpg",
   },
 ];
 
@@ -22,11 +26,17 @@ function TestimonialCard({ item }: { item: typeof TESTIMONIALS[0] }) {
         &ldquo;{item.quote}&rdquo;
       </blockquote>
       <div className="flex items-center gap-3 pt-2 border-t border-white/20">
-        <div className="w-12 h-12 rounded-full bg-white/20 shrink-0 flex items-center justify-center">
-          <span className="text-white/70 font-bold text-lg font-[family-name:var(--font-heading)]">
-            {item.name.charAt(0)}
-          </span>
-        </div>
+        {item.photo ? (
+          <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-white/30 shrink-0">
+            <Image src={item.photo} alt={item.name} fill className="object-cover object-top" />
+          </div>
+        ) : (
+          <div className="w-12 h-12 rounded-full bg-white/20 shrink-0 flex items-center justify-center">
+            <span className="text-white/70 font-bold text-lg font-[family-name:var(--font-heading)]">
+              {item.name.charAt(0)}
+            </span>
+          </div>
+        )}
         <div className="min-w-0">
           <p className="font-[family-name:var(--font-heading)] font-bold text-white text-base leading-snug">{item.name}</p>
           <p className="text-white/60 text-sm leading-snug">{item.role}</p>
