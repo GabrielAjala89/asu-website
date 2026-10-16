@@ -2,6 +2,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import Image from "next/image";
 import Link from "next/link";
+import { Landmark, BarChart2, Users } from "lucide-react";
 
 export const revalidate = 60;
 
@@ -12,6 +13,7 @@ export const metadata = {
 
 const WHAT_WE_DO = [
   {
+    Icon: Landmark,
     title: "Advisory",
     body: "Strategic advice for governments, federations, rights holders, investors and brands — from commercial strategy to policy and investment readiness.",
     href: "/advisory",
@@ -19,6 +21,7 @@ const WHAT_WE_DO = [
     highlight: true,
   },
   {
+    Icon: BarChart2,
     title: "Intelligence",
     body: "Original research and analysis on deals, media rights, sponsorship and investment across the continent, including the ASU Deals Tracker and market reports.",
     href: "/intelligence",
@@ -26,6 +29,7 @@ const WHAT_WE_DO = [
     highlight: false,
   },
   {
+    Icon: Users,
     title: "ASU Insider",
     body: "A membership connecting decision makers with the intelligence and people they need to act with confidence.",
     href: "/asu-insider",
@@ -153,6 +157,9 @@ export default function AboutPage() {
                   key={w.title}
                   className={`rounded p-9 flex flex-col ${w.highlight ? "bg-[#1b3d6e]" : "border border-gray-200"}`}
                 >
+                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${w.highlight ? "bg-white/15" : "bg-[#1b3d6e]/8"}`}>
+                    <w.Icon size={24} className={w.highlight ? "text-[#F4A26B]" : "text-[#1b3d6e]"} strokeWidth={1.5} />
+                  </div>
                   <h3 className={`font-[family-name:var(--font-heading)] font-extrabold text-xl ${w.highlight ? "text-white" : "text-[#1b3d6e]"}`}>
                     {w.title}
                   </h3>

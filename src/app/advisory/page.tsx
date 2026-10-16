@@ -1,15 +1,18 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { AdvisoryAnimatedStats } from "@/components/sections/AdvisoryAnimatedStats";
 import Image from "next/image";
+import { Landmark, TrendingUp, Shield, Search, FileText, Target, Truck } from "lucide-react";
 
 export const metadata = {
   title: "Advisory | Africa Sports Unified",
-  description: "Strategic advisory for Africa's sports economy. We advise governments, brands, investors and rights holders on how to create and capture value.",
+  description: "Strategic advisory for governments, brands, investors and rights holders in Africa's sports economy.",
 };
+
 
 const SERVICES = [
   {
-    num: "01",
+    Icon: Landmark,
     title: "Governments",
     bullets: [
       "Sports economy strategy and policy",
@@ -19,7 +22,7 @@ const SERVICES = [
     ],
   },
   {
-    num: "02",
+    Icon: TrendingUp,
     title: "Brands and investors",
     bullets: [
       "Market entry and market sizing",
@@ -29,7 +32,7 @@ const SERVICES = [
     ],
   },
   {
-    num: "03",
+    Icon: Shield,
     title: "Rights holders and federations",
     bullets: [
       "Commercial strategy and revenue planning",
@@ -41,52 +44,17 @@ const SERVICES = [
 ];
 
 const HOW_STEPS = [
-  {
-    num: "01",
-    title: "Diagnose",
-    body: "Define the decision you need to make and what success looks like.",
-    highlight: false,
-  },
-  {
-    num: "02",
-    title: "Evidence",
-    body: "Research, deal data and conversations with the people on the ground.",
-    highlight: false,
-  },
-  {
-    num: "03",
-    title: "Strategy",
-    body: "Clear recommendations, priorities and a plan you can act on.",
-    highlight: false,
-  },
-  {
-    num: "04",
-    title: "Delivery support",
-    body: "We stay with you through implementation, not just the report.",
-    highlight: true,
-  },
+  { num: "01", title: "Diagnose",         Icon: Search,   body: "Define the decision you need to make and what success looks like.", highlight: false },
+  { num: "02", title: "Evidence",         Icon: FileText,  body: "Research, deal data and conversations with the people on the ground.", highlight: false },
+  { num: "03", title: "Strategy",         Icon: Target,    body: "Clear recommendations, priorities and a plan you can act on.", highlight: false },
+  { num: "04", title: "Delivery support", Icon: Truck,     body: "We stay with you through implementation, not just the report.", highlight: true },
 ];
 
-const UNECA_STATS = [
-  { value: "2",  label: "research projects" },
-  { value: "2",  label: "stakeholder events" },
-  { value: "4",  label: "podcasts, 47% average consumption" },
-  { value: "14", label: "entrepreneurs mentored over 6 months" },
-];
 
 const WAYS_TO_WORK = [
-  {
-    title: "Project",
-    body: "A defined piece of work with a clear scope, timeline and outcome.",
-  },
-  {
-    title: "Retainer",
-    body: "Ongoing strategic counsel and intelligence, on call as decisions arise.",
-  },
-  {
-    title: "Commissioned research",
-    body: "Market studies, data and reports built around your question.",
-  },
+  { title: "Project",               body: "A defined piece of work with a clear scope, timeline and outcome." },
+  { title: "Retainer",              body: "Ongoing strategic counsel and intelligence, on call as decisions arise." },
+  { title: "Commissioned research", body: "Market studies, data and reports built around your question." },
 ];
 
 const GABRIEL_QUALS = [
@@ -103,12 +71,20 @@ export default function AdvisoryPage() {
       <main className="pt-[72px]">
 
         {/* ── Hero ─────────────────────────────────────────────────────── */}
-        <section className="bg-[#1b3d6e] text-white">
-          <div className="mx-auto max-w-7xl px-6 py-24 md:py-28 flex flex-col gap-6">
+        <section className="relative min-h-[65vh] flex items-end overflow-hidden">
+          <Image
+            src="/images/consult-hero.jpg"
+            alt="ASU Advisory — strategic advisory for Africa's sports economy"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#1b3d6e]/90 via-[#1b3d6e]/50 to-transparent" />
+          <div className="relative z-10 mx-auto max-w-7xl px-6 w-full pb-16 md:pb-20 flex flex-col gap-5">
             <p className="font-[family-name:var(--font-heading)] text-sm font-semibold uppercase tracking-[0.14em] text-[#F4A26B]">
               ASU Advisory
             </p>
-            <h1 className="font-[family-name:var(--font-heading)] font-extrabold text-[clamp(2.2rem,4.8vw,4rem)] leading-[1.1] max-w-[17ch]">
+            <h1 className="font-[family-name:var(--font-heading)] font-extrabold text-[clamp(2.2rem,4.8vw,4rem)] leading-[1.1] text-white max-w-[17ch]">
               Strategic Advisory for Africa&apos;s Sports Economy
             </h1>
             <p className="text-[clamp(1.1rem,1.6vw,1.3rem)] leading-relaxed text-[#E3E9F2] max-w-[46rem]">
@@ -135,12 +111,14 @@ export default function AdvisoryPage() {
               <p className="text-lg text-[#4A5D7A]">Advice shaped around who you are and what you need to decide.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {SERVICES.map((s) => (
-                <div key={s.num} className="bg-[#F5F6F8] rounded p-8 flex flex-col gap-4">
-                  <p className="font-[family-name:var(--font-heading)] font-bold text-sm text-[#B04A06]">{s.num}</p>
-                  <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">{s.title}</h3>
+              {SERVICES.map(({ Icon, title, bullets }) => (
+                <div key={title} className="bg-[#F5F6F8] rounded p-8 flex flex-col gap-4">
+                  <div className="w-12 h-12 rounded-lg bg-[#1b3d6e]/8 flex items-center justify-center">
+                    <Icon size={24} className="text-[#1b3d6e]" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">{title}</h3>
                   <ul className="space-y-1 pl-5 list-disc text-base text-[#4A4A4A] leading-relaxed">
-                    {s.bullets.map((b) => <li key={b}>{b}</li>)}
+                    {bullets.map((b) => <li key={b}>{b}</li>)}
                   </ul>
                 </div>
               ))}
@@ -160,11 +138,11 @@ export default function AdvisoryPage() {
               </h2>
             </div>
             <ol className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 list-none p-0 m-0">
-              {HOW_STEPS.map((s) => (
-                <li key={s.num} className={`flex flex-col gap-3 border-t-2 pt-5 ${s.highlight ? "border-[#E8630A]" : "border-[#6F86A8]"}`}>
-                  <span className="font-[family-name:var(--font-heading)] font-extrabold text-sm text-[#F4A26B]">{s.num}</span>
-                  <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-white">{s.title}</h3>
-                  <p className="text-base leading-relaxed text-[#E3E9F2]">{s.body}</p>
+              {HOW_STEPS.map(({ num, title, Icon, body, highlight }) => (
+                <li key={num} className={`flex flex-col gap-3 border-t-2 pt-5 ${highlight ? "border-[#E8630A]" : "border-[#6F86A8]"}`}>
+                  <Icon size={22} className="text-[#F4A26B]" strokeWidth={1.5} />
+                  <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-white">{title}</h3>
+                  <p className="text-base leading-relaxed text-[#E3E9F2]">{body}</p>
                 </li>
               ))}
             </ol>
@@ -187,14 +165,7 @@ export default function AdvisoryPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-              {UNECA_STATS.map((s) => (
-                <div key={s.label} className="border border-gray-200 rounded p-6 flex flex-col gap-1.5">
-                  <span className="font-[family-name:var(--font-heading)] font-extrabold text-5xl text-[#1b3d6e]">{s.value}</span>
-                  <span className="text-sm text-[#4A5D7A]">{s.label}</span>
-                </div>
-              ))}
-            </div>
+            <AdvisoryAnimatedStats />
 
             <div className="bg-[#F5F6F8] rounded p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="flex flex-col gap-2">
@@ -217,9 +188,6 @@ export default function AdvisoryPage() {
                 <span className="font-[family-name:var(--font-heading)] font-bold text-base text-[#1b3d6e]">Alive &amp; Kicking</span>
               </div>
               <p className="font-[family-name:var(--font-heading)] text-sm font-bold uppercase tracking-[0.12em] text-[#B04A06]">Partnership brokering</p>
-              <h2 className="font-[family-name:var(--font-heading)] font-extrabold text-[clamp(1.7rem,2.8vw,2.3rem)] text-[#1b3d6e] leading-tight">
-                Alive &amp; Kicking
-              </h2>
               <p className="text-[17px] leading-relaxed text-[#4A4A4A]">
                 Alive &amp; Kicking presented at an ASU webinar, where FIFA first saw their work. The relationship that followed made AK the first African manufacturer of FIFA licensed footballs.
               </p>

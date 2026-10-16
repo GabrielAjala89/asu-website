@@ -1,11 +1,50 @@
-import Link from "next/link";
+"use client";
 
-const STATS = [
-  { value: "80",    label: "deals tracked in 2026 so far" },
-  { value: "$192M+", label: "disclosed value, from 20 of 80 deals" },
-  { value: "67",    label: "deals tracked in 2025" },
-  { value: "40",    label: "football deals, the most active sport" },
-];
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+
+function useCountUp(target: number, duration = 1400) {
+  const [value, setValue] = useState(0);
+  const elRef = useRef<HTMLDivElement | null>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = elRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const p = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - p, 3);
+            setValue(Math.round(eased * target));
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target, duration]);
+
+  return { value, elRef };
+}
+
+function AnimatedStat({ value, prefix = "", suffix = "", label }: { value: number; prefix?: string; suffix?: string; label: string }) {
+  const { value: count, elRef } = useCountUp(value);
+  return (
+    <div ref={elRef} className="flex flex-col gap-2">
+      <p className="font-[family-name:var(--font-heading)] font-extrabold text-5xl text-[#1b3d6e] tabular-nums">
+        {prefix}{count}{suffix}
+      </p>
+      <p className="text-base text-[#4A5D7A]">{label}</p>
+    </div>
+  );
+}
 
 export function DealsTrackerStats() {
   return (
@@ -18,14 +57,10 @@ export function DealsTrackerStats() {
           <span className="text-sm text-[#4A5D7A]">Updated fortnightly · Verified by ASU</span>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
-          {STATS.map((s) => (
-            <div key={s.label} className="flex flex-col gap-2">
-              <p className="font-[family-name:var(--font-heading)] font-extrabold text-5xl text-[#1b3d6e]">
-                {s.value}
-              </p>
-              <p className="text-base text-[#4A5D7A]">{s.label}</p>
-            </div>
-          ))}
+          <AnimatedStat value={80}   label="deals tracked in 2026 so far" />
+          <AnimatedStat value={192}  prefix="$" suffix="M+" label="disclosed value, from 20 of 80 deals" />
+          <AnimatedStat value={67}   label="deals tracked in 2025" />
+          <AnimatedStat value={40}   label="football deals, the most active sport" />
         </div>
         <Link
           href="/deals-tracker"

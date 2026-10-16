@@ -2,17 +2,28 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 
 const SPOTIFY_URL = "https://open.spotify.com/show/37o4pqxpyoJzURhSr2dXpe?si=32b40de3ab6d491a";
 
-export function Navbar({ transparent: _transparent = false }: { transparent?: boolean }) {
+export function Navbar({ transparent = false }: { transparent?: boolean }) {
   const [open, setOpen] = useState(false);
   const [intelOpen, setIntelOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const intelTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (!transparent) return;
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [transparent]);
+
+  const isNavy = !transparent || scrolled;
 
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(href + "/");
@@ -42,7 +53,7 @@ export function Navbar({ transparent: _transparent = false }: { transparent?: bo
     }`;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-[#1b3d6e]">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${isNavy ? "bg-[#1b3d6e]" : "bg-transparent"}`}>
       <div className="mx-auto max-w-7xl px-6 h-18 flex items-center justify-between py-4">
 
         {/* Logo */}
@@ -75,28 +86,18 @@ export function Navbar({ transparent: _transparent = false }: { transparent?: bo
 
             {intelOpen && (
               <div
-                className="absolute top-full left-0 mt-2 w-56 bg-white rounded shadow-lg border border-gray-100 overflow-hidden z-50"
+                className="absolute top-full left-0 mt-2 w-52 bg-white rounded shadow-lg border border-gray-100 overflow-hidden z-50"
                 onMouseEnter={openIntel}
                 onMouseLeave={closeIntel}
               >
-                <Link href="/intelligence" className="flex items-center justify-between px-4 py-3 text-sm font-semibold text-[#1b3d6e] font-[family-name:var(--font-heading)] hover:bg-[#f4f7fb] border-b border-gray-50">
-                  Overview
-                </Link>
-                <p className="px-4 pt-3 pb-1 text-[10px] font-bold uppercase tracking-widest text-[#B04A06] font-[family-name:var(--font-heading)]">Trackers</p>
-                <Link href="/deals-tracker" className="flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-[#1b3d6e] font-[family-name:var(--font-heading)] hover:bg-[#f4f7fb] border-b border-gray-50">
+                <Link href="/deals-tracker" className="flex items-center justify-between px-4 py-3 text-sm font-semibold text-[#1b3d6e] font-[family-name:var(--font-heading)] hover:bg-[#f4f7fb] border-b border-gray-50">
                   Deals Tracker
-                </Link>
-                <Link href="/intelligence#reports" className="flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-[#1b3d6e] font-[family-name:var(--font-heading)] hover:bg-[#f4f7fb] border-b border-gray-50">
-                  Reports
-                </Link>
-                <Link href="/intelligence#insights" className="flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-[#1b3d6e] font-[family-name:var(--font-heading)] hover:bg-[#f4f7fb] border-b border-gray-50">
-                  Insights
                 </Link>
                 <a
                   href={SPOTIFY_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-between px-4 py-2.5 text-sm font-semibold text-[#1b3d6e] font-[family-name:var(--font-heading)] hover:bg-[#f4f7fb]"
+                  className="flex items-center justify-between px-4 py-3 text-sm font-semibold text-[#1b3d6e] font-[family-name:var(--font-heading)] hover:bg-[#f4f7fb]"
                 >
                   Podcast ↗
                 </a>

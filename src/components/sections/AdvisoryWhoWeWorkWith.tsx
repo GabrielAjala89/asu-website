@@ -1,18 +1,19 @@
 import Link from "next/link";
+import { Landmark, TrendingUp, Shield } from "lucide-react";
 
 const CLIENTS = [
   {
-    num: "01",
+    Icon: Landmark,
     title: "Governments",
     body: "Sports economy strategy, policy and commercial frameworks that turn sport into investment, jobs and trade.",
   },
   {
-    num: "02",
+    Icon: TrendingUp,
     title: "Brands and investors",
     body: "Market entry, partner selection and deal intelligence to know where African sport is moving and who to back.",
   },
   {
-    num: "03",
+    Icon: Shield,
     title: "Rights holders and federations",
     body: "Commercial strategy, data and sponsor readiness for federations, leagues, clubs and events building revenue.",
   },
@@ -36,11 +37,13 @@ export function AdvisoryWhoWeWorkWith() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {CLIENTS.map((c) => (
-            <div key={c.num} className="bg-white rounded p-8 flex flex-col gap-3">
-              <p className="font-[family-name:var(--font-heading)] font-bold text-sm text-[#B04A06]">{c.num}</p>
-              <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">{c.title}</h3>
-              <p className="text-[17px] leading-relaxed text-[#4A4A4A]">{c.body}</p>
+          {CLIENTS.map(({ Icon, title, body }) => (
+            <div key={title} className="bg-white rounded p-8 flex flex-col gap-4">
+              <div className="w-12 h-12 rounded-lg bg-[#1b3d6e]/8 flex items-center justify-center">
+                <Icon size={24} className="text-[#1b3d6e]" strokeWidth={1.5} />
+              </div>
+              <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">{title}</h3>
+              <p className="text-[17px] leading-relaxed text-[#4A4A4A]">{body}</p>
             </div>
           ))}
         </div>

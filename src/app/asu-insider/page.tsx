@@ -7,6 +7,7 @@ import { sanityFetch } from "@/lib/sanity";
 import { ALL_TRUSTED_BY_QUERY } from "@/lib/queries";
 import Image from "next/image";
 import { InsiderTestimonials } from "@/components/sections/InsiderTestimonials";
+import { TrendingUp, Users, CalendarDays, BarChart2, Shield, Landmark } from "lucide-react";
 
 export const revalidate = 60;
 
@@ -24,16 +25,19 @@ interface TrustedBy {
 const BENEFITS = [
   {
     num: "01",
+    Icon: TrendingUp,
     title: "Know where the money is moving",
     body: "The monthly Insider Brief, deals and investment intelligence from ASU's trackers, and country market snapshots on the markets that matter to your business.",
   },
   {
     num: "02",
+    Icon: Users,
     title: "Reach the people who decide",
     body: "The ASU Directory of organisations across African sport, by country, sport and sector. Tell us who you need to meet: where we know the right person, we will make the introduction.",
   },
   {
     num: "03",
+    Icon: CalendarDays,
     title: "Build relationships in the room",
     body: "Invite only member briefings with senior leaders, plus meetups at key industry events.",
   },
@@ -41,6 +45,7 @@ const BENEFITS = [
 
 const WHO_FOR = [
   {
+    Icon: TrendingUp,
     title: "Brands and sponsors",
     voice: '"I need evidence to justify spending in Africa."',
     bullets: [
@@ -50,6 +55,7 @@ const WHO_FOR = [
     ],
   },
   {
+    Icon: BarChart2,
     title: "Investors",
     voice: '"I can\'t invest blind."',
     bullets: [
@@ -59,6 +65,7 @@ const WHO_FOR = [
     ],
   },
   {
+    Icon: Shield,
     title: "Rights holders and federations",
     voice: '"I\'m pricing deals without benchmarks."',
     bullets: [
@@ -68,6 +75,7 @@ const WHO_FOR = [
     ],
   },
   {
+    Icon: Landmark,
     title: "Government leaders",
     voice: '"We need sport to raise its own revenue."',
     bullets: [
@@ -157,7 +165,12 @@ export default async function AsuInsiderPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {BENEFITS.map((b) => (
                 <div key={b.num} className="bg-[#F5F6F8] rounded p-9 flex flex-col gap-3">
-                  <p className="font-[family-name:var(--font-heading)] font-bold text-sm text-[#B04A06]">{b.num}</p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-[#1b3d6e]/8 flex items-center justify-center shrink-0">
+                      <b.Icon size={20} className="text-[#1b3d6e]" strokeWidth={1.5} />
+                    </div>
+                    <p className="font-[family-name:var(--font-heading)] font-bold text-sm text-[#B04A06]">{b.num}</p>
+                  </div>
                   <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">{b.title}</h3>
                   <p className="text-[17px] leading-relaxed text-[#4A4A4A]">{b.body}</p>
                 </div>
@@ -178,6 +191,9 @@ export default async function AsuInsiderPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {WHO_FOR.map((w) => (
                 <div key={w.title} className="bg-white rounded p-8 flex flex-col gap-4">
+                  <div className="w-11 h-11 rounded-lg bg-[#1b3d6e]/8 flex items-center justify-center">
+                    <w.Icon size={22} className="text-[#1b3d6e]" strokeWidth={1.5} />
+                  </div>
                   <h3 className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">{w.title}</h3>
                   <p className="text-base text-[#4A4A4A] italic">{w.voice}</p>
                   <ul className="space-y-1 pl-5 list-disc text-base text-[#4A4A4A] leading-relaxed">
@@ -216,12 +232,12 @@ export default async function AsuInsiderPage() {
           </div>
         </section>
 
-        {/* ── Join by invitation ───────────────────────────────────────── */}
-        <TwoWaysToJoin />
-
-        {/* ── Not ready to join? Start free. ──────────────────────────── */}
-        <div id="free">
-          <NotReadyToJoin />
+        {/* ── Join + Free — side by side 60/40 ─────────────────────────── */}
+        <div className="grid md:grid-cols-[3fr_2fr] items-stretch" id="request-briefing-section">
+          <TwoWaysToJoin />
+          <div id="free">
+            <NotReadyToJoin />
+          </div>
         </div>
 
         {/* ── Network line ─────────────────────────────────────────────── */}

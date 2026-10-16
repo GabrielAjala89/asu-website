@@ -75,7 +75,7 @@ export function Footer() {
             <p className="font-[family-name:var(--font-heading)] font-bold text-base mb-5">
               Our Socials
             </p>
-            <div className="flex flex-wrap gap-3 mb-5">
+            <div className="flex flex-nowrap gap-3 mb-5 overflow-x-auto pb-1">
               <FooterEmailButton />
               <SocialIcon href="https://www.linkedin.com/company/africa-sports-unified/" label="LinkedIn" external>
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -103,9 +103,6 @@ export function Footer() {
                 </svg>
               </SocialIcon>
             </div>
-            <p className="text-sm text-white/70 leading-relaxed">
-              Feel free to reach us on any of our social media handles or contact us directly.
-            </p>
           </div>
         </div>
 

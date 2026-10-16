@@ -61,11 +61,8 @@ export default async function IntelligencePage({
 
         {/* ── Hero ─────────────────────────────────────────────────────── */}
         <section className="bg-[#1b3d6e] overflow-hidden">
-          <div className="mx-auto max-w-7xl px-6 py-20 md:py-24 relative">
-            <span className="pointer-events-none select-none absolute right-0 top-1/2 -translate-y-1/2 text-[160px] md:text-[200px] font-extrabold text-white/[0.04] font-[family-name:var(--font-heading)] leading-none whitespace-nowrap pr-4">
-              INTEL
-            </span>
-            <div className="relative z-10 flex flex-col gap-5 max-w-[46rem]">
+          <div className="mx-auto max-w-7xl px-6 py-20 md:py-24">
+            <div className="flex flex-col gap-5 max-w-[46rem]">
               <p className="font-[family-name:var(--font-heading)] text-sm font-semibold uppercase tracking-[0.14em] text-[#F4A26B]">
                 ASU Intelligence
               </p>
@@ -73,7 +70,7 @@ export default async function IntelligencePage({
                 Data and intelligence on Africa&apos;s sports economy
               </h1>
               <p className="text-[clamp(1.05rem,1.5vw,1.25rem)] leading-relaxed text-[#E3E9F2]">
-                Deals tracking, market reports and sector insights — built from primary research and a network of 4,300 senior leaders across the continent.
+                Deals tracking, market reports and sector insights built from primary research and a network of 4,300 senior leaders across the continent.
               </p>
             </div>
           </div>
@@ -149,9 +146,9 @@ export default async function IntelligencePage({
           <KnowledgeHubGrid
             articles={articles}
             videos={videos}
-            reports={reports}
-            trackers={trackers}
-            initialTab={initialTab}
+            reports={[]}
+            trackers={[]}
+            initialTab={initialTab === "reports" || initialTab === "trackers" ? "all" : initialTab}
           />
         </section>
 

@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
 const SPORTS = [
   { label: "Football",   count: 40, pct: 100 },
   { label: "Golf",       count: 6,  pct: 15 },
@@ -11,13 +15,75 @@ const YEARS = [
   { label: "2026 so far",  count: 80, pct: 100 },
 ];
 
-function Bar({ label, count, pct }: { label: string; count: number; pct: number }) {
+function useAnimate(duration = 1200) {
+  const [progress, setProgress] = useState(0);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const p = Math.min((now - start) / duration, 1);
+            setProgress(1 - Math.pow(1 - p, 3));
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [duration]);
+
+  return { progress, containerRef };
+}
+
+function AnimatedBar({ label, count, pct, progress }: { label: string; count: number; pct: number; progress: number }) {
+  const animatedPct = pct * progress;
+  const animatedCount = Math.round(count * progress);
   return (
     <div className="grid items-center gap-3" style={{ gridTemplateColumns: "96px 1fr 36px" }}>
       <span className="text-sm text-[#4A4A4A]">{label}</span>
-      <span className="h-[18px] bg-[#1b3d6e] rounded-r-sm" style={{ width: `${pct}%` }} />
-      <span className="font-[family-name:var(--font-heading)] font-bold text-sm text-[#1b3d6e]">{count}</span>
+      <div className="h-[18px] bg-gray-100 rounded-r-sm overflow-hidden">
+        <div
+          className="h-full bg-[#1b3d6e] rounded-r-sm"
+          style={{ width: `${animatedPct}%`, transition: "none" }}
+        />
+      </div>
+      <span className="font-[family-name:var(--font-heading)] font-bold text-sm text-[#1b3d6e] tabular-nums">{animatedCount}</span>
     </div>
+  );
+}
+
+function AnimatedChart({ data, title, exhibit, caption, ariaLabel }: {
+  data: { label: string; count: number; pct: number }[];
+  title: string;
+  exhibit: string;
+  caption: string;
+  ariaLabel: string;
+  children?: React.ReactNode;
+}) {
+  const { progress, containerRef } = useAnimate();
+  return (
+    <figure ref={containerRef} className="m-0 border border-gray-200 rounded p-7 flex flex-col gap-4">
+      <p className="font-[family-name:var(--font-heading)] font-semibold text-[13px] uppercase tracking-[0.1em] text-[#B04A06]">{exhibit}</p>
+      <p className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">{title}</p>
+      <div
+        className="flex flex-col justify-center gap-3.5 min-h-[200px]"
+        role="img"
+        aria-label={ariaLabel}
+      >
+        {data.map((d) => <AnimatedBar key={d.label} {...d} progress={progress} />)}
+      </div>
+      <figcaption className="text-sm text-[#4A5D7A]">{caption}</figcaption>
+    </figure>
   );
 }
 
@@ -35,34 +101,20 @@ export function DealsTrackerCharts() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Chart 1 */}
-          <figure className="m-0 border border-gray-200 rounded p-7 flex flex-col gap-4">
-            <p className="font-[family-name:var(--font-heading)] font-semibold text-[13px] uppercase tracking-[0.1em] text-[#B04A06]">Exhibit 1</p>
-            <p className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">Deals by sport, 2026 so far</p>
-            <div
-              className="flex flex-col justify-center gap-3.5 min-h-[220px]"
-              role="img"
-              aria-label="2026 deals by sport: Football 40, Golf 6, Basketball 5, Cricket 5, Rugby 5"
-            >
-              {SPORTS.map((s) => <Bar key={s.label} {...s} />)}
-            </div>
-            <figcaption className="text-sm text-[#4A5D7A]">Source: ASU Deals Tracker, October 2026</figcaption>
-          </figure>
-
-          {/* Chart 2 */}
-          <figure className="m-0 border border-gray-200 rounded p-7 flex flex-col gap-4">
-            <p className="font-[family-name:var(--font-heading)] font-semibold text-[13px] uppercase tracking-[0.1em] text-[#B04A06]">Exhibit 2</p>
-            <p className="font-[family-name:var(--font-heading)] font-bold text-xl text-[#1b3d6e]">Deals tracked, 2025 vs 2026</p>
-            <div
-              className="flex flex-col justify-center gap-5 min-h-[220px]"
-              role="img"
-              aria-label="Deals tracked: 67 in 2025, 80 in 2026 so far"
-            >
-              {YEARS.map((y) => <Bar key={y.label} {...y} />)}
-              <p className="text-sm text-[#4A4A4A]">2026 has already passed the full 2025 total, with the year still running.</p>
-            </div>
-            <figcaption className="text-sm text-[#4A5D7A]">Source: ASU Deals Tracker, October 2026</figcaption>
-          </figure>
+          <AnimatedChart
+            data={SPORTS}
+            exhibit="Exhibit 1"
+            title="Deals by sport, 2026 so far"
+            caption="Source: ASU Deals Tracker, October 2026"
+            ariaLabel="2026 deals by sport: Football 40, Golf 6, Basketball 5, Cricket 5, Rugby 5"
+          />
+          <AnimatedChart
+            data={YEARS}
+            exhibit="Exhibit 2"
+            title="Deals tracked, 2025 vs 2026"
+            caption="Source: ASU Deals Tracker, October 2026"
+            ariaLabel="Deals tracked: 67 in 2025, 80 in 2026 so far"
+          />
         </div>
       </div>
     </section>
