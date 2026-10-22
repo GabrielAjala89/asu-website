@@ -34,14 +34,14 @@ function useCountUp(target: number, duration = 1400) {
   return { value, elRef };
 }
 
-function AnimatedStat({ value, prefix = "", suffix = "", label }: { value: number; prefix?: string; suffix?: string; label: string }) {
+function AnimatedStat({ value, prefix = "", suffix = "", label, large = false }: { value: number; prefix?: string; suffix?: string; label: string; large?: boolean }) {
   const { value: count, elRef } = useCountUp(value);
   return (
     <div ref={elRef} className="flex flex-col gap-2">
-      <p className="font-[family-name:var(--font-heading)] font-extrabold text-5xl text-[#1b3d6e] tabular-nums">
+      <p className={`font-[family-name:var(--font-heading)] font-extrabold text-[#1b3d6e] tabular-nums ${large ? "text-[clamp(3rem,6vw,5rem)] leading-none" : "text-5xl"}`}>
         {prefix}{count}{suffix}
       </p>
-      <p className="text-base text-[#4A5D7A]">{label}</p>
+      <p className={`text-[#4A5D7A] ${large ? "text-lg" : "text-base"}`}>{label}</p>
     </div>
   );
 }
@@ -55,6 +55,9 @@ export function DealsTrackerStats() {
             ASU Deals Tracker
           </h2>
           <span className="text-sm text-[#4A5D7A]">Updated fortnightly · Verified by ASU</span>
+        </div>
+        <div className="mb-10 pb-10 border-b border-gray-100">
+          <AnimatedStat value={142} suffix="+" label="deals tracked in total since 2024" large />
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           <AnimatedStat value={80}   label="deals tracked in 2026 so far" />
