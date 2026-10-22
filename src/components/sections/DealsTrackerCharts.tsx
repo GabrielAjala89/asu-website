@@ -16,7 +16,7 @@ const YEARS = [
 ];
 
 function useAnimate(duration = 1200) {
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = useState(1);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const started = useRef(false);
 

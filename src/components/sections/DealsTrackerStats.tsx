@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 function useCountUp(target: number, duration = 1400) {
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(target);
   const elRef = useRef<HTMLDivElement | null>(null);
   const started = useRef(false);
 
