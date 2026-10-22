@@ -13,11 +13,35 @@ export const metadata = {
     "Track the latest signed deals, partnerships, and investments across Africa's sports economy. Verified and updated weekly by ASU.",
 };
 
+// Published CSV exports — gids unchanged after sheet restructure
 const CSV_URL_2026 =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQwfVa1av_8miAE8shipaI58BjTz98lNXCOoXQPMpu7bY_qCPLjVTcTU9IBjMpcvoV03F-sVLTEvvCc/pub?gid=900243820&single=true&output=csv";
 
 const CSV_URL_2025 =
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vQwfVa1av_8miAE8shipaI58BjTz98lNXCOoXQPMpu7bY_qCPLjVTcTU9IBjMpcvoV03F-sVLTEvvCc/pub?gid=0&single=true&output=csv";
+
+// Column indices (0-based; col A = 0 is always empty)
+// Columns B–N are original; O–AD are new; AE (30) is Internal Flag — never expose
+const COL = {
+  DATE: 1,          // B
+  COUNTRY: 2,       // C Country / Region
+  SPORT: 3,         // D
+  RIGHTS_HOLDER: 4, // E
+  BUYER: 5,         // F
+  DEAL_TYPE: 6,     // G
+  LOCAL_VALUE: 7,   // H
+  USD_VALUE: 8,     // I — now a raw number or "Undisclosed" / "In kind"
+  DURATION: 9,      // J
+  SECTOR: 10,       // K Sector Focus
+  STATUS: 11,       // L — "Active" or "Ended"
+  NOTES: 12,        // M
+  SOURCE: 13,       // N
+  DEAL_ID: 14,      // O
+  YEAR: 15,         // P Year Announced
+  REGION: 20,       // U
+  VALUE_BASIS: 28,  // AC — "Total" | "Per year" | "Reserve price" | "Proposed"
+  // AE (30) = Internal Flag — NEVER read or display
+} as const;
 
 const FLAGS: Record<string, string> = {
   "Algeria": "🇩🇿", "Angola": "🇦🇴", "Botswana": "🇧🇼", "Burkina Faso": "🇧🇫",
@@ -39,15 +63,15 @@ interface Deal {
 }
 
 interface Stats {
-  totalDeals: number;
+  totalDeals2026: number;
   totalDeals2025: number;
   topSport: string;
   topSportCount: number;
   topCountry: string;
   topCountryCount: number;
-  signedCount: number;
+  activeCount: number;
   sportBreakdown: { sport: string; count: number }[];
-  disclosedValueM: number;
+  disclosedValue: number;  // exact dollars, Value Basis = "Total", 2026 deals only
   disclosedCount: number;
 }
 
@@ -74,7 +98,6 @@ function parseCSVLine(line: string): string[] {
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
 function formatDate(raw: string): string {
-  // DD/MM/YYYY (2026 tab format)
   if (raw.includes("/")) {
     const [d, m, y] = raw.split("/").map((p) => p.trim());
     const mNum = parseInt(m, 10);
@@ -82,7 +105,6 @@ function formatDate(raw: string): string {
       return `${parseInt(d, 10)} ${MONTHS[mNum - 1]} ${y}`;
     }
   }
-  // DD-MM-YY fallback
   if (raw.includes("-")) {
     const [d, m, y] = raw.split("-").map((p) => p.trim());
     const mNum = parseInt(m, 10);
@@ -98,31 +120,22 @@ function getFlag(country: string): string {
   return FLAGS[country] ?? "";
 }
 
-function parseUSDMillions(raw: string): number | null {
+// Column I is now a raw number (e.g. "7500000") or "Undisclosed" / "In kind"
+function parseUSDValue(raw: string): number | null {
   if (!raw) return null;
-  if (/undisclosed|not officially/i.test(raw)) return null;
-  const lower = raw.toLowerCase();
-  if (lower === "tbc" || lower === "n/a" || lower === "not disclosed") return null;
+  const t = raw.trim();
+  if (!t) return null;
+  const lower = t.toLowerCase();
+  if (lower === "undisclosed" || lower === "in kind" || lower === "tbc" || lower === "n/a") return null;
+  const n = parseFloat(t.replace(/[$,]/g, ""));
+  return isNaN(n) || n <= 0 ? null : n;
+}
 
-  // Range: take midpoint (e.g. "26.7–26.8 million")
-  const rangeM = raw.match(/([\d,]+(?:\.\d+)?)\s*[–\-]\s*([\d,]+(?:\.\d+)?)/);
-  let base: number;
-  if (rangeM) {
-    const a = parseFloat(rangeM[1].replace(/,/g, ""));
-    const b = parseFloat(rangeM[2].replace(/,/g, ""));
-    base = (a + b) / 2;
-  } else {
-    const m = raw.match(/\$?\s*~?\s*([\d,]+(?:\.\d+)?)/);
-    if (!m) return null;
-    base = parseFloat(m[1].replace(/,/g, ""));
-  }
-  if (isNaN(base) || base <= 0) return null;
-
-  if (/billion|bn\b/i.test(lower)) return base * 1000;
-  if (/million/i.test(lower)) return base;
-  if (/\d[mM]\b/.test(raw)) return base;
-  // Raw dollar figure — convert to millions
-  return base / 1_000_000;
+// Format a dollar amount for display
+function formatUSD(dollars: number): string {
+  if (dollars >= 1_000_000_000) return `$${(dollars / 1_000_000_000).toFixed(1)}B`;
+  if (dollars >= 1_000_000) return `$${Math.round(dollars / 1_000_000)}M`;
+  return `$${dollars.toLocaleString()}`;
 }
 
 function topByFrequency(values: string[]): [string, number] {
@@ -138,19 +151,26 @@ function parseRows(text: string) {
     .map((l) => l.trim())
     .filter((l) => l.length > 0)
     .map(parseCSVLine)
-    .slice(1)
-    .filter((r) => r.length > 10 && r[1]?.trim());
+    .slice(1)  // skip header row
+    .filter((r) => r.length > 10 && r[COL.DATE]?.trim());
 }
+
+// Regional values to exclude when finding "top country"
+const REGIONAL_VALUES = new Set([
+  "sub-saharan africa", "continental", "global", "pan-africa", "pan african",
+  "mena", "north africa", "west africa", "east africa", "central africa",
+  "southern africa", "multi region",
+]);
 
 async function getTrackerData(): Promise<{ deals: Deal[]; stats: Stats }> {
   const fallback = {
     deals: [],
     stats: {
-      totalDeals: 0, totalDeals2025: 0,
+      totalDeals2026: 0, totalDeals2025: 0,
       topSport: "—", topSportCount: 0,
       topCountry: "—", topCountryCount: 0,
-      signedCount: 0, sportBreakdown: [],
-      disclosedValueM: 0, disclosedCount: 0,
+      activeCount: 0, sportBreakdown: [],
+      disclosedValue: 0, disclosedCount: 0,
     },
   };
   try {
@@ -160,25 +180,21 @@ async function getTrackerData(): Promise<{ deals: Deal[]; stats: Stats }> {
     ]);
     const [text2026, text2025] = await Promise.all([res2026.text(), res2025.text()]);
 
-    const allRows   = parseRows(text2026);
-    const rows2025  = parseRows(text2025);
+    const rows2026 = parseRows(text2026);
+    const rows2025 = parseRows(text2025);
+    const allDeals = [...rows2026, ...rows2025];
 
-    const signed = ["signed", "active", "activated", "confirmed", "renewed"];
-    const signedCount = allRows.filter((r) =>
-      signed.includes((r[11] ?? "").trim().toLowerCase())
-    ).length;
+    // Year counts use Year Announced (col P), not the tab name
+    const deals2026 = allDeals.filter(r => (r[COL.YEAR] ?? "").trim() === "2026");
+    const deals2025 = allDeals.filter(r => (r[COL.YEAR] ?? "").trim() === "2025");
 
-    const [topSport, topSportCount] = topByFrequency(allRows.map((r) => r[3]?.trim() ?? ""));
+    // Active deals: Status = "Active" across both tabs
+    const activeCount = allDeals.filter(r => (r[COL.STATUS] ?? "").trim() === "Active").length;
 
-    const countryValues = allRows.map((r) => r[2]?.trim() ?? "").filter(
-      (c) => !["sub-saharan africa", "continental", "global", "pan-africa", "mena", "west africa", "east africa"].includes(c.toLowerCase())
-    );
-    const [topCountry, topCountryCount] = topByFrequency(countryValues);
-
-    // Sport breakdown: top 8 by deal count
+    // Sport breakdown from 2026 deals
     const sportCounts: Record<string, number> = {};
-    for (const r of allRows) {
-      const s = r[3]?.trim();
+    for (const r of deals2026) {
+      const s = r[COL.SPORT]?.trim();
       if (s) sportCounts[s] = (sportCounts[s] ?? 0) + 1;
     }
     const sportBreakdown = Object.entries(sportCounts)
@@ -186,30 +202,38 @@ async function getTrackerData(): Promise<{ deals: Deal[]; stats: Stats }> {
       .slice(0, 8)
       .map(([sport, count]) => ({ sport, count }));
 
-    // Financial: sum disclosed USD values (col 8)
-    let disclosedValueM = 0;
-    let disclosedCount = 0;
-    for (const r of allRows) {
-      const v = parseUSDMillions(r[8]?.trim() ?? "");
-      if (v !== null) { disclosedValueM += v; disclosedCount++; }
+    const [topSport, topSportCount] = topByFrequency(deals2026.map(r => r[COL.SPORT]?.trim() ?? ""));
+
+    const countryValues = deals2026
+      .map(r => r[COL.COUNTRY]?.trim() ?? "")
+      .filter(c => !REGIONAL_VALUES.has(c.toLowerCase()));
+    const [topCountry, topCountryCount] = topByFrequency(countryValues);
+
+    // Disclosed value: 2026 deals, Value Basis = "Total" only
+    let disclosedValue = 0, disclosedCount = 0;
+    for (const r of deals2026) {
+      if ((r[COL.VALUE_BASIS] ?? "").trim() !== "Total") continue;
+      const v = parseUSDValue(r[COL.USD_VALUE] ?? "");
+      if (v !== null) { disclosedValue += v; disclosedCount++; }
     }
 
-    const deals = allRows.slice(0, 5).map((r) => ({
-      date: formatDate(r[1]?.trim() ?? ""),
-      country: r[2]?.trim() ?? "",
-      sport: r[3]?.trim() ?? "",
-      sectorFocus: r[10]?.trim() ?? "",
+    // Preview: 5 most recent from 2026 tab (already sorted newest-first by the sheet)
+    const deals = rows2026.slice(0, 5).map((r) => ({
+      date: formatDate(r[COL.DATE]?.trim() ?? ""),
+      country: r[COL.COUNTRY]?.trim() ?? "",
+      sport: r[COL.SPORT]?.trim() ?? "",
+      sectorFocus: r[COL.SECTOR]?.trim() ?? "",
     }));
 
     return {
       deals,
       stats: {
-        totalDeals: allRows.length,
-        totalDeals2025: rows2025.length,
+        totalDeals2026: deals2026.length,
+        totalDeals2025: deals2025.length,
         topSport, topSportCount,
         topCountry, topCountryCount,
-        signedCount, sportBreakdown,
-        disclosedValueM, disclosedCount,
+        activeCount, sportBreakdown,
+        disclosedValue, disclosedCount,
       },
     };
   } catch {
@@ -221,7 +245,7 @@ const PERKS = [
   "All fields",
   "Deal value",
   "Parties & sources",
-  "Country & sport filters",
+  "Country, region & sport filters",
   "Weekly updates",
 ];
 
@@ -269,7 +293,7 @@ export default async function DealsTrackerPage() {
 
               <div className="px-6 py-8 flex flex-col gap-1">
                 <span className="text-4xl font-extrabold text-[#1b3d6e] font-[family-name:var(--font-heading)] leading-none tabular-nums">
-                  {stats.totalDeals}
+                  {stats.totalDeals2026}
                 </span>
                 <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-1">
                   Deals in 2026
@@ -305,13 +329,13 @@ export default async function DealsTrackerPage() {
 
               <div className="px-6 py-8 flex flex-col gap-1">
                 <span className="text-4xl font-extrabold text-[#F37021] font-[family-name:var(--font-heading)] leading-none tabular-nums">
-                  {stats.signedCount}
+                  {stats.activeCount}
                 </span>
                 <span className="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-1">
-                  Signed &amp; confirmed
+                  Active deals
                 </span>
                 <span className="text-sm text-gray-500 leading-snug mt-0.5">
-                  Active deals in the market
+                  Status active across both years
                 </span>
               </div>
 
@@ -327,9 +351,8 @@ export default async function DealsTrackerPage() {
               Market at a Glance
             </h2>
             {/* Financial headline stat */}
-            {stats.disclosedValueM > 0 && (
+            {stats.disclosedValue > 0 && (
               <div className="mb-8 bg-[#1b3d6e] rounded-2xl p-8 flex flex-col sm:flex-row sm:items-center gap-6">
-                {/* Icon */}
                 <div className="shrink-0 w-16 h-16 rounded-2xl bg-[#F37021]/20 flex items-center justify-center">
                   <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
                     <circle cx="16" cy="16" r="15" stroke="#F37021" strokeWidth="2"/>
@@ -341,10 +364,10 @@ export default async function DealsTrackerPage() {
                     Disclosed Deal Value — 2026 YTD
                   </p>
                   <p className="text-4xl font-extrabold text-white font-[family-name:var(--font-heading)] leading-none tabular-nums">
-                    ${Math.round(stats.disclosedValueM)}M+
+                    {formatUSD(stats.disclosedValue)}+
                   </p>
                   <p className="mt-2 text-white/55 text-xs leading-snug max-w-lg">
-                    Based on {stats.disclosedCount} of {stats.totalDeals} deals with disclosed values. The remaining {stats.totalDeals - stats.disclosedCount} deals are undisclosed — the true total is significantly higher.
+                    Based on {stats.disclosedCount} of {stats.totalDeals2026} deals where total value has been reported. The remaining {stats.totalDeals2026 - stats.disclosedCount} deals are undisclosed — the true total is significantly higher.
                   </p>
                 </div>
               </div>
@@ -369,7 +392,7 @@ export default async function DealsTrackerPage() {
                     <div className="border-t border-[#dde3ee] pt-6">
                       <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">2026 — Year to Date</p>
                       <p className="text-5xl font-extrabold text-[#F37021] font-[family-name:var(--font-heading)] leading-none tabular-nums">
-                        {stats.totalDeals}
+                        {stats.totalDeals2026}
                       </p>
                       <p className="text-sm text-gray-500 mt-1">deals tracked so far</p>
                     </div>
@@ -411,7 +434,7 @@ export default async function DealsTrackerPage() {
                   <p className="text-gray-400 text-sm">Data unavailable.</p>
                 )}
                 <p className="mt-6 text-xs text-gray-400">
-                  Based on {stats.totalDeals} deals tracked in 2026 year to date.
+                  Based on {stats.totalDeals2026} deals tracked in 2026 year to date. Source: ASU Deals Tracker.
                 </p>
               </div>
 
@@ -518,7 +541,7 @@ export default async function DealsTrackerPage() {
                   See every deal, not just the headlines
                 </h3>
                 <p className="mt-2 text-white/70 text-sm leading-relaxed max-w-lg">
-                  The full tracker includes all deals, deal value, parties involved, methodology, and source links — with filters by country, sport, and sector.
+                  The full tracker includes all deals, deal value, parties involved, methodology, and source links — with filters by country, region, sport, and sector.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {PERKS.map((p) => (
