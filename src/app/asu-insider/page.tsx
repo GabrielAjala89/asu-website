@@ -100,7 +100,7 @@ const HOW_STEPS = [
   {
     num: "3",
     title: "Decide, with the early member rate",
-    body: "Early member places close on 30 November 2026.",
+    body: "Early member places close December 2026.",
   },
 ];
 
@@ -128,7 +128,7 @@ export default async function AsuInsiderPage() {
                 Private briefings now open
               </span>
               <span className="px-3 py-1.5 rounded-sm border border-white/60 text-white text-xs font-bold uppercase tracking-widest">
-                Early member places close 30 November
+                Early member places close December 2026
               </span>
             </div>
             <OrangeLine />
