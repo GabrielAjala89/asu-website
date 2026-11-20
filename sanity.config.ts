@@ -3,7 +3,7 @@ import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
 import {
   article, video, report, tracker, caseStudy,
-  testimonial, trustedBy, author, topic, siteSettings, waitlistEntry, downloadRequest, articleTable, youtubeEmbed, promoBanner,
+  testimonial, trustedBy, author, topic, siteSettings, waitlistEntry, downloadRequest, articleTable, youtubeEmbed, promoBanner, podcastEmbed,
 } from "./sanity/schemas";
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
@@ -50,7 +50,7 @@ export default defineConfig({
   schema: {
     types: [
       article, video, report, tracker, caseStudy,
-      testimonial, trustedBy, author, topic, siteSettings, waitlistEntry, downloadRequest, articleTable, youtubeEmbed, promoBanner,
+      testimonial, trustedBy, author, topic, siteSettings, waitlistEntry, downloadRequest, articleTable, youtubeEmbed, promoBanner, podcastEmbed,
     ],
   },
 });
