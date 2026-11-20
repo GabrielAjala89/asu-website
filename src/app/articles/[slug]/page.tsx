@@ -40,9 +40,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const article = await sanityFetch<Article>(ARTICLE_BY_SLUG_QUERY, { slug }).catch(() => null);
   if (!article) return { title: "Article" };
+
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.asunified.com").replace(/\/$/, "");
+  const articleUrl = `${siteUrl}/articles/${slug}`;
+  const ogImage = article.heroImage?.asset?.url;
+
   return {
     title: article.title,
     description: article.excerpt,
+    openGraph: {
+      title: article.title,
+      description: article.excerpt ?? undefined,
+      url: articleUrl,
+      siteName: "Africa Sports Unified",
+      type: "article",
+      publishedTime: article.publishedAt ?? undefined,
+      ...(ogImage ? { images: [{ url: ogImage, width: 1200, height: 630 }] } : {}),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt ?? undefined,
+      ...(ogImage ? { images: [ogImage] } : {}),
+    },
   };
 }
 
@@ -97,6 +117,26 @@ const portableComponents = {
               className="absolute inset-0 w-full h-full"
             />
           </div>
+          {value.caption && <p className="mt-2 text-sm text-gray-500 text-center italic">{value.caption}</p>}
+        </div>
+      );
+    },
+    podcastEmbed: ({ value }: { value: { embedUrl?: string; caption?: string } }) => {
+      if (!value.embedUrl) return null;
+      const isSpotify = value.embedUrl.includes("spotify.com");
+      const isApple = value.embedUrl.includes("podcasts.apple.com");
+      const height = isSpotify ? 152 : isApple ? 175 : 200;
+      return (
+        <div className="my-8">
+          <iframe
+            src={value.embedUrl}
+            width="100%"
+            height={height}
+            frameBorder="0"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            className="rounded-xl"
+          />
           {value.caption && <p className="mt-2 text-sm text-gray-500 text-center italic">{value.caption}</p>}
         </div>
       );
@@ -161,6 +201,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const related = (allArticles as RelatedArticle[])
     .filter(a => a.slug.current !== slug)
     .slice(0, 3);
+
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.asunified.com").replace(/\/$/, "");
+  const articleUrl = `${siteUrl}/articles/${article.slug.current}`;
 
   const publishedDate = article.publishedAt
     ? new Date(article.publishedAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
@@ -244,7 +287,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   ))}
                 </div>
               )}
-              <ShareBar title={article.title} />
+              <ShareBar title={article.title} url={articleUrl} />
             </div>
 
             {/* Body */}
@@ -268,7 +311,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   Knowledge Hub
                 </Link>
               </div>
-              <ShareBar title={article.title} />
+              <ShareBar title={article.title} url={articleUrl} />
             </div>
           </div>
         </section>

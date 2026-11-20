@@ -18,3 +18,4 @@ export { freeMemberSignup } from "./freeMemberSignup";
 export { articleTable } from "./articleTable";
 export { youtubeEmbed } from "./youtubeEmbed";
 export { promoBanner } from "./promoBanner";
+export { podcastEmbed } from "./podcastEmbed";

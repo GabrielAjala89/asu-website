@@ -20,6 +20,7 @@ export const article = defineType({
       { type: "articleTable" },
       { type: "youtubeEmbed" },
       { type: "promoBanner" },
+      { type: "podcastEmbed" },
       { type: "image", options: { hotspot: true }, fields: [
         defineField({ name: "caption", title: "Caption", type: "string" }),
         defineField({ name: "alt", title: "Alt text", type: "string" }),

@@ -24,11 +24,11 @@ export const metadata: Metadata = {
   },
   description:
     "Commercial intelligence and strategic advisory for Africa's sports economy — serving governments, brands, investors and rights holders.",
-  metadataBase: new URL("https://asunified.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.asunified.com"),
   openGraph: {
     title: "Africa Sports Unified",
     description: "Commercial intelligence and strategic advisory for Africa's sports economy — serving governments, brands, investors and rights holders.",
-    url: "https://asunified.com",
+    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.asunified.com",
     siteName: "Africa Sports Unified",
     locale: "en_GB",
     type: "website",
